@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { isError } from '../../types/guards';
+import { isError } from '../../types/guards.types';
 
 export default async function connectToMongoDB(mongoUri: string | undefined) {
   try {

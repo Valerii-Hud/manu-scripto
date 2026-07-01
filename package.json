@@ -11,13 +11,15 @@
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/mongoose": "^5.11.97"
+    "@types/mongoose": "^5.11.97",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "scripts": {
-    "dev": "bun run  --watch ./server/index.ts"
+    "dev": "tsx  watch server/index.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
