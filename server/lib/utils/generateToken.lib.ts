@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import type { Response } from 'express';
 import { ENV_VARS } from '../env/envVars.lib';
 import type mongoose from 'mongoose';
+import errorHandler from './errorHandler.lib';
 
 const generateTokenAndSetCookie = (
   userId: mongoose.Types.ObjectId,
@@ -20,7 +21,9 @@ const generateTokenAndSetCookie = (
       sameSite: 'strict',
       secure: NODE_ENV === 'production',
     });
-  } catch (error) {}
+  } catch (error) {
+    errorHandler(res, error);
+  }
 };
 
 export default generateTokenAndSetCookie;
