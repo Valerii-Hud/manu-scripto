@@ -54,7 +54,7 @@ export const signup = async (req: AuthRequest, res: Response) => {
     if (newUser) {
       generateTokenAndSetCookie(newUser._id, res);
       await newUser.save();
-      return res.status(201).json({
+      const usr = {
         _id: newUser._id,
         userName: newUser.userName,
         fullName: newUser.fullName,
@@ -66,7 +66,8 @@ export const signup = async (req: AuthRequest, res: Response) => {
         coverImage: newUser.coverImage,
         bio: newUser.bio,
         link: newUser.link,
-      });
+      };
+      return res.status(201).json(usr);
     } else {
       return res.status(400).json({ error: 'Invalid user data' });
     }
