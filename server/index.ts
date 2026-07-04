@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/user', protectRoute, userRoutes);
+app.use('/api/v1/users', protectRoute, userRoutes);
 
 app.listen(ENV_VARS.PORT, () => {
   connectToMongoDB(MONGO_URI);

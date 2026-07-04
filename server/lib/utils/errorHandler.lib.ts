@@ -2,11 +2,19 @@ import { isError } from '../../types/guards.types';
 import type { Response } from 'express';
 import { ENV_VARS } from '../env/envVars.lib';
 
-export default function errorHandler(res: Response, error: unknown) {
+type Status = 500 | 404 | 400 | 401;
+
+export default function errorHandler(
+  res: Response,
+  error: unknown,
+  status: Status = 500,
+  message: string = 'Internal Server Error'
+) {
   if (isError(error)) {
-    return res.status(500).json({
+    return res.status(status).json({
       error:
-        'Internal Server Error ' +
+        message +
+        ' ' +
         (ENV_VARS.NODE_ENV !== 'production' ? error.message : ''),
     });
   }
