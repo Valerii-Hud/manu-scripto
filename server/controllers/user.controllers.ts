@@ -17,7 +17,34 @@ export const getUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const getSuggestedUsers = async (req: Request, res: Response) => {};
+export const getSuggestedUsers = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?._id;
+
+    const usersFollowedByMe = await User.findById(userId).select('following');
+
+    const users = await User.aggregate([
+      {
+        $match: {
+          _id: { $ne: userId },
+        },
+      },
+      { $sample: { size: 10 } },
+    ]);
+
+    const filteredUsers = users.filter(
+      (user) => !usersFollowedByMe?.following.includes(user._id)
+    );
+
+    const suggestedUsersWithPasswords = filteredUsers.slice(0, 4);
+
+    suggestedUsersWithPasswords.map((user) => (user.password = null));
+
+    return res.status(200).json(suggestedUsersWithPasswords);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
 export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
   try {
     const { userId } = req.params;
