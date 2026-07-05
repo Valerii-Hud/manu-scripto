@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import errorHandler from '../lib/utils/errorHandler.lib';
 import User from '../models/user.model';
 import type { AuthRequest } from '../types/interfaces.types';
+import Notification from '../models/notification.model';
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
     const { userName } = req.params;
@@ -53,6 +54,13 @@ export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
       await User.findByIdAndUpdate(req.user?._id, {
         $push: { following: userId },
       });
+      const newNotification = new Notification({
+        from: req.user?._id,
+        to: userId,
+        type: 'follow',
+      });
+      await newNotification.save();
+
       return res.status(200).json({ message: 'User followed successfully' });
     }
   } catch (error) {
