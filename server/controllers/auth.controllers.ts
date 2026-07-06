@@ -24,6 +24,12 @@ export const signup = async (req: AuthRequest, res: Response) => {
       return res.status(403).json({ error: 'Please provide all fields' });
     }
 
+    if (tPassword.length < 8) {
+      return res
+        .status(400)
+        .json({ error: 'Password must be at least 8 characters long' });
+    }
+
     if (tUserName.length < 4 || tUserName.length > 16) {
       return res.status(400).json({
         error:

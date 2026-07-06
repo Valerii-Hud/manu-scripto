@@ -2,7 +2,17 @@ import type { EnvVars } from '../../types/interfaces.types';
 import dotenv from 'dotenv';
 dotenv.config({});
 
-const { PORT, DOMAIN, PROTOCOL, NODE_ENV, JWT_SECRET, MONGO_URI } = process.env;
+const {
+  PORT,
+  DOMAIN,
+  PROTOCOL,
+  NODE_ENV,
+  JWT_SECRET,
+  MONGO_URI,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+  CLOUDINARY_CLOUD_NAME,
+} = process.env;
 
 const NODE_ENV_LIST = ['development', 'production', 'tests'];
 
@@ -60,6 +70,9 @@ if (JWT_SECRET.length < 32) {
   throw new Error('JWT_SECRET must be at least 32 characters');
 }
 
+if (!CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET || !CLOUDINARY_CLOUD_NAME) {
+  throw new Error('CLOUDINARY API KEYS must be provided');
+}
 export const ENV_VARS: EnvVars = {
   PROTOCOL,
   DOMAIN,
@@ -67,4 +80,7 @@ export const ENV_VARS: EnvVars = {
   JWT_SECRET,
   NODE_ENV,
   MONGO_URI,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+  CLOUDINARY_CLOUD_NAME,
 };

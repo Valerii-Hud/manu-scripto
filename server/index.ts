@@ -6,9 +6,15 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectToMongoDB from './lib/db/connectToMongoDB.lib';
 import protectRoute from './middlewares/protectRoute.middleware';
-
+import { v2 as cloudinary } from 'cloudinary';
 const app = express();
 const { MONGO_URI } = ENV_VARS;
+
+cloudinary.config({
+  cloud_name: ENV_VARS.CLOUDINARY_CLOUD_NAME,
+  api_secret: ENV_VARS.CLOUDINARY_API_SECRET,
+  api_key: ENV_VARS.CLOUDINARY_API_KEY,
+});
 
 app.use(urlencoded({ extended: true }));
 app.use(express.json());

@@ -3,6 +3,8 @@ import errorHandler from '../lib/utils/errorHandler.lib';
 import User from '../models/user.model';
 import type { AuthRequest } from '../types/interfaces.types';
 import Notification from '../models/notification.model';
+import bcrypt from 'bcryptjs';
+import { v2 as cloudinary } from 'cloudinary';
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
     const { userName } = req.params;
@@ -94,4 +96,55 @@ export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
     errorHandler(res, error);
   }
 };
-export const updateUserProfile = (req: Request, res: Response) => {};
+export const updateUser = async (req: AuthRequest, res: Response) => {
+  try {
+    const {
+      fullName,
+      email,
+      userName,
+      currentPassword,
+      newPassword,
+      bio,
+      link,
+    } = req.body;
+
+    let { profileImage, coverImage } = req.body;
+
+    const userId = req.user?._id;
+    const user = await User.findById(userId).select('-password');
+
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    if ((currentPassword && !newPassword) || (!currentPassword && newPassword))
+      return res.status(400).json({
+        error: 'Please provide both current password and new password',
+      });
+    if (currentPassword && newPassword) {
+      const isPasswordCorrect = await bcrypt.compare(
+        currentPassword,
+        user.password
+      );
+      if (!isPasswordCorrect) {
+        return res.status(401).json({
+          error: 'Current password is incorrect',
+        });
+      }
+      if (newPassword.length < 8) {
+        return res
+          .status(400)
+          .json({ error: 'Password must be at least 8 characters long' });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(newPassword, salt);
+      user.password = hash;
+      //TODO:
+      // if (profileImage) {
+
+      // }
+      // if (coverImage) {
+      // }
+    }
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
