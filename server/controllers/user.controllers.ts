@@ -5,6 +5,11 @@ import type { AuthRequest } from '../types/interfaces.types';
 import Notification from '../models/notification.model';
 import bcrypt from 'bcryptjs';
 import { v2 as cloudinary } from 'cloudinary';
+import {
+  destroyImage,
+  isImageExists,
+  uploadImage,
+} from '../lib/utils/cloudinary.lib';
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
     const { userName } = req.params;
@@ -111,7 +116,7 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
     let { profileImage, coverImage } = req.body;
 
     const userId = req.user?._id;
-    const user = await User.findById(userId).select('-password');
+    let user = await User.findById(userId).select('-password');
 
     if (!user) return res.status(404).json({ error: 'User not found' });
     if ((currentPassword && !newPassword) || (!currentPassword && newPassword))
@@ -137,12 +142,31 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(newPassword, salt);
       user.password = hash;
-      //TODO:
-      // if (profileImage) {
+      if (profileImage) {
+        if (isImageExists(user, 'profileImage'))
+          destroyImage(user, 'profileImage');
 
-      // }
-      // if (coverImage) {
-      // }
+        profileImage = await uploadImage(profileImage);
+      }
+      if (coverImage) {
+        if (isImageExists(user, 'coverImage')) destroyImage(user, 'coverImage');
+
+        coverImage = await uploadImage(profileImage);
+      }
+
+      user.fullName = fullName || user.fullName;
+      user.email = email || user.email;
+      user.userName = userName || user.userName;
+      user.profileImage = profileImage || user.profileImage;
+      user.coverImage = coverImage || user.coverImage;
+      user.bio = bio || user.bio;
+      user.link = link || user.link;
+
+      user = await user.save();
+
+      user.password = '';
+
+      return res.status(200).json(user);
     }
   } catch (error) {
     errorHandler(res, error);
