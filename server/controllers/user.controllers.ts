@@ -4,7 +4,6 @@ import User from '../models/user.model';
 import type { AuthRequest } from '../types/interfaces.types';
 import Notification from '../models/notification.model';
 import bcrypt from 'bcryptjs';
-import { v2 as cloudinary } from 'cloudinary';
 import {
   destroyImage,
   isImageExists,
@@ -52,6 +51,7 @@ export const getSuggestedUsers = async (req: AuthRequest, res: Response) => {
     errorHandler(res, error);
   }
 };
+
 export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
   try {
     const { userId } = req.params;
@@ -101,6 +101,7 @@ export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
     errorHandler(res, error);
   }
 };
+
 export const updateUser = async (req: AuthRequest, res: Response) => {
   try {
     const {
