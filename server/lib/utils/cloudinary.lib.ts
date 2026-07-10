@@ -1,27 +1,28 @@
 import { v2 as cloudinary } from 'cloudinary';
-import type { Post, User } from '../../types/interfaces.types';
 
-type DataType = User | Post;
+type ImageData = {
+  image?: string | null;
+  profileImage?: string | null;
+  coverImage?: string | null;
+};
+
 export async function uploadImage(image: string) {
   const uploadedResponse = await cloudinary.uploader.upload(image);
   return uploadedResponse.secure_url;
 }
 
-export function isImageExists<T extends DataType, K extends keyof T & string>(
-  dataType: T,
-  imageType: K
-) {
+export function isImageExists(dataType: ImageData, imageType: keyof ImageData) {
   if (!imageType) throw new Error('Image Not Found');
   return Boolean(dataType[imageType]);
 }
 
-export async function destroyImage<
-  T extends DataType,
-  K extends keyof T & string
->(dataType: T, imageType: K) {
-  if (!dataType) {
+export async function destroyImage(
+  imageData: ImageData,
+  imageType: keyof ImageData
+) {
+  if (!imageData) {
   }
-  const image = dataType[imageType] as string;
+  const image = imageData[imageType] as string;
   if (!image) throw new Error(`${imageType} not found`);
 
   const publicId = image.split('/').pop()?.split('.')[0];

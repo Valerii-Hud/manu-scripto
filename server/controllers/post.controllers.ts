@@ -71,6 +71,7 @@ export const deletePost = async (req: AuthRequest, res: Response) => {
     }
 
     if (post.image) {
+      await destroyImage(post, 'image');
     }
 
     return res.status(200).json({ message: 'Post deleted successfully' });
