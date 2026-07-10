@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import type { AuthRequest } from '../types/interfaces.types';
 import User from '../models/user.model';
 import Post from '../models/post.model';
-import { uploadImage } from '../lib/utils/cloudinary.lib';
+import { destroyImage, uploadImage } from '../lib/utils/cloudinary.lib';
 
 export const createPost = async (req: AuthRequest, res: Response) => {
   try {
@@ -47,6 +47,33 @@ export const createPost = async (req: AuthRequest, res: Response) => {
     await newPost.save();
 
     return res.status(201).json(newPost);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+export const deletePost = async (req: AuthRequest, res: Response) => {
+  try {
+    const { postId } = req.params;
+
+    const post = await Post.findById(postId);
+
+    if (!post) return res.status(404).json({ error: 'Post Not Found' });
+
+    if (!post.user) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    if (post.user?._id.toString() !== req.user?._id.toString()) {
+      return res
+        .status(401)
+        .json({ error: 'You are not authorized to delete this post' });
+    }
+
+    if (post.image) {
+    }
+
+    return res.status(200).json({ message: 'Post deleted successfully' });
   } catch (error) {
     errorHandler(res, error);
   }

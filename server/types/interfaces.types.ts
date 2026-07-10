@@ -27,6 +27,22 @@ export interface User {
   link: string;
 }
 
+export interface Post {
+  _id: mongoose.Types.ObjectId;
+  user: User;
+  text: string;
+  image: string;
+  views: number;
+  comments: PostComment[];
+  tags: string[];
+  postType: ['public', 'private', 'onlySubscribers', 'onlySponsors'];
+}
+
+export interface PostComment {
+  text: string;
+  user: User;
+}
+
 export interface AuthRequest extends Request {
   user?: User;
 }
