@@ -74,7 +74,65 @@ export const deletePost = async (req: AuthRequest, res: Response) => {
       await destroyImage(post, 'image');
     }
 
+    await Post.findByIdAndDelete(postId);
+
     return res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+export const commentOnPost = async (req: AuthRequest, res: Response) => {
+  try {
+    const { text, isHidden } = req.body;
+    const { postId } = req.params;
+    const userId = req.user?._id.toString();
+
+    if (!text) return res.status(400).json({ error: 'Text field is required' });
+
+    const post = await Post.findById(postId);
+
+    if (!post) return res.status(404).json({ error: 'Post Not Found' });
+
+    const newComment = { text, isHidden, user: userId };
+
+    post.comments.push(newComment);
+
+    await post.save();
+
+    return res.status(200).json(post);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+export const deleteComment = async (req: AuthRequest, res: Response) => {
+  try {
+    const { commentId } = req.body;
+    const { postId } = req.params;
+    const userId = req.user?._id.toString();
+
+    const post = await Post.findById(postId);
+    if (!post) return res.status(404).json({ error: 'Post Not Found' });
+
+    const user = await User.findById(userId).select('-password');
+    if (!user) return res.status(404).json({ error: 'User Not Found' });
+
+    if (userId !== post.user?._id.toString() && user.userType !== 'default') {
+      post.comments.filter((comment) => comment._id !== commentId);
+    }
+    if (userId !== post.user?._id.toString() && user.userType === 'default') {
+      return res.status(401).json({ error: 'You can not delete this comment' });
+    }
+
+    const comment = post.comments.id(commentId);
+
+    if (!comment) return res.status(404).json({ error: 'Comment Not Found' });
+
+    await comment.deleteOne();
+    await post.save();
+
+    return res.status(200).json(post);
   } catch (error) {
     errorHandler(res, error);
   }
