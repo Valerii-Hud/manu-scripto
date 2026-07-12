@@ -4,6 +4,7 @@ import type { AuthRequest } from '../types/interfaces.types';
 import User from '../models/user.model';
 import Post from '../models/post.model';
 import { destroyImage, uploadImage } from '../lib/utils/cloudinary.lib';
+import Notification from '../models/notification.model';
 
 export const createPost = async (req: AuthRequest, res: Response) => {
   try {
@@ -133,6 +134,36 @@ export const deleteComment = async (req: AuthRequest, res: Response) => {
     await post.save();
 
     return res.status(200).json(post);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+export const likeUnlikePost = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?._id;
+    const { postId } = req.params;
+    const post = await Post.findById(postId);
+
+    if (!userId) return res.status(404).json({ error: 'User Not Found' });
+    if (!post) return res.status(404).json({ error: 'Post Not Found' });
+
+    const isUserLikesPost = post.likes.includes(userId);
+
+    if (isUserLikesPost) {
+      await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+      return res.status(200).json({ message: 'Post unliked successfully' });
+    } else {
+      post.likes.push(userId);
+      await post.save();
+      const newNotification = new Notification({
+        from: userId,
+        to: post.user,
+        type: 'like',
+      });
+      await newNotification.save();
+      return res.status(200).json({ message: 'Post liked successfully' });
+    }
   } catch (error) {
     errorHandler(res, error);
   }

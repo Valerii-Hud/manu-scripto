@@ -5,12 +5,13 @@ import {
   createPost,
   deleteComment,
   deletePost,
+  likeUnlikePost,
 } from '../controllers/post.controllers';
 
 const router = express.Router();
 
 router.post('/create', createPost);
-// router.post('/like/:postId', likeUnlikePost);
+router.post('/like/:postId', likeUnlikePost);
 router.post('/comment/:postId', commentOnPost);
 router.delete('/comment/:postId', deleteComment);
 router.delete('/:postId', deletePost);
