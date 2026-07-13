@@ -6,10 +6,14 @@ import {
   deleteComment,
   deletePost,
   likeUnlikePost,
+  getLikedPosts,
+  getAllPosts
 } from '../controllers/post.controllers';
 
 const router = express.Router();
 
+router.get('/all',getAllPosts);
+router.get('/likes/:userId',getLikedPosts)
 router.post('/create', createPost);
 router.post('/like/:postId', likeUnlikePost);
 router.post('/comment/:postId', commentOnPost);
