@@ -206,7 +206,7 @@ export const getLikedPosts = async (req:AuthRequest,res:Response) => {
     
     return res.status(200).json(likedPosts)
 
-  } catch (error){
+  } catch (error) {
     errorHandler(res,error)
   }
 } 
