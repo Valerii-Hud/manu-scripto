@@ -1,5 +1,5 @@
-import express from 'express';
-import protectRoute from '../middlewares/protectRoute.middleware';
+import express from "express";
+import protectRoute from "../middlewares/protectRoute.middleware";
 import {
   commentOnPost,
   createPost,
@@ -8,20 +8,22 @@ import {
   likeUnlikePost,
   getLikedPosts,
   getAllPosts,
-  getFollowingPosts
-} from '../controllers/post.controllers';
+  getFollowingPosts,
+  getUserPosts,
+} from "../controllers/post.controllers";
 
 const router = express.Router();
 
-router.get('/all', getAllPosts);
-router.get('/likes/:userId', getLikedPosts);
-router.get('/following', getFollowingPosts);
+router.get("/all", getAllPosts);
+router.get("/likes/:userId", getLikedPosts);
+router.get("/following", getFollowingPosts);
+router.get("/user/:userName", getUserPosts);
 
-router.post('/create', createPost);
-router.post('/like/:postId', likeUnlikePost);
-router.post('/comment/:postId', commentOnPost);
+router.post("/create", createPost);
+router.post("/like/:postId", likeUnlikePost);
+router.post("/comment/:postId", commentOnPost);
 
-router.delete('/comment/:postId', deleteComment);
-router.delete('/:postId', deletePost);
+router.delete("/comment/:postId", deleteComment);
+router.delete("/:postId", deletePost);
 
 export default router;
