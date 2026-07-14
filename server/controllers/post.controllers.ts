@@ -213,4 +213,31 @@ export const getLikedPosts = async (req:AuthRequest,res:Response) => {
   } catch (error) {
     errorHandler(res,error)
   }
-} 
+}
+
+export const getFollowingPosts = async (req: AuthRequest, res: Response) => {
+  try {
+    
+    const userId = req.user?._id;
+
+    const user = await User.findById(userId).select('-password');
+    if(!user) return res.status(404).json({error: 'User Not Found'});
+
+    const {following} = user;
+    const feedPosts = await Post.find({user: { $in: following }}).sort({createtAt: -1})
+    .populate({
+        path:'user',
+        select:'-password',
+    })
+    .populate({
+      path:'comments.user',
+        select:'-password'
+    });
+
+    return res.status(200).json(feedPosts)
+
+  } catch (error) {
+    errorHandler(res,error)  
+  }
+}
+
