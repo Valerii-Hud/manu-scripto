@@ -1,5 +1,4 @@
 import express from "express";
-import protectRoute from "../middlewares/protectRoute.middleware";
 import {
   commentOnPost,
   createPost,
