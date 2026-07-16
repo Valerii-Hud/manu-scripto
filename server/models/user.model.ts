@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose';
+import mongoose, { mongo } from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -27,65 +27,69 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
       unique: true,
-      default: '',
+      default: "",
     },
     phoneNumber: {
       type: String,
       trim: true,
       unique: true,
-      default: '',
+      default: "",
     },
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
         default: [],
       },
     ],
     following: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
         default: [],
       },
     ],
     likedPosts: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Post',
-        default:[]
-      }
+        ref: "Post",
+        default: [],
+      },
     ],
     profileImage: {
       type: String,
       trim: true,
-      default: '',
+      default: "",
     },
     coverImage: {
       type: String,
       trim: true,
-      default: '',
+      default: "",
     },
     bio: {
       type: String,
       trim: true,
-      default: '',
+      default: "",
     },
     link: {
       type: String,
       trim: true,
-      default: '',
+      default: "",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
     userType: {
       type: String,
-      enum: ['default', 'administrator', 'moderator', 'support', 'secretAdmin'],
-      default: 'default',
+      enum: ["default", "administrator", "moderator", "support", "secretAdmin"],
+      default: "default",
     },
   },
 
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

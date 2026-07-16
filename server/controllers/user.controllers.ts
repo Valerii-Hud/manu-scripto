@@ -1,21 +1,21 @@
-import type { Request, Response } from 'express';
-import errorHandler from '../lib/utils/errorHandler.lib';
-import User from '../models/user.model';
-import type { AuthRequest } from '../types/interfaces.types';
-import Notification from '../models/notification.model';
-import bcrypt from 'bcryptjs';
+import type { Request, Response } from "express";
+import errorHandler from "../lib/utils/errorHandler.lib";
+import User from "../models/user.model";
+import type { AuthRequest } from "../types/interfaces.types";
+import Notification from "../models/notification.model";
+import bcrypt from "bcryptjs";
 import {
   destroyImage,
   isImageExists,
   uploadImage,
-} from '../lib/utils/cloudinary.lib';
+} from "../lib/utils/cloudinary.lib";
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
     const { userName } = req.params;
 
-    const user = await User.findOne({ userName: userName }).select('-password');
+    const user = await User.findOne({ userName: userName }).select("-password");
 
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     return res.status(200).json(user);
   } catch (error) {
@@ -27,7 +27,7 @@ export const getSuggestedUsers = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?._id;
 
-    const usersFollowedByMe = await User.findById(userId).select('following');
+    const usersFollowedByMe = await User.findById(userId).select("following");
 
     const users = await User.aggregate([
       {
@@ -39,7 +39,7 @@ export const getSuggestedUsers = async (req: AuthRequest, res: Response) => {
     ]);
 
     const filteredUsers = users.filter(
-      (user) => !usersFollowedByMe?.following.includes(user._id)
+      (user) => !usersFollowedByMe?.following.includes(user._id),
     );
 
     const suggestedUsersWithPasswords = filteredUsers.slice(0, 4);
@@ -59,16 +59,16 @@ export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
     if (userId === req.user?._id.toString())
       return res
         .status(400)
-        .json({ error: 'You cannot follow/unfollow yourself' });
+        .json({ error: "You cannot follow/unfollow yourself" });
 
     const currentUser = await User.findById(req.user?._id);
     const modifyUser = await User.findById(userId);
 
     if (!currentUser || !modifyUser)
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
 
-    if (typeof userId !== 'string') {
-      return res.status(401).json({ error: 'User not found' });
+    if (typeof userId !== "string") {
+      return res.status(401).json({ error: "User not found" });
     }
 
     const isFollowing = currentUser.following.some((id) => id.equals(userId));
@@ -80,7 +80,7 @@ export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
       await User.findByIdAndUpdate(req.user?._id, {
         $pull: { following: userId },
       });
-      return res.status(200).json({ message: 'User unfollowed successfully' });
+      return res.status(200).json({ message: "User unfollowed successfully" });
     } else {
       await User.findByIdAndUpdate(userId, {
         $push: { followers: req.user?._id },
@@ -91,11 +91,11 @@ export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
       const newNotification = new Notification({
         from: req.user?._id,
         to: userId,
-        type: 'follow',
+        type: "follow",
       });
       await newNotification.save();
 
-      return res.status(200).json({ message: 'User followed successfully' });
+      return res.status(200).json({ message: "User followed successfully" });
     }
   } catch (error) {
     errorHandler(res, error);
@@ -117,40 +117,40 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
     let { profileImage, coverImage } = req.body;
 
     const userId = req.user?._id;
-    let user = await User.findById(userId).select('-password');
+    let user = await User.findById(userId).select("-password");
 
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) return res.status(404).json({ error: "User not found" });
     if ((currentPassword && !newPassword) || (!currentPassword && newPassword))
       return res.status(400).json({
-        error: 'Please provide both current password and new password',
+        error: "Please provide both current password and new password",
       });
     if (currentPassword && newPassword) {
       const isPasswordCorrect = await bcrypt.compare(
         currentPassword,
-        user.password
+        user.password,
       );
       if (!isPasswordCorrect) {
         return res.status(401).json({
-          error: 'Current password is incorrect',
+          error: "Current password is incorrect",
         });
       }
       if (newPassword.length < 8) {
         return res
           .status(400)
-          .json({ error: 'Password must be at least 8 characters long' });
+          .json({ error: "Password must be at least 8 characters long" });
       }
 
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(newPassword, salt);
       user.password = hash;
       if (profileImage) {
-        if (isImageExists(user, 'profileImage'))
-          destroyImage(user, 'profileImage');
+        if (isImageExists(user, "profileImage"))
+          destroyImage(user, "profileImage");
 
         profileImage = await uploadImage(profileImage);
       }
       if (coverImage) {
-        if (isImageExists(user, 'coverImage')) destroyImage(user, 'coverImage');
+        if (isImageExists(user, "coverImage")) destroyImage(user, "coverImage");
 
         coverImage = await uploadImage(profileImage);
       }
@@ -165,9 +165,44 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
 
       user = await user.save();
 
-      user.password = '';
+      user.password = "";
 
       return res.status(200).json(user);
+    }
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+export const verifyUnverifyUser = async (req: AuthRequest, res: Response) => {
+  try {
+    const currentUserId = req.user?._id;
+
+    const currentUser = await User.findById(currentUserId);
+
+    if (!currentUser)
+      return res
+        .status(401)
+        .json({ error: "Unathorized UserId must be provided" });
+
+    const { userId: userToModifyId } = req.params;
+
+    const userToModify =
+      await User.findById(userToModifyId).select("-password");
+
+    if (!userToModify) return res.status(404).json({ error: "User Not Found" });
+
+    if (currentUser.userType === "administrator") {
+      const updatedUser = await User.findByIdAndUpdate(
+        userToModifyId,
+        {
+          isVerified: !userToModify.isVerified,
+        },
+        { new: true },
+      ).select("-password");
+      return res.status(200).json(updatedUser);
+    } else {
+      return res.status(401).json({ error: "Unauthorized Permissons Deny" });
     }
   } catch (error) {
     errorHandler(res, error);
