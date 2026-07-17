@@ -208,3 +208,42 @@ export const verifyUnverifyUser = async (req: AuthRequest, res: Response) => {
     errorHandler(res, error);
   }
 };
+
+export const changeUserType = async (req: AuthRequest, res: Response) => {
+  try {
+    const { userType } = req.body;
+    const validUserTypes = [
+      "administrator",
+      "moderator",
+      "support",
+      "secretAdministrator",
+    ];
+    if (!validUserTypes.includes(userType)) {
+      return res.status(401).json({ error: "Invalid User Type" });
+    }
+
+    const currentUserId = req.user?._id;
+    if (!currentUserId)
+      return res.status(401).json({ error: "Unauthorized Permissons Deny" });
+    const { userId: userToModifyId } = req.params;
+    if (!userToModifyId)
+      return res.status(404).json({ error: "User Not Found" });
+
+    const currentUser = await User.findById(currentUserId).select("-password");
+
+    if (currentUser.userType === "administrator") {
+      const userToModify = await User.findByIdAndUpdate(
+        userToModifyId,
+        {
+          userType: userType,
+        },
+        { new: true },
+      ).select("-password");
+      return res.status(201).json(userToModify);
+    } else {
+      return res.status(401).json({ error: "Unauthorized Permissons Deny" });
+    }
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};

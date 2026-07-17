@@ -82,7 +82,13 @@ const userSchema = new mongoose.Schema(
     },
     userType: {
       type: String,
-      enum: ["default", "administrator", "moderator", "support", "secretAdmin"],
+      enum: [
+        "default",
+        "administrator",
+        "moderator",
+        "support",
+        "secretAdministrator",
+      ],
       default: "default",
     },
   },
