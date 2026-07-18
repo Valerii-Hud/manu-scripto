@@ -174,41 +174,6 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const verifyUnverifyUser = async (req: AuthRequest, res: Response) => {
-  try {
-    const currentUserId = req.user?._id;
-
-    const currentUser = await User.findById(currentUserId);
-
-    if (!currentUser)
-      return res
-        .status(401)
-        .json({ error: "Unathorized UserId must be provided" });
-
-    const { userId: userToModifyId } = req.params;
-
-    const userToModify =
-      await User.findById(userToModifyId).select("-password");
-
-    if (!userToModify) return res.status(404).json({ error: "User Not Found" });
-
-    if (currentUser.userType === "administrator") {
-      const updatedUser = await User.findByIdAndUpdate(
-        userToModifyId,
-        {
-          isVerified: !userToModify.isVerified,
-        },
-        { new: true },
-      ).select("-password");
-      return res.status(200).json(updatedUser);
-    } else {
-      return res.status(401).json({ error: "Unauthorized Permissons Deny" });
-    }
-  } catch (error) {
-    errorHandler(res, error);
-  }
-};
-
 export const changeUserType = async (req: AuthRequest, res: Response) => {
   try {
     const { userType } = req.body;

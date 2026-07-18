@@ -6,7 +6,6 @@ import {
   getSuggestedUsers,
   getUserProfile,
   updateUser,
-  verifyUnverifyUser,
   changeUserType,
 } from "../controllers/user.controllers";
 
@@ -16,7 +15,7 @@ router.get("/profile/:userName", getUserProfile);
 router.get("/suggested", getSuggestedUsers);
 router.post("/follow/:userId", followUnfollowUser);
 router.put("/update", updateUser);
-router.put("/verify/:userId", adminOnlyRoute, verifyUnverifyUser); // TODO: Make some tests with adminAccess
+//router.put("/verify/:userId", adminOnlyRoute, verifyUnverifyUser); // TODO: Make some tests with adminAccess
 router.put("/type/:userId", adminOnlyRoute, changeUserType);
 
 export default router;

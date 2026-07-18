@@ -3,8 +3,8 @@ import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import postRoutes from "./routes/post.routes";
 import reportRoutes from "./routes/report.routes";
-import notificatonRoutes from "./routes/notification.routers.ts";
-
+import notificatonRoutes from "./routes/notification.routers";
+import verifiedUsersRoutes from "./routes/verifiedUser.routes";
 import { ENV_VARS } from "./lib/env/envVars.lib";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -31,6 +31,7 @@ app.use("/api/v1/users", protectRoute, userRoutes);
 app.use("/api/v1/posts", protectRoute, postRoutes);
 app.use("/api/v1/notifications", protectRoute, notificatonRoutes);
 app.use("/api/v1/reports", protectRoute, reportRoutes);
+app.use("/api/v1/verify", verifiedUsersRoutes);
 
 app.listen(ENV_VARS.PORT, () => {
   connectToMongoDB(MONGO_URI);

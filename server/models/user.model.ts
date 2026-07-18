@@ -76,10 +76,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
     userType: {
       type: String,
       enum: [

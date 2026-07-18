@@ -22,7 +22,7 @@ export const getAllReports = async (_req: AuthRequest, res: Response) => {
 
 export const getUserReports = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.params;
+    const { userId } = req.params;
 
     const reports = await Report.find({ to: userId });
 
