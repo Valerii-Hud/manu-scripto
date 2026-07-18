@@ -1,9 +1,15 @@
 import express from "express";
-import { sendReport, getAllReports } from "../controllers/report.controllers";
+import {
+  sendReport,
+  getAllReports,
+  getUserReports,
+} from "../controllers/report.controllers";
+import adminOnlyRoute from "../middlewares/adminOnlyRoute.middleware";
 
 const router = express.Router();
 
 router.post("/:userId", sendReport);
-router.get("/all", getAllReports);
+router.get("/all", adminOnlyRoute, getAllReports);
+router.get("/:userId", adminOnlyRoute, getUserReports);
 
 export default router;

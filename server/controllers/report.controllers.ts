@@ -3,7 +3,7 @@ import type { Response } from "express";
 import Report from "../models/report.model.ts";
 import errorHandler from "../lib/utils/errorHandler.lib.ts";
 
-export const getAllReports = async (req: AuthRequest, res: Response) => {
+export const getAllReports = async (_req: AuthRequest, res: Response) => {
   try {
     const reports = await Report.find().populate({
       path: "from to",
@@ -15,6 +15,19 @@ export const getAllReports = async (req: AuthRequest, res: Response) => {
     } else {
       return res.status(200).json(reports);
     }
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+export const getUserReports = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.params;
+
+    const reports = await Report.find({ to: userId });
+
+    if (!reports) return res.status(200).json([]);
+    return res.status(200).json(reports);
   } catch (error) {
     errorHandler(res, error);
   }
