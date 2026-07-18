@@ -2,6 +2,7 @@ import express, { urlencoded } from "express";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import postRoutes from "./routes/post.routes";
+import reportRoutes from "./routes/report.routes";
 import notificatonRoutes from "./routes/notification.routers.ts";
 
 import { ENV_VARS } from "./lib/env/envVars.lib";
@@ -28,7 +29,8 @@ app.use(cors());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", protectRoute, userRoutes);
 app.use("/api/v1/posts", protectRoute, postRoutes);
-app.use("/api/v1/notification", protectRoute, notificatonRoutes);
+app.use("/api/v1/notifications", protectRoute, notificatonRoutes);
+app.use("/api/v1/reports", protectRoute, reportRoutes);
 
 app.listen(ENV_VARS.PORT, () => {
   connectToMongoDB(MONGO_URI);

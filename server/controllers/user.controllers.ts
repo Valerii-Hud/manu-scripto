@@ -230,8 +230,9 @@ export const changeUserType = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ error: "User Not Found" });
 
     const currentUser = await User.findById(currentUserId).select("-password");
-
-    if (currentUser.userType === "administrator") {
+    if (!currentUser || !currentUser.userType)
+      return res.status(404).json({ error: "User Not Found" });
+    if (currentUser && currentUser.userType === "administrator") {
       const userToModify = await User.findByIdAndUpdate(
         userToModifyId,
         {
