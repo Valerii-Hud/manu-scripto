@@ -259,3 +259,33 @@ export const getUserPosts = async (req: AuthRequest, res: Response) => {
     errorHandler(res, error);
   }
 };
+
+export const savePost = async (req: AuthRequest, res: Response) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user?._id;
+
+    const post = await Post.findById(postId);
+
+    if (!post) return res.status(404).json({ error: "Post Not Found" });
+
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) return res.status(404).json({ error: "User Not Found" });
+
+    const isUserSavedPost = post.saves.includes(userId);
+
+    if (isUserSavedPost) {
+      await Post.updateOne({ _id: postId }, { $pull: { saves: userId } });
+      await User.updateOne({ _id: userId }, { $pull: { savedPosts: postId } });
+      return res.status(200).json({ message: "Post unsaved successfully" });
+    } else {
+      post.saves.push(userId);
+      await User.updateOne({ _id: userId }, { $push: { savedPosts: postId } });
+      await post.save();
+      return res.status(200).json({ message: "Post saved successfully" });
+    }
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
