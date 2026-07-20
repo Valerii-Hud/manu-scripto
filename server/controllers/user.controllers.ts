@@ -213,3 +213,48 @@ export const changeUserType = async (req: AuthRequest, res: Response) => {
     errorHandler(res, error);
   }
 };
+
+export const getMyPoints = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?._id;
+
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) return res.status(404).json({ error: "User Not Found" });
+
+    const { points } = user;
+
+    return res.status(200).json(points);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+export const addPointsByUserId = async (req: AuthRequest, res: Response) => {
+  try {
+    const { amount } = req.body;
+
+    if (amount <= 0) {
+      return res
+        .status(401)
+        .json({ error: "You cannot add zero or minus points" });
+    }
+
+    const { userId: userToModifyId } = req.params;
+    const userToModify = await User.findById(userToModifyId);
+
+    const currentPoints = userToModify?.points;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userToModifyId,
+      {
+        points: Number(currentPoints) + Number(amount),
+      },
+      { new: true },
+    );
+
+    return res.status(201).json(updatedUser);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};

@@ -7,15 +7,18 @@ import {
   getUserProfile,
   updateUser,
   changeUserType,
+  getMyPoints,
+  addPointsByUserId,
 } from "../controllers/user.controllers";
 
 const router = express.Router();
 
 router.get("/profile/:userName", getUserProfile);
 router.get("/suggested", getSuggestedUsers);
+router.get("/points", getMyPoints);
+router.post("/points/add/:userId", adminOnlyRoute, addPointsByUserId);
 router.post("/follow/:userId", followUnfollowUser);
 router.put("/update", updateUser);
-//router.put("/verify/:userId", adminOnlyRoute, verifyUnverifyUser); // TODO: Make some tests with adminAccess
 router.put("/type/:userId", adminOnlyRoute, changeUserType);
 
 export default router;

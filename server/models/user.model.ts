@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
       unique: true,
       default: "",
     },
+    points: {
+      type: Number,
+      default: 0,
+    },
     phoneNumber: {
       type: String,
       trim: true,
