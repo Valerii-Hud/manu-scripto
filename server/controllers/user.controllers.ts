@@ -259,6 +259,38 @@ export const addPointsByUserId = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const subtractPointsByUserId = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const { amount } = req.body;
+
+    if (amount >= 0) {
+      return res
+        .status(401)
+        .json({ error: "You cannot add zero or plus points" });
+    }
+
+    const { userId: userToModifyId } = req.params;
+    const userToModify = await User.findById(userToModifyId);
+
+    const currentPoints = userToModify?.points;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userToModifyId,
+      {
+        points: Number(currentPoints) - Number(amount),
+      },
+      { new: true },
+    );
+
+    return res.status(201).json(updatedUser);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
 export const setPointsByUserId = async (req: AuthRequest, res: Response) => {
   try {
     const { amount } = req.body;
