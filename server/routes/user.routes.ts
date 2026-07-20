@@ -9,6 +9,7 @@ import {
   changeUserType,
   getMyPoints,
   addPointsByUserId,
+  setPointsByUserId,
 } from "../controllers/user.controllers";
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.get("/profile/:userName", getUserProfile);
 router.get("/suggested", getSuggestedUsers);
 router.get("/points", getMyPoints);
 router.post("/points/add/:userId", adminOnlyRoute, addPointsByUserId);
+router.post("/points/set/:userId", adminOnlyRoute, setPointsByUserId);
 router.post("/follow/:userId", followUnfollowUser);
 router.put("/update", updateUser);
 router.put("/type/:userId", adminOnlyRoute, changeUserType);

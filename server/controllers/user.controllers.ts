@@ -258,3 +258,26 @@ export const addPointsByUserId = async (req: AuthRequest, res: Response) => {
     errorHandler(res, error);
   }
 };
+
+export const setPointsByUserId = async (req: AuthRequest, res: Response) => {
+  try {
+    const { amount } = req.body;
+
+    const { userId: userToModifyId } = req.params;
+    const userToModify = await User.findById(userToModifyId);
+
+    const currentPoints = userToModify?.points;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userToModifyId,
+      {
+        points: amount,
+      },
+      { new: true },
+    );
+
+    return res.status(201).json(updatedUser);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
