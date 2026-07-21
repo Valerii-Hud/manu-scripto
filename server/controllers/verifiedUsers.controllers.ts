@@ -8,7 +8,7 @@ export const getAllVerifiedUsers = async (_req: AuthRequest, res: Response) => {
   try {
     const verifiedUsers = await VerifiedUser.find();
 
-    //if (!verifiedUsers) return res.status(200).json([]);
+    if (!verifiedUsers) return res.status(200).json([]);
 
     return res.status(200).json(verifiedUsers);
   } catch (error) {

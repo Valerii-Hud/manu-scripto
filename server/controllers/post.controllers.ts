@@ -144,10 +144,19 @@ export const changePostCounter = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?._id;
     const { postId } = req.params;
+
+    const { type } = req.body;
+
+    const validTypes = ["like", "dislike", "save"] as const;
+
+    if (!validTypes.includes(type)) {
+      return res.status(400).json({ error: "Invalid Type" });
+    }
+
+    const postCounter = `${type}s`;
+    const userCounter = `${type}dPosts`;
+
     const post = await Post.findById(postId);
-
-    const { notificationType, postCounter, userCounter } = req.body;
-
     if (!userId) return res.status(404).json({ error: "User Not Found" });
     if (!post) return res.status(404).json({ error: "Post Not Found" });
 
@@ -171,11 +180,11 @@ export const changePostCounter = async (req: AuthRequest, res: Response) => {
         { $push: { [userCounter]: postId } },
       );
       await post.save();
-      if (notificationType) {
+      if (type === "like") {
         const newNotification = new Notification({
           from: userId,
           to: post.user,
-          type: notificationType,
+          type: type,
         });
         await newNotification.save();
       }

@@ -59,6 +59,13 @@ const userSchema = new mongoose.Schema(
         default: [],
       },
     ],
+    dislikedPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+      },
+    ],
     savedPosts: [
       {
         type: mongoose.Schema.Types.ObjectId,
