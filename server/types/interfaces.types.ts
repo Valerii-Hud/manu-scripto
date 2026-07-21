@@ -1,6 +1,6 @@
-import type { Request } from 'express';
-import type { ObjectId } from 'mongoose';
-import type mongoose from 'mongoose';
+import type { Request } from "express";
+import type { ObjectId } from "mongoose";
+import type mongoose from "mongoose";
 export interface EnvVars {
   PROTOCOL: string;
   DOMAIN: string;
@@ -35,13 +35,15 @@ export interface Post {
   views: number;
   comments: PostComment[];
   tags: string[];
-  postType: ['public', 'private', 'onlySubscribers', 'onlySponsors'];
+  postType: ["public", "private", "onlySubscribers", "onlySponsors"];
 }
 
 export interface PostComment {
   text: string;
   user: User;
 }
+
+export type Id = mongoose.Types.ObjectId;
 
 export interface AuthRequest extends Request {
   user?: User;

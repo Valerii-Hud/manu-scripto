@@ -128,7 +128,7 @@ export const login = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const logout = (req: AuthRequest, res: Response) => {
+export const logout = (_req: AuthRequest, res: Response) => {
   const { NODE_ENV } = ENV_VARS;
   try {
     res.clearCookie("secret_token", {

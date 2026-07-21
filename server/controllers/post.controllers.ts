@@ -5,6 +5,7 @@ import User from "../models/user.model";
 import Post from "../models/post.model";
 import { destroyImage, uploadImage } from "../lib/utils/cloudinary.lib";
 import Notification from "../models/notification.model";
+import type { Id } from "../types/interfaces.types";
 
 export const createPost = async (req: AuthRequest, res: Response) => {
   try {
@@ -139,32 +140,46 @@ export const deleteComment = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const likeUnlikePost = async (req: AuthRequest, res: Response) => {
+export const changePostCounter = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?._id;
     const { postId } = req.params;
     const post = await Post.findById(postId);
 
+    const { notificationType, postCounter, userCounter } = req.body;
+
     if (!userId) return res.status(404).json({ error: "User Not Found" });
     if (!post) return res.status(404).json({ error: "Post Not Found" });
 
-    const isUserLikesPost = post.likes.includes(userId);
+    const pCounter = post[postCounter as keyof typeof post] as Id[];
+    const isChanged = pCounter.includes(userId);
 
-    if (isUserLikesPost) {
-      await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
-      await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
-      return res.status(200).json({ message: "Post unliked successfully" });
+    if (isChanged) {
+      await Post.updateOne(
+        { _id: postId },
+        { $pull: { [postCounter]: userId } },
+      );
+      await User.updateOne(
+        { _id: userId },
+        { $pull: { [userCounter]: postId } },
+      );
+      return res.status(200).json({ message: "Post unchanged successfully" });
     } else {
-      post.likes.push(userId);
-      await User.updateOne({ _id: userId }, { $push: { likedPosts: postId } });
+      pCounter.push(userId);
+      await User.updateOne(
+        { _id: userId },
+        { $push: { [userCounter]: postId } },
+      );
       await post.save();
-      const newNotification = new Notification({
-        from: userId,
-        to: post.user,
-        type: "like",
-      });
-      await newNotification.save();
-      return res.status(200).json({ message: "Post liked successfully" });
+      if (notificationType) {
+        const newNotification = new Notification({
+          from: userId,
+          to: post.user,
+          type: notificationType,
+        });
+        await newNotification.save();
+      }
+      return res.status(200).json({ message: "Post changed successfully" });
     }
   } catch (error) {
     errorHandler(res, error);
@@ -255,36 +270,6 @@ export const getUserPosts = async (req: AuthRequest, res: Response) => {
       .populate({ path: "comments.user", select: "-password" });
 
     return res.status(200).json(posts);
-  } catch (error) {
-    errorHandler(res, error);
-  }
-};
-
-export const savePost = async (req: AuthRequest, res: Response) => {
-  try {
-    const { postId } = req.params;
-    const userId = req.user?._id;
-
-    const post = await Post.findById(postId);
-
-    if (!post) return res.status(404).json({ error: "Post Not Found" });
-
-    const user = await User.findById(userId).select("-password");
-
-    if (!user) return res.status(404).json({ error: "User Not Found" });
-
-    const isUserSavedPost = post.saves.includes(userId);
-
-    if (isUserSavedPost) {
-      await Post.updateOne({ _id: postId }, { $pull: { saves: userId } });
-      await User.updateOne({ _id: userId }, { $pull: { savedPosts: postId } });
-      return res.status(200).json({ message: "Post unsaved successfully" });
-    } else {
-      post.saves.push(userId);
-      await User.updateOne({ _id: userId }, { $push: { savedPosts: postId } });
-      await post.save();
-      return res.status(200).json({ message: "Post saved successfully" });
-    }
   } catch (error) {
     errorHandler(res, error);
   }

@@ -25,6 +25,12 @@ const postSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    dislikes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     saves: [
       {
         type: mongoose.Schema.Types.ObjectId,

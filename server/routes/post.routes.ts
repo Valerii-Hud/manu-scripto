@@ -4,7 +4,7 @@ import {
   createPost,
   deleteComment,
   deletePost,
-  likeUnlikePost,
+  changePostCounter,
   getLikedPosts,
   getAllPosts,
   getFollowingPosts,
@@ -19,7 +19,8 @@ router.get("/following", getFollowingPosts);
 router.get("/user/:userName", getUserPosts);
 
 router.post("/create", createPost);
-router.post("/like/:postId", likeUnlikePost);
+router.put("/counter/:postId", changePostCounter);
+
 router.post("/comment/:postId", commentOnPost);
 
 router.delete("/comment/:postId", deleteComment);
