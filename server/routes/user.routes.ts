@@ -8,21 +8,21 @@ import {
   updateUser,
   changeUserType,
   getMyPoints,
-  addPointsByUserId,
-  setPointsByUserId,
-  subtractPointsByUserId,
+  changePointsByUserId,
 } from "../controllers/user.controllers";
 
 const router = express.Router();
 
+//Methods: GET
 router.get("/profile/:userName", getUserProfile);
 router.get("/suggested", getSuggestedUsers);
 router.get("/points", getMyPoints);
-//TODO: uptimaze add/subtract/set controllers
-router.post("/points/add/:userId", adminOnlyRoute, addPointsByUserId);
-router.post("/points/set/:userId", adminOnlyRoute, setPointsByUserId);
-router.post("/points/subtract/:userId", adminOnlyRoute, subtractPointsByUserId);
+
+//Methods: POST
 router.post("/follow/:userId", followUnfollowUser);
+
+//Methods: PUT
+router.put("/points/:userId", adminOnlyRoute, changePointsByUserId);
 router.put("/update", updateUser);
 router.put("/type/:userId", adminOnlyRoute, changeUserType);
 
