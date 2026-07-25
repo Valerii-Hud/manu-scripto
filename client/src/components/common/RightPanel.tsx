@@ -7,7 +7,7 @@ const RightPanel = () => {
 
   return (
     <div className="hidden lg:block my-4 mx-2">
-      <div className="bg-primary p-4 rounded-lg sticky top-2 border ">
+      <div className=" p-4  sticky top-2 bg-primary  rounded-md">
         <p className="font-bold text-primary-content">Who to follow</p>
         <div className="flex flex-col gap-4">
           {/* item */}
