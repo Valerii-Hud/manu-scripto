@@ -5,23 +5,34 @@ import XSvg from '../../../components/svgs/X';
 
 import { MdOutlineMail } from 'react-icons/md';
 import { MdPassword } from 'react-icons/md';
+import { api, HttpMethod, type LoginData } from '../../../api/api';
+import { useMutation } from '@tanstack/react-query';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    userName: '',
     password: '',
+  });
+
+  const {
+    mutate: login,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: async (data: LoginData) => {
+      await api(HttpMethod.POST, '/api/v1/auth/login', data);
+    },
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+    login(formData);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const isError = false;
 
   return (
     <div className="max-w-screen-xl mx-auto flex h-screen">
@@ -37,10 +48,10 @@ const LoginPage = () => {
             <input
               type="text"
               className="grow"
-              placeholder="username"
-              name="username"
+              placeholder="Username"
+              name="userName"
               onChange={handleInputChange}
-              value={formData.username}
+              value={formData.userName}
             />
           </label>
 
@@ -58,13 +69,17 @@ const LoginPage = () => {
           <button className="btn rounded-full btn-primary text-white">
             Login
           </button>
-          {isError && <p className="text-red-500">Something went wrong</p>}
+          {isError && (
+            <p className="text-red-500">
+              {error ? error.message : 'Something went wrong'}{' '}
+            </p>
+          )}
         </form>
         <div className="flex flex-col gap-2 mt-4">
           <p className="text-white text-lg">{"Don't"} have an account?</p>
           <Link to="/signup">
             <button className="btn rounded-full btn-primary text-white btn-outline w-full">
-              Sign up
+              {isPending ? 'Loading...' : 'Sign up'}
             </button>
           </Link>
         </div>

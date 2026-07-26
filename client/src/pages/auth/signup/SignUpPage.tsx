@@ -8,19 +8,9 @@ import { FaUser } from 'react-icons/fa';
 import { MdPassword } from 'react-icons/md';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { useMutation } from '@tanstack/react-query';
-import { api } from '../../../lib/axios';
-import { AxiosError } from 'axios';
-import toast from 'react-hot-toast';
+import { api, HttpMethod, type SignupData } from '../../../api/api';
 
 const SignUpPage = () => {
-  interface FormData {
-    email: string;
-    userName: string;
-    fullName: string;
-    password: string;
-    phoneNumber: string;
-    confirmPassword: string;
-  }
   const [formData, setFormData] = useState({
     email: '',
     userName: '',
@@ -36,40 +26,8 @@ const SignUpPage = () => {
     isError,
     error,
   } = useMutation({
-    mutationFn: async ({
-      email,
-      userName,
-      fullName,
-      password,
-      phoneNumber,
-      confirmPassword,
-    }: FormData) => {
-      try {
-        const res = await api
-          .post('/api/v1/auth/signup', {
-            email,
-            userName,
-            fullName,
-            password,
-            phoneNumber,
-            confirmPassword,
-          })
-          .catch((error) => {
-            if (error?.response) {
-              toast.error(error.response.data.error);
-            }
-          });
-        return res;
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          console.error(error.response?.data.error);
-          toast.error(error.response?.data.error);
-        }
-        if (error instanceof Error) {
-          console.error(error.message);
-          toast.error(error.message);
-        }
-      }
+    mutationFn: async (data: SignupData) => {
+      await api(HttpMethod.POST, '/api/v1/auth/signup', data);
     },
   });
 
