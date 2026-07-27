@@ -4,7 +4,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import XSvg from '../../../components/svgs/X';
 
 import { MdOutlineMail } from 'react-icons/md';
-import { FaUser } from 'react-icons/fa';
+import { FaPhoneAlt, FaUser } from 'react-icons/fa';
 import { MdPassword } from 'react-icons/md';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { useMutation } from '@tanstack/react-query';
@@ -63,7 +63,7 @@ const SignUpPage = () => {
             />
           </label>
           <label className="input input-bordered rounded flex items-center gap-2">
-            <MdOutlineMail />
+            <FaPhoneAlt />
             <input
               type="tel"
               className="grow"

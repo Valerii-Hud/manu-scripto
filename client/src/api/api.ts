@@ -23,10 +23,16 @@ export interface LoginData {
 }
 
 type ApiData = SignupData | LoginData;
+type StaticEndpoint =
+  '/api/v1/auth/signup' | '/api/v1/auth/login' | '/api/v1/auth/logout';
+
+type DynamicEndpoint = `/api/v1/posts/likes/:userId`;
+
+type Endpoint = StaticEndpoint | DynamicEndpoint;
 
 export const api = async (
   method: HttpMethod = HttpMethod.POST,
-  endpoint: string,
+  endpoint: Endpoint,
   data?: ApiData
 ) => {
   try {
