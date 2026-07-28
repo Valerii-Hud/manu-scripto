@@ -21,7 +21,11 @@ const LoginPage = () => {
     error,
   } = useMutation({
     mutationFn: async (data: LoginData) => {
-      await api(HttpMethod.POST, '/api/v1/auth/login', data);
+      await api({
+        data,
+        method: HttpMethod.POST,
+        endpoint: '/api/v1/auth/login',
+      });
     },
   });
 

@@ -24,17 +24,22 @@ export interface LoginData {
 
 type ApiData = SignupData | LoginData;
 type StaticEndpoint =
-  '/api/v1/auth/signup' | '/api/v1/auth/login' | '/api/v1/auth/logout';
+  | '/api/v1/auth/signup'
+  | '/api/v1/auth/login'
+  | '/api/v1/auth/logout'
+  | '/api/v1/auth/check-auth'
+  | '/api/v1/users/suggested';
 
 type DynamicEndpoint = `/api/v1/posts/likes/:userId`;
 
 type Endpoint = StaticEndpoint | DynamicEndpoint;
-
-export const api = async (
-  method: HttpMethod = HttpMethod.POST,
-  endpoint: Endpoint,
-  data?: ApiData
-) => {
+interface Api {
+  endpoint: Endpoint;
+  method?: HttpMethod;
+  data?: ApiData;
+  showError
+}
+export const api = async ({ method = HttpMethod.GET, endpoint, data }: Api) => {
   try {
     const res = await axiosInstance[method](endpoint, data).catch((error) => {
       if (error?.response) {

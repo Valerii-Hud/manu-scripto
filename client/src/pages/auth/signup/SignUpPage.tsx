@@ -19,7 +19,6 @@ const SignUpPage = () => {
     phoneNumber: '',
     confirmPassword: '',
   });
-
   const {
     mutate: signup,
     isPending,
@@ -27,7 +26,11 @@ const SignUpPage = () => {
     error,
   } = useMutation({
     mutationFn: async (data: SignupData) => {
-      await api(HttpMethod.POST, '/api/v1/auth/signup', data);
+      await api({
+        data,
+        method: HttpMethod.POST,
+        endpoint: '/api/v1/auth/signup',
+      });
     },
   });
 
