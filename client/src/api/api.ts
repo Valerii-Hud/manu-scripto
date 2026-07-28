@@ -37,7 +37,7 @@ interface Api {
   endpoint: Endpoint;
   method?: HttpMethod;
   data?: ApiData;
-  showError
+  // showError TODO:
 }
 export const api = async ({ method = HttpMethod.GET, endpoint, data }: Api) => {
   try {
