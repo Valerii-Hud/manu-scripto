@@ -6,13 +6,14 @@ import XSvg from '../../../components/svgs/X';
 import { MdOutlineMail } from 'react-icons/md';
 import { MdPassword } from 'react-icons/md';
 import { api, HttpMethod, type LoginData } from '../../../api/api';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     userName: '',
     password: '',
   });
+  const queryClient = useQueryClient();
 
   const {
     mutate: login,
@@ -21,11 +22,14 @@ const LoginPage = () => {
     error,
   } = useMutation({
     mutationFn: async (data: LoginData) => {
-      await api({
+      return await api({
         data,
         method: HttpMethod.POST,
         endpoint: '/api/v1/auth/login',
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['authUser'] });
     },
   });
 
@@ -71,7 +75,7 @@ const LoginPage = () => {
             />
           </label>
           <button className="btn rounded-full btn-primary text-white">
-            Login
+            {isPending ? 'Loading...' : 'Login'}
           </button>
           {isError && (
             <p className="text-red-500">
@@ -83,7 +87,7 @@ const LoginPage = () => {
           <p className="text-white text-lg">{"Don't"} have an account?</p>
           <Link to="/signup">
             <button className="btn rounded-full btn-primary text-white btn-outline w-full">
-              {isPending ? 'Loading...' : 'Sign up'}
+              Sign up
             </button>
           </Link>
         </div>

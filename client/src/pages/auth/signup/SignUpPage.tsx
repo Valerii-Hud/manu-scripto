@@ -7,7 +7,7 @@ import { MdOutlineMail } from 'react-icons/md';
 import { FaPhoneAlt, FaUser } from 'react-icons/fa';
 import { MdPassword } from 'react-icons/md';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod, type SignupData } from '../../../api/api';
 
 const SignUpPage = () => {
@@ -19,6 +19,7 @@ const SignUpPage = () => {
     phoneNumber: '',
     confirmPassword: '',
   });
+  const queryClient = useQueryClient();
   const {
     mutate: signup,
     isPending,
@@ -26,11 +27,14 @@ const SignUpPage = () => {
     error,
   } = useMutation({
     mutationFn: async (data: SignupData) => {
-      await api({
+      return await api({
         data,
         method: HttpMethod.POST,
         endpoint: '/api/v1/auth/signup',
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['authUser'] });
     },
   });
 
