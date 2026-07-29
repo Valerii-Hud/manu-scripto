@@ -37,21 +37,26 @@ interface Api {
   endpoint: Endpoint;
   method?: HttpMethod;
   data?: ApiData;
-  // showError TODO:
+  showError?: boolean;
 }
-export const api = async ({ method = HttpMethod.GET, endpoint, data }: Api) => {
+export const api = async ({
+  method = HttpMethod.GET,
+  endpoint,
+  showError = true,
+  data,
+}: Api) => {
   try {
     const res = await axiosInstance[method](endpoint, data).catch((error) => {
-      if (error?.response) {
+      if (error?.response && showError) {
         toast.error(error.response.data.error);
       }
     });
     return res;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof AxiosError && showError) {
       toast.error(error.response?.data.error);
     }
-    if (error instanceof Error) {
+    if (error instanceof Error && showError) {
       toast.error(error.message);
     }
   }
