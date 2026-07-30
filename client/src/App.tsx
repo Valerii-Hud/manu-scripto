@@ -21,9 +21,7 @@ function App() {
         showError: false,
       });
       if (!res) return null;
-      const data = res?.data;
-      console.log(data);
-      return data;
+      return res;
     },
   });
 

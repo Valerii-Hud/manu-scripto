@@ -30,20 +30,23 @@ const Post = ({ post }: { post: IPost }) => {
       <div className="flex gap-2 items-start p-4 border-b border-gray-700">
         <div className="avatar">
           <Link
-            to={`/profile/${postOwner.userName}`}
+            to={`/profile/${postOwner?.userName || 'anonymous'}`}
             className="w-8 rounded-full overflow-hidden"
           >
-            <img src={postOwner.profileImage || '/avatar-placeholder.png'} />
+            <img src={postOwner?.profileImage || '/avatar-placeholder.png'} />
           </Link>
         </div>
         <div className="flex flex-col flex-1">
           <div className="flex gap-2 items-center">
-            <Link to={`/profile/${postOwner.userName}`} className="font-bold">
-              {postOwner.fullName}
+            <Link
+              to={`/profile/${postOwner?.userName || 'anonymous'}`}
+              className="font-bold"
+            >
+              {postOwner?.fullName || 'Anonymous'}
             </Link>
             <span className="text-gray-700 flex gap-1 text-sm">
-              <Link to={`/profile/${postOwner.userName}`}>
-                @{postOwner.userName}
+              <Link to={`/profile/${postOwner?.userName || 'anonymous'}`}>
+                @{postOwner?.userName || 'anonymous'}
               </Link>
               <span>·</span>
               <span>{formattedDate}</span>
@@ -103,7 +106,7 @@ const Post = ({ post }: { post: IPost }) => {
                           <div className="w-8 rounded-full">
                             <img
                               src={
-                                comment.user.profileImage ||
+                                comment.user?.profileImage ||
                                 '/avatar-placeholder.png'
                               }
                             />
@@ -112,10 +115,10 @@ const Post = ({ post }: { post: IPost }) => {
                         <div className="flex flex-col">
                           <div className="flex items-center gap-1">
                             <span className="font-bold">
-                              {comment.user.fullName}
+                              {comment.user?.fullName || 'Anonymous'}
                             </span>
                             <span className="text-gray-700 text-sm">
-                              @{comment.user.userName}
+                              @{comment.user?.userName || 'anonymous'}
                             </span>
                           </div>
                           <div className="text-sm">{comment.text}</div>

@@ -28,11 +28,13 @@ type StaticEndpoint =
   | '/api/v1/auth/login'
   | '/api/v1/auth/logout'
   | '/api/v1/auth/check-auth'
-  | '/api/v1/users/suggested';
+  | '/api/v1/users/suggested'
+  | '/api/v1/posts/following'
+  | '/api/v1/posts/all';
 
 type DynamicEndpoint = `/api/v1/posts/likes/:userId`;
 
-type Endpoint = StaticEndpoint | DynamicEndpoint;
+export type Endpoint = StaticEndpoint | DynamicEndpoint;
 interface Api {
   endpoint: Endpoint;
   method?: HttpMethod;
@@ -51,7 +53,7 @@ export const api = async ({
         toast.error(error.response.data.error);
       }
     });
-    return res;
+    return res?.data;
   } catch (error) {
     if (error instanceof AxiosError && showError) {
       toast.error(error.response?.data.error);

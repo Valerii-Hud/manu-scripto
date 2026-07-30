@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/check-auth', protectRoute, checkAuth);
 
-router.post('/signup', signup);
+router.post('/signup', signup); // TODO: {"error": "Invalid data type"} fix this error
 router.post('/login', login);
 router.post('/logout', logout);
 

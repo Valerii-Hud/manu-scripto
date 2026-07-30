@@ -11,10 +11,11 @@ import { FaArrowLeft } from 'react-icons/fa6';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { FaLink } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';
+import type { IUser } from '../../types/interfaces';
 
 const ProfilePage = () => {
-  const [coverImg, setCoverImg] = useState<string>('');
-  const [profileImg, setProfileImg] = useState<string>('');
+  const [coverImage, setCoverImage] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string>('');
   const [feedType, setFeedType] = useState('posts');
 
   const coverImgRef = useRef<HTMLInputElement>(null);
@@ -23,12 +24,12 @@ const ProfilePage = () => {
   const isLoading = false;
   const isMyProfile = true;
 
-  const user = {
+  const user: IUser = {
     _id: '1',
     fullName: 'John Doe',
-    username: 'johndoe',
-    profileImg: '/avatars/boy2.png',
-    coverImg: '/cover.png',
+    userName: 'johndoe',
+    profileImage: '/avatars/boy2.png',
+    coverImage: '/cover.png',
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     link: 'https://youtube.com/@asaprogrammer_',
     following: ['1', '2', '3'],
@@ -43,11 +44,11 @@ const ProfilePage = () => {
       reader.onload = () => {
         if (typeof reader.result === 'string') {
           switch (state) {
-            case 'coverImg':
-              setCoverImg(reader.result);
+            case 'coverImage':
+              setCoverImage(reader.result);
               break;
-            case 'profileImg':
-              setProfileImg(reader.result);
+            case 'profileImage':
+              setProfileImage(reader.result);
               break;
           }
         }
@@ -81,7 +82,7 @@ const ProfilePage = () => {
               {/* COVER IMG */}
               <div className="relative group/cover">
                 <img
-                  src={coverImg || user?.coverImg || '/cover.png'}
+                  src={coverImage || user?.coverImage || '/cover.png'}
                   className="h-52 w-full object-cover"
                   alt="cover image"
                 />
@@ -101,22 +102,22 @@ const ProfilePage = () => {
                   hidden
                   accept="image/*"
                   ref={coverImgRef}
-                  onChange={(e) => handleImgChange(e, 'coverImg')}
+                  onChange={(e) => handleImgChange(e, 'coverImage')}
                 />
                 <input
                   type="file"
                   hidden
                   accept="image/*"
                   ref={profileImgRef}
-                  onChange={(e) => handleImgChange(e, 'profileImg')}
+                  onChange={(e) => handleImgChange(e, 'profileImage')}
                 />
                 {/* USER AVATAR */}
                 <div className="avatar absolute -bottom-16 left-4">
                   <div className="w-32 rounded-full relative group/avatar">
                     <img
                       src={
-                        profileImg ||
-                        user?.profileImg ||
+                        profileImage ||
+                        user?.profileImage ||
                         '/avatar-placeholder.png'
                       }
                     />
@@ -141,7 +142,7 @@ const ProfilePage = () => {
                     Follow
                   </button>
                 )}
-                {(coverImg || profileImg) && (
+                {(coverImage || profileImage) && (
                   <button
                     className="btn btn-primary rounded-full btn-sm text-white px-4 ml-2"
                     onClick={() => alert('Profile updated successfully')}
@@ -155,7 +156,7 @@ const ProfilePage = () => {
                 <div className="flex flex-col">
                   <span className="font-bold text-lg">{user?.fullName}</span>
                   <span className="text-sm text-slate-500">
-                    @{user?.username}
+                    @{user?.userName}
                   </span>
                   <span className="text-sm my-1">{user?.bio}</span>
                 </div>
@@ -171,7 +172,7 @@ const ProfilePage = () => {
                           rel="noreferrer"
                           className="text-sm text-blue-500 hover:underline"
                         >
-                          youtube.com/@asaprogrammer_
+                          youtube.com/@amongus
                         </a>
                       </>
                     </div>
@@ -186,13 +187,13 @@ const ProfilePage = () => {
                 <div className="flex gap-2">
                   <div className="flex gap-1 items-center">
                     <span className="font-bold text-xs">
-                      {user?.following.length}
+                      {user?.following?.length}
                     </span>
                     <span className="text-slate-500 text-xs">Following</span>
                   </div>
                   <div className="flex gap-1 items-center">
                     <span className="font-bold text-xs">
-                      {user?.followers.length}
+                      {user?.followers?.length}
                     </span>
                     <span className="text-slate-500 text-xs">Followers</span>
                   </div>
@@ -220,8 +221,7 @@ const ProfilePage = () => {
               </div>
             </>
           )}
-
-          <Posts />
+          <Posts feedType={'all'} /> {/* TODO: fix it */}
         </div>
       </div>
     </>
