@@ -26,6 +26,7 @@ export interface IUser {
   email?: string;
   followers?: string[];
   following?: string[];
+  likedPosts: string[];
   profileImage?: string;
   coverImage?: string;
   bio?: string;

@@ -5,19 +5,40 @@ import { FaRegBookmark } from 'react-icons/fa6';
 import { FaTrash } from 'react-icons/fa';
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import type { IPost } from '../../types/interfaces';
+import type { IPost, IUser } from '../../types/interfaces';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { api, HttpMethod } from '../../api/api';
+import LoadingSpinner from './LoadingSpinner';
 const Post = ({ post }: { post: IPost }) => {
   const [comment, setComment] = useState('');
   const postOwner = post.user;
-  const isLiked = false;
 
-  const isMyPost = true;
+  const { data: authUser } = useQuery<IUser>({ queryKey: ['authUser'] });
+  const queryClient = useQueryClient();
+  const { mutate: deletePost, isPending: isDeleting } = useMutation({
+    mutationFn: async (postId: string) => {
+      return await api({
+        method: HttpMethod.DELETE,
+        endpoint: `/api/v1/posts/${postId}`,
+        successMessage: 'Post deleted successfully',
+      });
+    },
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+    },
+  });
+
+  const isLiked = authUser?.likedPosts.includes(post._id);
+
+  const isMyPost = authUser?._id === post.user?._id;
 
   const formattedDate = '1h';
 
   const isCommenting = false;
 
-  const handleDeletePost = () => {};
+  const handleDeletePost = () => {
+    deletePost(post._id);
+  };
 
   const handlePostComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,10 +74,14 @@ const Post = ({ post }: { post: IPost }) => {
             </span>
             {isMyPost && (
               <span className="flex justify-end flex-1">
-                <FaTrash
-                  className="cursor-pointer hover:text-red-500"
-                  onClick={handleDeletePost}
-                />
+                {!isDeleting && (
+                  <FaTrash
+                    className="cursor-pointer hover:text-red-500"
+                    onClick={handleDeletePost}
+                  />
+                )}
+
+                {isDeleting && <LoadingSpinner size="sm" />}
               </span>
             )}
           </div>

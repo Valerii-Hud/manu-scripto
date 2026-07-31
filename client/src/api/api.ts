@@ -6,6 +6,7 @@ export enum HttpMethod {
   GET = 'get',
   POST = 'post',
   PUT = 'put',
+  DELETE = 'delete',
 }
 
 export interface SignupData {
@@ -32,18 +33,22 @@ type StaticEndpoint =
   | '/api/v1/posts/following'
   | '/api/v1/posts/all';
 
-type DynamicEndpoint = `/api/v1/posts/likes/:userId`;
+type DynamicEndpoint = `/api/v1/posts/${string}`;
 
 export type Endpoint = StaticEndpoint | DynamicEndpoint;
 interface Api {
   endpoint: Endpoint;
   method?: HttpMethod;
   data?: ApiData;
+  successMessage?: string;
+  errorMessage?: string;
   showError?: boolean;
 }
 export const api = async ({
   method = HttpMethod.GET,
   endpoint,
+  successMessage,
+  errorMessage,
   showError = true,
   data,
 }: Api) => {
@@ -53,13 +58,14 @@ export const api = async ({
         toast.error(error.response.data.error);
       }
     });
+    if (successMessage) toast.success(successMessage || 'OK');
     return res?.data;
   } catch (error) {
     if (error instanceof AxiosError && showError) {
-      toast.error(error.response?.data.error);
+      toast.error(error.response?.data.error || errorMessage);
     }
     if (error instanceof Error && showError) {
-      toast.error(error.message);
+      toast.error(error.message || 'Something went wrong');
     }
   }
 };
