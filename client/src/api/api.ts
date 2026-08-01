@@ -23,7 +23,12 @@ export interface LoginData {
   password: string;
 }
 
-type ApiData = SignupData | LoginData;
+export interface CreatePostData {
+  img?: string;
+  text?: string;
+}
+
+type ApiData = SignupData | LoginData | CreatePostData;
 type StaticEndpoint =
   | '/api/v1/auth/signup'
   | '/api/v1/auth/login'
@@ -55,10 +60,13 @@ export const api = async ({
   try {
     const res = await axiosInstance[method](endpoint, data).catch((error) => {
       if (error?.response && showError) {
-        toast.error(error.response.data.error);
+        throw new Error(error.response.data.error);
       }
     });
-    if (successMessage) toast.success(successMessage || 'OK');
+    if (successMessage) {
+      toast.success(successMessage || 'OK');
+    }
+
     return res?.data;
   } catch (error) {
     if (error instanceof AxiosError && showError) {
