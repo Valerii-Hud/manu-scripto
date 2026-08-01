@@ -2,18 +2,16 @@ import { CiImageOn } from 'react-icons/ci';
 import { BsEmojiSmileFill } from 'react-icons/bs';
 import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod, type CreatePostData } from '../../api/api';
 import type { IUser } from '../../types/interfaces';
 
 const CreatePost = () => {
   const [text, setText] = useState<string>('');
-  const [img, setImg] = useState<string>('');
+  const [image, setImage] = useState<string>('');
 
   const queryClient = useQueryClient();
-  const { data: authUser } = useQuery<IUser>({
-    queryKey: ['authUser'],
-  });
+  const authUser = queryClient.getQueryData(['authUser']) as IUser;
 
   const imgRef = useRef<HTMLInputElement>(null);
 
@@ -28,14 +26,14 @@ const CreatePost = () => {
     },
     onSuccess: () => {
       setText('');
-      setImg('');
+      setImage('');
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createPost({ text, img });
+    createPost({ text, image });
   };
 
   const handleImgChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +44,7 @@ const CreatePost = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        if (typeof reader.result === 'string') setImg(reader.result);
+        if (typeof reader.result === 'string') setImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -66,19 +64,19 @@ const CreatePost = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        {img && (
+        {image && (
           <div className="relative w-72 mx-auto">
             <IoCloseSharp
               className="absolute top-0 right-0 text-white bg-gray-800 rounded-full w-5 h-5 cursor-pointer"
               onClick={() => {
-                setImg('');
+                setImage('');
                 if (!imgRef || !imgRef.current)
                   return { error: 'No Image Provided' };
                 imgRef.current.value = '';
               }}
             />
             <img
-              src={img}
+              src={image}
               className="w-full mx-auto h-72 object-contain rounded"
             />
           </div>

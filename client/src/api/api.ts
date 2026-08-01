@@ -24,7 +24,7 @@ export interface LoginData {
 }
 
 export interface CreatePostData {
-  img?: string;
+  image?: string;
   text?: string;
 }
 
@@ -59,6 +59,7 @@ export const api = async ({
 }: Api) => {
   try {
     const res = await axiosInstance[method](endpoint, data).catch((error) => {
+      console.log({ error });
       if (error?.response && showError) {
         throw new Error(error.response.data.error);
       }

@@ -6,15 +6,15 @@ import { FaTrash } from 'react-icons/fa';
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import type { IPost, IUser } from '../../types/interfaces';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod } from '../../api/api';
 import LoadingSpinner from './LoadingSpinner';
 const Post = ({ post }: { post: IPost }) => {
   const [comment, setComment] = useState('');
   const postOwner = post.user;
 
-  const { data: authUser } = useQuery<IUser>({ queryKey: ['authUser'] });
   const queryClient = useQueryClient();
+  const authUser = queryClient.getQueryData(['authUser']) as IUser;
   const { mutate: deletePost, isPending: isDeleting } = useMutation({
     mutationFn: async (postId: string) => {
       return await api({
