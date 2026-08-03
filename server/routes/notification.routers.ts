@@ -1,12 +1,12 @@
-import express from "express";
+import express from 'express';
 import {
   deleteNotifications,
   getNotifications,
-} from "../controllers/notification.controllers";
+} from '../controllers/notification.controllers';
 
 const router = express.Router();
 
-router.get("/", getNotifications);
-router.delete("/", deleteNotifications);
+router.get('/all', getNotifications);
+router.delete('/all', deleteNotifications);
 
 export default router;

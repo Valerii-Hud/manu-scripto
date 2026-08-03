@@ -4,20 +4,33 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa6';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../../api/api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { api, HttpMethod } from '../../api/api';
 import type { INotification } from '../../types/interfaces';
 
 const NotificationPage = () => {
-  const { data: notifications, isLoading } = useQuery({
+  const queryClient = useQueryClient();
+  const { data: notifications, isLoading: isFetching } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
-      return await api({ endpoint: '/api/v1/notifications/' });
+      return await api({ endpoint: '/api/v1/notifications/all' });
+    },
+  });
+
+  const { mutate: deleteNotification, isPending: isDeleting } = useMutation({
+    mutationFn: async () => {
+      return await api({
+        endpoint: '/api/v1/notifications/all',
+        method: HttpMethod.DELETE,
+      });
+    },
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
     },
   });
 
   const deleteNotifications = () => {
-    alert('All notifications deleted');
+    deleteNotification();
   };
 
   return (
@@ -39,7 +52,7 @@ const NotificationPage = () => {
             </ul>
           </div>
         </div>
-        {isLoading && (
+        {(isFetching || isDeleting) && (
           <div className="flex justify-center h-full items-center">
             <LoadingSpinner size="lg" />
           </div>
