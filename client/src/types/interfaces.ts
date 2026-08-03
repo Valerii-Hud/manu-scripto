@@ -16,6 +16,16 @@ export interface IPostComment {
   user: IUser;
 }
 
+export interface INotification {
+  _id: Id;
+  from: IUser;
+  to: IUser;
+  type: string;
+  isRead: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type Id = string;
 
 export interface IUser {

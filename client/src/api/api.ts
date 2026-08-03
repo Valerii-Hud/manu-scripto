@@ -36,6 +36,7 @@ type StaticEndpoint =
   | '/api/v1/auth/check-auth'
   | '/api/v1/users/suggested'
   | '/api/v1/posts/following'
+  | '/api/v1/notifications/'
   | '/api/v1/posts/all';
 
 type DynamicEndpoint = `/api/v1/posts/${string}`;
