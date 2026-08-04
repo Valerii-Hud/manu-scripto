@@ -39,7 +39,9 @@ type StaticEndpoint =
   | '/api/v1/posts/all';
 
 type DynamicEndpoint =
-  `/api/v1/posts/${string}` | `/api/v1/notifications/${string}`;
+  | `/api/v1/users/follow/${string}`
+  | `/api/v1/posts/${string}`
+  | `/api/v1/notifications/${string}`;
 
 export type Endpoint = StaticEndpoint | DynamicEndpoint;
 interface Api {

@@ -3,8 +3,10 @@ import RightPanelSkeleton from '../skeletons/RightPanelSkeleton';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../api/api';
 import type { IUser } from '../../types/interfaces';
+import useFollow from '../../hooks/useFollow';
 
 const RightPanel = () => {
+  const { follow, isFollowing } = useFollow();
   const { data: suggestedUsers, isFetching } = useQuery({
     queryKey: ['suggestedUsers'],
     queryFn: async () => {
@@ -25,7 +27,7 @@ const RightPanel = () => {
         <p className="font-bold text-primary-content">Who to follow</p>
         <div className="flex flex-col gap-4">
           {/* item */}
-          {isFetching && (
+          {(isFetching || isFollowing) && (
             <>
               <RightPanelSkeleton />
               <RightPanelSkeleton />
@@ -33,7 +35,7 @@ const RightPanel = () => {
               <RightPanelSkeleton />
             </>
           )}
-          {!isFetching &&
+          {!(isFetching || isFollowing) &&
             suggestedUsers?.map((user: IUser) => (
               <Link
                 to={`/profile/${user.userName}`}
@@ -60,9 +62,12 @@ const RightPanel = () => {
                 <div>
                   <button
                     className="btn bg-primary-content text-primary hover:bg-white hover:opacity-90 rounded-full btn-sm"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      follow(user._id);
+                    }}
                   >
-                    Follow
+                    {isFollowing ? 'Following...' : 'Follow'}
                   </button>
                 </div>
               </Link>
