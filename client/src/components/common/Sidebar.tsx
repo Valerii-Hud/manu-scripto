@@ -5,25 +5,10 @@ import { IoNotifications } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { BiLogOut } from 'react-icons/bi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, HttpMethod } from '../../api/api';
-import type { IUser } from '../../types/interfaces';
+import useAuth from '../../hooks/useAuth';
 
 const Sidebar = () => {
-  const queryClient = useQueryClient();
-  const { mutate: logout } = useMutation({
-    mutationFn: async () => {
-      await api({
-        method: HttpMethod.POST,
-        endpoint: '/api/v1/auth/logout',
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
-    },
-  });
-
-  const authUser = queryClient.getQueryData(['authUser']) as IUser;
+  const { auth: logout, authUser } = useAuth();
 
   return (
     <div className="md:flex-[2_2_0] w-18 max-w-52">
@@ -84,7 +69,7 @@ const Sidebar = () => {
                 className="w-5 h-5 cursor-pointer"
                 onClick={(event) => {
                   event.preventDefault();
-                  logout();
+                  logout({ endpoint: 'logout' });
                 }}
               />
             </div>

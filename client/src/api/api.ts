@@ -28,7 +28,7 @@ export interface CreatePostData {
   text?: string;
 }
 
-type ApiData = SignupData | LoginData | CreatePostData;
+export type ApiData = SignupData | LoginData | CreatePostData;
 type StaticEndpoint =
   | '/api/v1/auth/signup'
   | '/api/v1/auth/login'

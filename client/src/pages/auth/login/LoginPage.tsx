@@ -5,37 +5,24 @@ import XSvg from '../../../components/svgs/X';
 
 import { MdOutlineMail } from 'react-icons/md';
 import { MdPassword } from 'react-icons/md';
-import { api, HttpMethod, type LoginData } from '../../../api/api';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAuth from '../../../hooks/useAuth';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     userName: '',
     password: '',
   });
-  const queryClient = useQueryClient();
 
   const {
-    mutate: login,
-    isPending,
-    isError,
-    error,
-  } = useMutation({
-    mutationFn: async (data: LoginData) => {
-      return await api({
-        data,
-        method: HttpMethod.POST,
-        endpoint: '/api/v1/auth/login',
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
-    },
-  });
+    auth: login,
+    isAuthentication,
+    authenticationError,
+    isAuthenticationError,
+  } = useAuth();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(formData);
+    login({ data: formData, endpoint: 'login' });
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,11 +62,13 @@ const LoginPage = () => {
             />
           </label>
           <button className="btn rounded-full btn-primary text-white">
-            {isPending ? 'Loading...' : 'Login'}
+            {isAuthentication ? 'Loading...' : 'Login'}
           </button>
-          {isError && (
+          {isAuthenticationError && (
             <p className="text-red-500">
-              {error ? error.message : 'Something went wrong'}{' '}
+              {authenticationError
+                ? authenticationError.message
+                : 'Something went wrong'}{' '}
             </p>
           )}
         </form>

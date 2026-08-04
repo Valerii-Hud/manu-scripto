@@ -7,8 +7,7 @@ import { MdOutlineMail } from 'react-icons/md';
 import { FaPhoneAlt, FaUser } from 'react-icons/fa';
 import { MdPassword } from 'react-icons/md';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, HttpMethod, type SignupData } from '../../../api/api';
+import useAuth from '../../../hooks/useAuth';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -19,28 +18,16 @@ const SignUpPage = () => {
     phoneNumber: '',
     confirmPassword: '',
   });
-  const queryClient = useQueryClient();
   const {
-    mutate: signup,
-    isPending,
-    isError,
-    error,
-  } = useMutation({
-    mutationFn: async (data: SignupData) => {
-      return await api({
-        data,
-        method: HttpMethod.POST,
-        endpoint: '/api/v1/auth/signup',
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
-    },
-  });
+    auth: signup,
+    authenticationError,
+    isAuthentication,
+    isAuthenticationError,
+  } = useAuth();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signup(formData);
+    signup({ data: formData, endpoint: 'signup' });
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -127,11 +114,13 @@ const SignUpPage = () => {
             />
           </label>
           <button className="btn rounded-full btn-primary text-white">
-            {isPending ? 'Sign up' : 'Loading'}
+            {isAuthentication ? 'Sign up' : 'Loading'}
           </button>
-          {isError && (
+          {isAuthenticationError && (
             <p className="text-red-500">
-              {error ? error.message : 'Something went wrong'}
+              {authenticationError
+                ? authenticationError.message
+                : 'Something went wrong'}
             </p>
           )}
         </form>
