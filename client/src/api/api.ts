@@ -44,7 +44,7 @@ type DynamicEndpoint =
   | `/api/v1/notifications/${string}`;
 
 export type Endpoint = StaticEndpoint | DynamicEndpoint;
-interface Api {
+export interface Api {
   endpoint: Endpoint;
   method?: HttpMethod;
   data?: ApiData;

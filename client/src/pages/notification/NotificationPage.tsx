@@ -4,17 +4,15 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa6';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod } from '../../api/api';
 import type { INotification } from '../../types/interfaces';
+import useGetData from '../../hooks/useGetData';
 
 const NotificationPage = () => {
   const queryClient = useQueryClient();
-  const { data: notifications, isLoading: isFetching } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: async () => {
-      return await api({ endpoint: '/api/v1/notifications/all' });
-    },
+  const { data: notifications, isLoading: isFetching } = useGetData({
+    queryKey: 'notifications',
   });
 
   const { mutate: deleteNotification, isPending: isDeleting } = useMutation({

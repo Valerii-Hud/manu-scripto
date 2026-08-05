@@ -8,21 +8,14 @@ import RightPanel from './components/common/RightPanel';
 import NotificationPage from './pages/notification/NotificationPage';
 import ProfilePage from './pages/profile/ProfilePage';
 import { Toaster } from 'react-hot-toast';
-import { useQuery } from '@tanstack/react-query';
-import { api } from './api/api';
+
 import LoadingSpinner from './components/common/LoadingSpinner';
+import useGetData from './hooks/useGetData';
 
 function App() {
-  const { data: authUser, isLoading } = useQuery({
-    queryKey: ['authUser'],
-    queryFn: async () => {
-      const res = await api({
-        endpoint: '/api/v1/auth/check-auth',
-        showError: false,
-      });
-      if (!res) return null;
-      return res;
-    },
+  const { data: authUser, isLoading } = useGetData({
+    queryKey: 'authUser',
+    showError: false,
   });
 
   if (isLoading) {
