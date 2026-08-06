@@ -15,30 +15,6 @@ const Post = ({ post }: { post: IPost }) => {
 
   const queryClient = useQueryClient();
 
-  const { mutate: likePost, isPending: isLiking } = useMutation({
-    mutationFn: async (postId: Id) => {
-      return await api({
-        data: {
-          type: 'like',
-        },
-        method: HttpMethod.PUT,
-        endpoint: `/api/v1/posts/counter/${postId}`,
-      });
-    },
-    onSuccess: (updatedLikes: Id[]) => {
-      queryClient.setQueryData(['posts'], (oldData: IPost[]) => {
-        return oldData.map((p: IPost) => {
-          if (p._id === post._id)
-            return {
-              ...p,
-              likes: updatedLikes,
-            };
-          return p;
-        });
-      });
-    },
-  });
-
   const authUser = queryClient.getQueryData(['authUser']) as IUser;
   const { mutate: deletePost, isPending: isDeleting } = useMutation({
     mutationFn: async (postId: string) => {
@@ -53,10 +29,48 @@ const Post = ({ post }: { post: IPost }) => {
     },
   });
 
-  const isLiked = post?.likes?.includes(String(authUser._id));
+  const [isLiked, setIsLiked] = useState(
+    authUser.likedPosts.includes(post._id)
+  );
 
   const isMyPost = authUser?._id === post.user?._id;
 
+  const { mutate: likePost, isPending: isLiking } = useMutation({
+    mutationFn: async (postId: Id) => {
+      return await api({
+        data: {
+          type: 'like',
+        },
+        method: HttpMethod.PUT,
+        endpoint: `/api/v1/posts/counter/${postId}`,
+      });
+    },
+    onSuccess: ({
+      postUpdatedCounter,
+      postId,
+    }: {
+      postUpdatedCounter: string[];
+      postId: string;
+    }) => {
+      if (isLiked) {
+        authUser.likedPosts.filter((postId) => postId !== post._id);
+        setIsLiked(false);
+      } else {
+        authUser.likedPosts.push(postId);
+        setIsLiked(true);
+      }
+      queryClient.setQueryData(['posts'], (oldData: IPost[]) => {
+        return oldData.map((p: IPost) => {
+          if (p._id === post._id)
+            return {
+              ...p,
+              likes: postUpdatedCounter,
+            };
+          return p;
+        });
+      });
+    },
+  });
   const formattedDate = '1h';
 
   const isCommenting = false;

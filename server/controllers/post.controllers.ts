@@ -175,10 +175,10 @@ export const changePostCounter = async (req: AuthRequest, res: Response) => {
       if (!post || !post[postCounter as keyof typeof post])
         return res.status(500).json({ error: 'Something went wrong' });
 
-      const updatedCounter = (
+      const postUpdatedCounter = (
         post[postCounter as keyof typeof post] as string[]
       ).filter((postId: string) => postId.toString() !== userId.toString());
-      return res.status(200).json({ updatedCounter });
+      return res.status(200).json({ postId, postUpdatedCounter });
     } else {
       pCounter.push(userId);
       await User.updateOne(
@@ -194,7 +194,8 @@ export const changePostCounter = async (req: AuthRequest, res: Response) => {
         });
         await newNotification.save();
       }
-      return res.status(200).json({ message: 'Post changed successfully' });
+      const postUpdatedCounter = post[postCounter as keyof typeof post];
+      return res.status(200).json({ postId, postUpdatedCounter });
     }
   } catch (error) {
     errorHandler(res, error);
