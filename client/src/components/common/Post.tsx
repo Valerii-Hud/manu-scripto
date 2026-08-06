@@ -5,7 +5,7 @@ import { FaRegBookmark } from 'react-icons/fa6';
 import { FaTrash } from 'react-icons/fa';
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import type { IPost, IUser } from '../../types/interfaces';
+import type { Id, IPost, IUser } from '../../types/interfaces';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod } from '../../api/api';
 import LoadingSpinner from './LoadingSpinner';
@@ -14,6 +14,31 @@ const Post = ({ post }: { post: IPost }) => {
   const postOwner = post.user;
 
   const queryClient = useQueryClient();
+
+  const { mutate: likePost, isPending: isLiking } = useMutation({
+    mutationFn: async (postId: Id) => {
+      return await api({
+        data: {
+          type: 'like',
+        },
+        method: HttpMethod.PUT,
+        endpoint: `/api/v1/posts/counter/${postId}`,
+      });
+    },
+    onSuccess: (updatedLikes: Id[]) => {
+      queryClient.setQueryData(['posts'], (oldData: IPost[]) => {
+        return oldData.map((p: IPost) => {
+          if (p._id === post._id)
+            return {
+              ...p,
+              likes: updatedLikes,
+            };
+          return p;
+        });
+      });
+    },
+  });
+
   const authUser = queryClient.getQueryData(['authUser']) as IUser;
   const { mutate: deletePost, isPending: isDeleting } = useMutation({
     mutationFn: async (postId: string) => {
@@ -28,7 +53,7 @@ const Post = ({ post }: { post: IPost }) => {
     },
   });
 
-  const isLiked = authUser?.likedPosts.includes(post._id);
+  const isLiked = post?.likes?.includes(String(authUser._id));
 
   const isMyPost = authUser?._id === post.user?._id;
 
@@ -44,7 +69,10 @@ const Post = ({ post }: { post: IPost }) => {
     e.preventDefault();
   };
 
-  const handleLikePost = () => {};
+  const handleLikePost = () => {
+    if (isLiking) return;
+    likePost(post._id);
+  };
 
   return (
     <>
@@ -184,10 +212,11 @@ const Post = ({ post }: { post: IPost }) => {
                 className="flex gap-1 items-center group cursor-pointer"
                 onClick={handleLikePost}
               >
-                {!isLiked && (
+                {isLiking && <LoadingSpinner size="sm" />}
+                {!isLiked && !isLiking && (
                   <FaRegHeart className="w-4 h-4 cursor-pointer text-slate-500 group-hover:text-pink-500" />
                 )}
-                {isLiked && (
+                {isLiked && !isLiking && (
                   <FaRegHeart className="w-4 h-4 cursor-pointer text-pink-500 " />
                 )}
 

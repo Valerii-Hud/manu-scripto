@@ -172,7 +172,13 @@ export const changePostCounter = async (req: AuthRequest, res: Response) => {
         { _id: userId },
         { $pull: { [userCounter]: postId } }
       );
-      return res.status(200).json({ message: 'Post unchanged successfully' });
+      if (!post || !post[postCounter as keyof typeof post])
+        return res.status(500).json({ error: 'Something went wrong' });
+
+      const updatedCounter = (
+        post[postCounter as keyof typeof post] as string[]
+      ).filter((postId: string) => postId.toString() !== userId.toString());
+      return res.status(200).json({ updatedCounter });
     } else {
       pCounter.push(userId);
       await User.updateOne(
