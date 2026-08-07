@@ -9,8 +9,10 @@ import type { Id, IPost, IUser } from '../../types/interfaces';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod } from '../../api/api';
 import LoadingSpinner from './LoadingSpinner';
+import { formatPostDate } from '../../utils/data';
 const Post = ({ post }: { post: IPost }) => {
   const [comment, setComment] = useState('');
+  const [isHidden, setIsHidden] = useState(false);
   const postOwner = post.user;
 
   const queryClient = useQueryClient();
@@ -26,6 +28,24 @@ const Post = ({ post }: { post: IPost }) => {
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+    },
+  });
+
+  const { mutate: commentPost, isPending: isCommenting } = useMutation({
+    mutationFn: async (postId: string) => {
+      return await api({
+        data: {
+          isHidden,
+          text: comment,
+        },
+        method: HttpMethod.POST,
+        endpoint: `/api/v1/posts/comment/${postId}`,
+      });
+    },
+    onSuccess: () => {
+      setComment('');
+      setIsHidden(false);
+      queryClient.invalidateQueries({ queryKey: ['posts'] }); // TODO: optimize it
     },
   });
 
@@ -71,9 +91,7 @@ const Post = ({ post }: { post: IPost }) => {
       });
     },
   });
-  const formattedDate = '1h';
-
-  const isCommenting = false;
+  const formattedDate = formatPostDate(post.createdAt);
 
   const handleDeletePost = () => {
     deletePost(post._id);
@@ -81,6 +99,8 @@ const Post = ({ post }: { post: IPost }) => {
 
   const handlePostComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isCommenting) return;
+    commentPost(post._id);
   };
 
   const handleLikePost = () => {
@@ -93,7 +113,7 @@ const Post = ({ post }: { post: IPost }) => {
       <div className="flex gap-2 items-start p-4 border-b border-gray-700">
         <div className="avatar">
           <Link
-            to={`/profile/${postOwner?.userName || 'anonymous'}`}
+            to={`/${postOwner?.userName || 'anonymous'}`}
             className="w-8 rounded-full overflow-hidden"
           >
             <img src={postOwner?.profileImage || '/avatar-placeholder.png'} />
@@ -102,13 +122,13 @@ const Post = ({ post }: { post: IPost }) => {
         <div className="flex flex-col flex-1">
           <div className="flex gap-2 items-center">
             <Link
-              to={`/profile/${postOwner?.userName || 'anonymous'}`}
+              to={`/${postOwner?.userName || 'anonymous'}`}
               className="font-bold"
             >
               {postOwner?.fullName || 'Anonymous'}
             </Link>
             <span className="text-gray-700 flex gap-1 text-sm">
-              <Link to={`/profile/${postOwner?.userName || 'anonymous'}`}>
+              <Link to={`/${postOwner?.userName || 'anonymous'}`}>
                 @{postOwner?.userName || 'anonymous'}
               </Link>
               <span>·</span>

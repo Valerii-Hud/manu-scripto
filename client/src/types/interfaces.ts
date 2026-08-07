@@ -7,6 +7,7 @@ export interface IPost {
   likes?: Id[];
   comments: IPostComment[];
   tags?: string[];
+  createdAt: string;
   postType?: ['public', 'private', 'onlySubscribers', 'onlySponsors'];
 }
 
@@ -14,6 +15,7 @@ export interface IPostComment {
   text: string;
   _id: Id;
   user: IUser;
+  createdAt: string;
 }
 
 export interface INotification {

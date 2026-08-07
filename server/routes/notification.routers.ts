@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 router.get('/all', getNotifications);
-router.delete('/:notificationId', deleteNotificationById);
 router.delete('/all', deleteNotifications);
+router.delete('/:notificationId', deleteNotificationById);
 
 export default router;

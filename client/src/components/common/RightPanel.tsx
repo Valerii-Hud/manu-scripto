@@ -38,7 +38,7 @@ const RightPanel = () => {
           {!(isFetching || isFollowing) &&
             suggestedUsers?.map((user: IUser) => (
               <Link
-                to={`/profile/${user.userName}`}
+                to={`/${user.userName}`}
                 className="flex items-center justify-between gap-4"
                 key={user._id}
               >

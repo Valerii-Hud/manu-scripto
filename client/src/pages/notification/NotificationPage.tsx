@@ -67,7 +67,7 @@ const NotificationPage = () => {
               {notification.type === 'like' && (
                 <FaHeart className="w-7 h-7 text-red-500" />
               )}
-              <Link to={`/profile/${notification.from.userName}`}>
+              <Link to={`/${notification.from.userName}`}>
                 <div className="avatar">
                   <div className="w-8 rounded-full">
                     <img

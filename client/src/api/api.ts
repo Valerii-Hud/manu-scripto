@@ -32,8 +32,17 @@ export interface PostCounterTypeData {
   type: 'like' | 'dislike' | 'save';
 }
 
+export interface PostCommentData {
+  isHidden: boolean;
+  text: string;
+}
+
 export type ApiData =
-  SignupData | LoginData | CreatePostData | PostCounterTypeData;
+  | SignupData
+  | LoginData
+  | CreatePostData
+  | PostCounterTypeData
+  | PostCommentData;
 type StaticEndpoint =
   | '/api/v1/auth/signup'
   | '/api/v1/auth/login'
