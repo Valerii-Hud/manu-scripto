@@ -225,11 +225,11 @@ export const getAllPosts = async (_req: AuthRequest, res: Response) => {
 
 export const getLikedPosts = async (req: AuthRequest, res: Response) => {
   try {
-    const { userId } = req.params;
+    const { userName } = req.params;
 
-    if (!userId) return res.status(404).json({ error: 'User Not Found' });
+    if (!userName) return res.status(404).json({ error: 'User Not Found' });
 
-    const user = await User.findById(userId).select('-password');
+    const user = await User.findOne({ userName }).select('-password');
 
     const likedPosts = await Post.find({ _id: { $in: user?.likedPosts } })
       .populate({
@@ -281,7 +281,7 @@ export const getUserPosts = async (req: AuthRequest, res: Response) => {
     if (!user) return res.status(404).json({ error: 'User Not Found' });
 
     const posts = await Post.find({ user: user?._id })
-      .sort({ createtAt: -1 })
+      .sort({ createdAt: -1 })
       .populate({ path: 'user', select: '-password' })
       .populate({ path: 'comments.user', select: '-password' });
 

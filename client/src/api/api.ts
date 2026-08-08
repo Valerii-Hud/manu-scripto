@@ -53,7 +53,7 @@ type StaticEndpoint =
   | '/api/v1/posts/all';
 
 type DynamicEndpoint =
-  | `/api/v1/users/follow/${string}`
+  | `/api/v1/users/${string}`
   | `/api/v1/posts/${string}`
   | `/api/v1/notifications/${string}`;
 

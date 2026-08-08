@@ -5,23 +5,20 @@ import { api, type Endpoint } from '../../api/api';
 import type { IPost } from '../../types/interfaces';
 import { useEffect } from 'react';
 
-export type FeedType = 'following' | 'all';
+export type FeedType = 'following' | 'all' | 'likes' | 'posts';
 
 interface PostsProps {
-  feedType: FeedType;
+  feedType?: FeedType;
+  userName?: string;
 }
 
-const Posts = ({ feedType }: PostsProps) => {
-  // const getPostEndpoint = () => {
-  //   switch (feedType) {
-  //     case 'all':
-  //       return '/api/v1/posts/all';
-  //     case 'following':
-  //       return '/api/v1/posts/following';
-  //   }
-  // };
-
-  const POSTS_ENDPOINT: Endpoint = `/api/v1/posts/${feedType}`;
+const Posts = ({ feedType, userName }: PostsProps) => {
+  const POSTS_ENDPOINT: Endpoint =
+    feedType !== 'likes' && feedType !== 'posts'
+      ? `/api/v1/posts/${feedType}`
+      : feedType === 'likes'
+        ? `/api/v1/posts/likes/${userName}`
+        : `/api/v1/posts/user/${userName}`;
 
   const {
     data: posts,
@@ -32,7 +29,10 @@ const Posts = ({ feedType }: PostsProps) => {
   } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
-      return await api({ endpoint: POSTS_ENDPOINT, showError: false });
+      return await api({
+        endpoint: POSTS_ENDPOINT,
+        showError: false,
+      });
     },
   });
 

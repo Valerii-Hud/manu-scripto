@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import {
   commentOnPost,
   createPost,
@@ -9,21 +9,21 @@ import {
   getAllPosts,
   getFollowingPosts,
   getUserPosts,
-} from "../controllers/post.controllers";
+} from '../controllers/post.controllers';
 
 const router = express.Router();
 
-router.get("/all", getAllPosts);
-router.get("/likes/:userId", getLikedPosts);
-router.get("/following", getFollowingPosts);
-router.get("/user/:userName", getUserPosts);
+router.get('/all', getAllPosts);
+router.get('/likes/:userName', getLikedPosts);
+router.get('/following', getFollowingPosts);
+router.get('/user/:userName', getUserPosts);
 
-router.post("/create", createPost);
-router.put("/counter/:postId", changePostCounter);
+router.post('/create', createPost);
+router.put('/counter/:postId', changePostCounter);
 
-router.post("/comment/:postId", commentOnPost);
+router.post('/comment/:postId', commentOnPost);
 
-router.delete("/comment/:postId", deleteComment);
-router.delete("/:postId", deletePost);
+router.delete('/comment/:postId', deleteComment);
+router.delete('/:postId', deletePost);
 
 export default router;

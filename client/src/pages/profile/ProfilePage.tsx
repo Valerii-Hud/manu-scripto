@@ -1,7 +1,7 @@
-import { useRef, useState, type ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-import Posts from '../../components/common/Posts';
+import Posts, { type FeedType } from '../../components/common/Posts';
 import ProfileHeaderSkeleton from '../../components/skeletons/ProfileHeaderSkeleton';
 import EditProfileModal from './EditProfileModal';
 
@@ -11,31 +11,40 @@ import { FaArrowLeft } from 'react-icons/fa6';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { FaLink } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { api } from '../../api/api';
 import type { IUser } from '../../types/interfaces';
+import { formatMemberSinceData } from '../../utils/data';
 
 const ProfilePage = () => {
   const [coverImage, setCoverImage] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
-  const [feedType, setFeedType] = useState('posts');
+  const [feedType, setFeedType] = useState<FeedType>('posts');
 
   const coverImgRef = useRef<HTMLInputElement>(null);
   const profileImgRef = useRef<HTMLInputElement>(null);
 
-  const isLoading = false;
-  const isMyProfile = true;
+  const { userName } = useParams();
+  const queryClient = useQueryClient();
+  const authUser = queryClient.getQueryData<IUser>(['authUser']);
+  const isMyProfile = userName === authUser?.userName;
+  const {
+    data: user,
+    isPending: isFetchingUser,
+    refetch,
+    isRefetching,
+  } = useQuery({
+    queryKey: [`${userName}Profile`],
+    queryFn: async () => {
+      return await api({ endpoint: `/api/v1/users/profile/${userName}` });
+    },
+  });
 
-  const user: IUser = {
-    _id: '1',
-    fullName: 'John Doe',
-    userName: 'johndoe',
-    profileImage: '/avatars/boy2.png',
-    coverImage: '/cover.png',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    link: 'https://youtube.com/@asaprogrammer_',
-    following: ['1', '2', '3'],
-    followers: ['1', '2', '3'],
-  };
+  useEffect(() => {
+    refetch();
+  }, [userName, refetch]);
 
+  const memberSinceDate = formatMemberSinceData(user?.createdAt);
   const handleImgChange = (e: ChangeEvent<HTMLInputElement>, state: string) => {
     if (!e.target.files) return { error: 'Target Not Found' };
     const file = e.target.files[0];
@@ -61,12 +70,12 @@ const ProfilePage = () => {
     <>
       <div className="flex-[4_4_0]  border-r border-gray-700 min-h-screen ">
         {/* HEADER */}
-        {isLoading && <ProfileHeaderSkeleton />}
-        {!isLoading && !user && (
+        {(isFetchingUser || isRefetching) && <ProfileHeaderSkeleton />}
+        {!(isFetchingUser || isRefetching) && !user && (
           <p className="text-center text-lg mt-4">User not found</p>
         )}
         <div className="flex flex-col">
-          {!isLoading && user && (
+          {!(isFetchingUser || isRefetching) && user && (
             <>
               <div className="flex gap-10 px-4 py-2 items-center">
                 <Link to="/">
@@ -167,12 +176,12 @@ const ProfilePage = () => {
                       <>
                         <FaLink className="w-3 h-3 text-slate-500" />
                         <a
-                          href="https://youtube.com/@asaprogrammer_"
+                          href={`${user?.link}`}
                           target="_blank"
                           rel="noreferrer"
                           className="text-sm text-blue-500 hover:underline"
                         >
-                          youtube.com/@amongus
+                          {`${user?.link}`}
                         </a>
                       </>
                     </div>
@@ -180,7 +189,7 @@ const ProfilePage = () => {
                   <div className="flex gap-2 items-center">
                     <IoCalendarOutline className="w-4 h-4 text-slate-500" />
                     <span className="text-sm text-slate-500">
-                      Joined July 2021
+                      {memberSinceDate}
                     </span>
                   </div>
                 </div>
@@ -221,7 +230,7 @@ const ProfilePage = () => {
               </div>
             </>
           )}
-          <Posts feedType={'all'} /> {/* TODO: fix it */}
+          <Posts userName={userName} feedType={feedType} />
         </div>
       </div>
     </>
