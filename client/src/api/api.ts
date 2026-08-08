@@ -37,11 +37,24 @@ export interface PostCommentData {
   text: string;
 }
 
+export interface ProfileUpdateData {
+  coverImage?: string;
+  profileImage?: string;
+  fullName?: string;
+  username?: string;
+  email?: string;
+  bio?: string;
+  link?: string;
+  newPassword?: string;
+  currentPassword?: string;
+}
+
 export type ApiData =
   | SignupData
   | LoginData
   | CreatePostData
   | PostCounterTypeData
+  | ProfileUpdateData
   | PostCommentData;
 type StaticEndpoint =
   | '/api/v1/auth/signup'

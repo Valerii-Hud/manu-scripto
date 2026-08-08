@@ -1,9 +1,12 @@
-import { useState, type ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
+import useUpdateProfile from '../../hooks/useUpdateProfile';
+import { useQueryClient } from '@tanstack/react-query';
+import type { IUser } from '../../types/interfaces';
 
 const EditProfileModal = () => {
   const [formData, setFormData] = useState({
     fullName: '',
-    username: '',
+    userName: '',
     email: '',
     bio: '',
     link: '',
@@ -11,12 +14,29 @@ const EditProfileModal = () => {
     currentPassword: '',
   });
 
+  const { isUpdatingUserProfile, updateUserProfile } = useUpdateProfile();
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const queryClient = useQueryClient();
+  const authUser = queryClient.getQueryData<IUser>(['authUser']);
 
+  useEffect(() => {
+    if (!authUser) return;
+
+    // TODO: fix it
+    setFormData({
+      fullName: authUser.fullName ?? '',
+      userName: authUser.userName ?? '',
+      email: authUser.email ?? '',
+      bio: authUser.bio ?? '',
+      link: authUser.link ?? '',
+      newPassword: '',
+      currentPassword: '',
+    });
+  }, [authUser]);
   return (
     <>
       <button
@@ -28,16 +48,19 @@ const EditProfileModal = () => {
           modal?.showModal();
         }}
       >
-        Edit profile
+        {isUpdatingUserProfile ? 'Updating...' : 'Edit profile'}
       </button>
       <dialog id="edit_profile_modal" className="modal">
         <div className="modal-box border rounded-md border-gray-700 shadow-md">
-          <h3 className="font-bold text-lg my-3">Update Profile</h3>
+          <h3 className="font-bold text-lg my-3">
+            {' '}
+            {isUpdatingUserProfile ? 'Updating...' : 'Update profile'}
+          </h3>
           <form
             className="flex flex-col gap-4"
             onSubmit={(e) => {
               e.preventDefault();
-              alert('Profile updated successfully');
+              updateUserProfile(formData);
             }}
           >
             <div className="flex flex-wrap gap-2">
@@ -53,8 +76,8 @@ const EditProfileModal = () => {
                 type="text"
                 placeholder="Username"
                 className="flex-1 input border border-gray-700 rounded p-2 input-md"
-                value={formData.username}
-                name="username"
+                value={formData.userName}
+                name="userName"
                 onChange={handleInputChange}
               />
             </div>
@@ -102,7 +125,7 @@ const EditProfileModal = () => {
               onChange={handleInputChange}
             />
             <button className="btn btn-primary rounded-full btn-sm text-white">
-              Update
+              {isUpdatingUserProfile ? 'Updating...' : 'Update'}
             </button>
           </form>
         </div>

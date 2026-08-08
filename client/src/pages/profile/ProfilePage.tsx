@@ -5,8 +5,6 @@ import Posts, { type FeedType } from '../../components/common/Posts';
 import ProfileHeaderSkeleton from '../../components/skeletons/ProfileHeaderSkeleton';
 import EditProfileModal from './EditProfileModal';
 
-import { POSTS } from '../../utils/db/dummy';
-
 import { FaArrowLeft } from 'react-icons/fa6';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { FaLink } from 'react-icons/fa';
@@ -15,6 +13,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../api/api';
 import type { IUser } from '../../types/interfaces';
 import { formatMemberSinceData } from '../../utils/data';
+import useFollow from '../../hooks/useFollow';
+import useUpdateProfile from '../../hooks/useUpdateProfile';
 
 const ProfilePage = () => {
   const [coverImage, setCoverImage] = useState<string>('');
@@ -23,6 +23,8 @@ const ProfilePage = () => {
 
   const coverImgRef = useRef<HTMLInputElement>(null);
   const profileImgRef = useRef<HTMLInputElement>(null);
+
+  const { follow, isFollowing } = useFollow();
 
   const { userName } = useParams();
   const queryClient = useQueryClient();
@@ -34,11 +36,13 @@ const ProfilePage = () => {
     refetch,
     isRefetching,
   } = useQuery({
-    queryKey: [`${userName}Profile`],
+    queryKey: ['user'],
     queryFn: async () => {
       return await api({ endpoint: `/api/v1/users/profile/${userName}` });
     },
   });
+
+  const { isUpdatingUserProfile, updateUserProfile } = useUpdateProfile();
 
   useEffect(() => {
     refetch();
@@ -84,7 +88,7 @@ const ProfilePage = () => {
                 <div className="flex flex-col">
                   <p className="font-bold text-lg">{user?.fullName}</p>
                   <span className="text-sm text-slate-500">
-                    {POSTS?.length} posts
+                    {user.posts?.length} posts
                   </span>
                 </div>
               </div>
@@ -146,17 +150,28 @@ const ProfilePage = () => {
                 {!isMyProfile && (
                   <button
                     className="btn btn-outline rounded-full btn-sm"
-                    onClick={() => alert('Followed successfully')}
+                    onClick={() => {
+                      follow(user?._id);
+                      queryClient.invalidateQueries({
+                        queryKey: ['user'],
+                      });
+                    }}
                   >
-                    Follow
+                    {isFollowing
+                      ? 'Loading...'
+                      : authUser?.following?.includes(user?._id)
+                        ? 'Unfollow'
+                        : 'Follow'}
                   </button>
                 )}
                 {(coverImage || profileImage) && (
                   <button
                     className="btn btn-primary rounded-full btn-sm text-white px-4 ml-2"
-                    onClick={() => alert('Profile updated successfully')}
+                    onClick={() =>
+                      updateUserProfile({ coverImage, profileImage })
+                    }
                   >
-                    Update
+                    {isUpdatingUserProfile ? 'Updating...' : 'Update'}
                   </button>
                 )}
               </div>

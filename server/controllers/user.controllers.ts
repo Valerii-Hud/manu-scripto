@@ -102,6 +102,7 @@ export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// TODO: Rewrite this
 export const updateUser = async (req: AuthRequest, res: Response) => {
   try {
     const {
@@ -118,59 +119,124 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
     let { profileImage, coverImage } = req.body;
 
     const userId = req.user?._id;
-    let user = await User.findById(userId).select('-password');
 
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    if ((currentPassword && !newPassword) || (!currentPassword && newPassword))
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      });
+    }
+
+    if (
+      (currentPassword && !newPassword) ||
+      (!currentPassword && newPassword)
+    ) {
       return res.status(400).json({
         error: 'Please provide both current password and new password',
       });
+    }
+
     if (currentPassword && newPassword) {
       const isPasswordCorrect = await bcrypt.compare(
         currentPassword,
         user.password
       );
+
       if (!isPasswordCorrect) {
         return res.status(401).json({
           error: 'Current password is incorrect',
         });
       }
+
       if (newPassword.length < 8) {
-        return res
-          .status(400)
-          .json({ error: 'Password must be at least 8 characters long' });
+        return res.status(400).json({
+          error: 'Password must be at least 8 characters long',
+        });
       }
 
       const salt = await bcrypt.genSalt(10);
-      const hash = await bcrypt.hash(newPassword, salt);
-      user.password = hash;
-      if (profileImage) {
-        if (isImageExists(user, 'profileImage'))
-          destroyImage(user, 'profileImage');
 
-        profileImage = await uploadImage(profileImage);
-      }
-      if (coverImage) {
-        if (isImageExists(user, 'coverImage')) destroyImage(user, 'coverImage');
-
-        coverImage = await uploadImage(profileImage);
-      }
-
-      user.fullName = fullName || user.fullName;
-      user.email = email || user.email;
-      user.userName = userName || user.userName;
-      user.profileImage = profileImage || user.profileImage;
-      user.coverImage = coverImage || user.coverImage;
-      user.bio = bio || user.bio;
-      user.link = link || user.link;
-      user.phoneNumber = phoneNumber || user.phoneNumber;
-
-      user = await user.save();
-
-      user.password = '';
-
-      return res.status(200).json(user);
+      user.password = await bcrypt.hash(newPassword, salt);
     }
+
+    if (userName !== undefined && userName.trim() !== '') {
+      const trimmedUserName = userName.trim();
+
+      if (trimmedUserName.length < 4) {
+        return res.status(400).json({
+          error: 'Username must be at least 4 characters long',
+        });
+      }
+
+      if (trimmedUserName.length > 16) {
+        return res.status(400).json({
+          error: 'Username must be at most 16 characters long',
+        });
+      }
+
+      user.userName = trimmedUserName;
+    }
+
+    if (fullName !== undefined && fullName.trim() !== '') {
+      const trimmedFullName = fullName.trim();
+
+      if (trimmedFullName.length < 4) {
+        return res.status(400).json({
+          error: 'Full name must be at least 4 characters long',
+        });
+      }
+
+      if (trimmedFullName.length > 128) {
+        return res.status(400).json({
+          error: 'Full name must be at most 128 characters long',
+        });
+      }
+
+      user.fullName = trimmedFullName;
+    }
+
+    if (email !== undefined && email.trim() !== '') {
+      user.email = email.trim();
+    }
+
+    if (phoneNumber !== undefined && phoneNumber.trim() !== '') {
+      user.phoneNumber = phoneNumber.trim();
+    }
+
+    if (bio !== undefined) {
+      user.bio = bio.trim();
+    }
+
+    if (link !== undefined) {
+      user.link = link.trim();
+    }
+
+    if (profileImage) {
+      if (isImageExists(user, 'profileImage')) {
+        await destroyImage(user, 'profileImage');
+      }
+
+      const uploadedProfileImage = await uploadImage(profileImage);
+
+      user.profileImage = uploadedProfileImage;
+    }
+
+    if (coverImage) {
+      if (isImageExists(user, 'coverImage')) {
+        await destroyImage(user, 'coverImage');
+      }
+
+      const uploadedCoverImage = await uploadImage(coverImage);
+
+      user.coverImage = uploadedCoverImage;
+    }
+
+    const updatedUser = await user.save();
+
+    updatedUser.password = '';
+
+    return res.status(200).json(updatedUser);
   } catch (error) {
     errorHandler(res, error);
   }
