@@ -4,32 +4,12 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa6';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, HttpMethod } from '../../api/api';
 import type { INotification } from '../../types/interfaces';
-import useGetData from '../../hooks/useGetData';
+import useNotification from '../../hooks/useNotification';
 
 const NotificationPage = () => {
-  const queryClient = useQueryClient();
-  const { data: notifications, isLoading: isFetching } = useGetData({
-    queryKey: 'notifications',
-  });
-
-  const { mutate: deleteNotification, isPending: isDeleting } = useMutation({
-    mutationFn: async () => {
-      return await api({
-        endpoint: '/api/v1/notifications/all',
-        method: HttpMethod.DELETE,
-      });
-    },
-    onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
-    },
-  });
-
-  const deleteNotifications = () => {
-    deleteNotification();
-  };
+  const { deleteNotifications, notifications, isFetching, isDeleting } =
+    useNotification();
 
   return (
     <>

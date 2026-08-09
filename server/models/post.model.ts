@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     text: {
@@ -16,28 +16,28 @@ const postSchema = new mongoose.Schema(
     views: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         default: [],
       },
     ],
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         default: [],
       },
     ],
     dislikes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         default: [],
       },
     ],
     saves: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         default: [],
       },
     ],
@@ -49,7 +49,7 @@ const postSchema = new mongoose.Schema(
         },
         user: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
+          ref: 'User',
           required: true,
         },
         isHidden: {
@@ -59,7 +59,7 @@ const postSchema = new mongoose.Schema(
         likes: [
           {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: 'User',
           },
         ],
         reply: [
@@ -70,12 +70,12 @@ const postSchema = new mongoose.Schema(
             },
             user: {
               type: mongoose.Schema.Types.ObjectId,
-              ref: "User",
+              ref: 'User',
             },
             likes: [
               {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
+                ref: 'User',
               },
             ],
           },
@@ -89,12 +89,16 @@ const postSchema = new mongoose.Schema(
     ],
     postType: {
       type: String,
-      enum: ["public", "private", "onlySubscribers", "onlySponsors"],
-      default: "public",
+      enum: ['public', 'private', 'onlySubscribers', 'onlySponsors'],
+      default: 'public',
+    },
+    isHidden: {
+      type: Boolean,
+      default: false,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
-const Post = mongoose.model("Post", postSchema);
+const Post = mongoose.model('Post', postSchema);
 
 export default Post;

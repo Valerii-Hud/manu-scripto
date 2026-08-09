@@ -26,6 +26,7 @@ export interface LoginData {
 export interface CreatePostData {
   image?: string;
   text?: string;
+  isHidden?: boolean;
 }
 
 export interface PostCounterTypeData {

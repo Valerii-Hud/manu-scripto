@@ -43,4 +43,5 @@ export interface IUser {
   coverImage?: string;
   bio?: string;
   link?: string;
+  isHidden?: boolean;
 }

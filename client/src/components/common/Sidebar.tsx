@@ -6,10 +6,11 @@ import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { BiLogOut } from 'react-icons/bi';
 import useAuth from '../../hooks/useAuth';
+import useNotification from '../../hooks/useNotification';
 
 const Sidebar = () => {
   const { auth: logout, authUser } = useAuth();
-
+  const { notifications } = useNotification();
   return (
     <div className="md:flex-[2_2_0] w-18 max-w-52">
       <div className="sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full">
@@ -33,6 +34,16 @@ const Sidebar = () => {
             >
               <IoNotifications className="w-6 h-6" />
               <span className="text-lg hidden md:block">Notifications</span>
+
+              {notifications?.length >= 1 && (
+                <span className="indicator-item badge badge-secondary">
+                  {notifications?.length > 99
+                    ? '99+'
+                    : notifications?.length <= 99
+                      ? notifications?.length
+                      : null}
+                </span>
+              )}
             </Link>
           </li>
 

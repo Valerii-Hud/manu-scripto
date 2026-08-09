@@ -102,6 +102,10 @@ const userSchema = new mongoose.Schema(
       ],
       default: 'default',
     },
+    isHidden: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   { timestamps: true }

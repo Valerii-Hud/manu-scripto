@@ -9,7 +9,7 @@ import type { Id } from '../types/interfaces.types';
 
 export const createPost = async (req: AuthRequest, res: Response) => {
   try {
-    const { text, tags, postType } = req.body;
+    const { text, tags, postType, isHidden } = req.body;
     let { image } = req.body;
 
     if (tags && !Array.isArray(tags))
@@ -43,6 +43,7 @@ export const createPost = async (req: AuthRequest, res: Response) => {
       image,
       tags,
       postType,
+      isHidden: isHidden || false,
       user: userId,
     });
 
@@ -214,10 +215,10 @@ export const getAllPosts = async (_req: AuthRequest, res: Response) => {
         path: 'comments.user',
         select: '-password',
       });
-
     if (posts.length === 0) return res.status(200).json([]);
+    const filteredPosts = posts.filter((post) => post.isHidden === false);
 
-    return res.status(200).json(posts);
+    return res.status(200).json(filteredPosts);
   } catch (error) {
     errorHandler(res, error);
   }

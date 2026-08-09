@@ -14,6 +14,13 @@ const CreatePost = () => {
   const authUser = queryClient.getQueryData(['authUser']) as IUser;
 
   const imgRef = useRef<HTMLInputElement>(null);
+  const localDefault = localStorage.getItem('default_is_hide_post');
+
+  const [isHiddenPost, setIsHiddenPost] = useState(Boolean(localDefault));
+  const toggleHidePost = () => {
+    localStorage.setItem('default_is_hide_post', String(!isHiddenPost));
+    setIsHiddenPost(!isHiddenPost);
+  };
 
   const { mutate: createPost, isPending: isPosting } = useMutation({
     mutationFn: async (data: CreatePostData) => {
@@ -33,7 +40,7 @@ const CreatePost = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createPost({ text, image });
+    createPost({ text, image, isHidden: isHiddenPost });
   };
 
   const handleImgChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +71,7 @@ const CreatePost = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
+
         {image && (
           <div className="relative w-72 mx-auto">
             <IoCloseSharp
@@ -89,6 +97,14 @@ const CreatePost = () => {
               onClick={() => imgRef.current && imgRef.current.click()}
             />
             <BsEmojiSmileFill className="fill-primary w-5 h-5 cursor-pointer" />
+            {authUser.isHidden === true && (
+              <input
+                type="checkbox"
+                className="toggle rounded-lg"
+                defaultChecked={Boolean(localDefault)}
+                onClick={toggleHidePost}
+              ></input>
+            )}
           </div>
           <input type="file" hidden ref={imgRef} onChange={handleImgChange} />
           <button className="btn btn-primary rounded-full btn-sm text-white px-4">
