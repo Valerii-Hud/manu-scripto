@@ -42,7 +42,27 @@ const ProfilePage = () => {
     },
   });
 
+  const { data: posts = [] } = useQuery({
+    queryKey: ['posts', feedType, userName],
+    queryFn: async () => {
+      return await api({
+        endpoint:
+          feedType !== 'likes' && feedType !== 'posts'
+            ? `/api/v1/posts/${feedType}`
+            : feedType === 'likes'
+              ? `/api/v1/posts/likes/${userName}`
+              : `/api/v1/posts/user/${userName}`,
+        showError: false,
+      });
+    },
+  });
   const { isUpdatingUserProfile, updateUserProfile } = useUpdateProfile();
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['posts', feedType, userName],
+    });
+  }, [feedType, queryClient, userName]);
 
   useEffect(() => {
     refetch();
@@ -88,7 +108,8 @@ const ProfilePage = () => {
                 <div className="flex flex-col">
                   <p className="font-bold text-lg">{user?.fullName}</p>
                   <span className="text-sm text-slate-500">
-                    {user.posts?.length} posts
+                    {feedType === 'posts' && posts?.length}
+                    {feedType === 'likes' && user?.likedPosts?.length} posts
                   </span>
                 </div>
               </div>

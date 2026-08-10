@@ -19,7 +19,6 @@ const Posts = ({ feedType, userName }: PostsProps) => {
       : feedType === 'likes'
         ? `/api/v1/posts/likes/${userName}`
         : `/api/v1/posts/user/${userName}`;
-
   const {
     data: posts,
     isLoading,
@@ -27,7 +26,7 @@ const Posts = ({ feedType, userName }: PostsProps) => {
     refetch,
     isRefetching,
   } = useQuery({
-    queryKey: ['posts'],
+    queryKey: ['posts', feedType, userName],
     queryFn: async () => {
       return await api({
         endpoint: POSTS_ENDPOINT,
@@ -38,7 +37,7 @@ const Posts = ({ feedType, userName }: PostsProps) => {
 
   useEffect(() => {
     refetch();
-  }, [feedType, refetch]);
+  }, [feedType, refetch, userName]);
 
   return (
     <>

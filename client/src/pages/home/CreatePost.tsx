@@ -14,7 +14,8 @@ const CreatePost = () => {
   const authUser = queryClient.getQueryData(['authUser']) as IUser;
 
   const imgRef = useRef<HTMLInputElement>(null);
-  const localDefault = localStorage.getItem('default_is_hide_post');
+  const localDefault =
+    authUser.isHidden && localStorage.getItem('default_is_hide_post');
 
   const [isHiddenPost, setIsHiddenPost] = useState(Boolean(localDefault));
   const toggleHidePost = () => {
