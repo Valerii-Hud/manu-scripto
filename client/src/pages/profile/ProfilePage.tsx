@@ -146,7 +146,7 @@ const ProfilePage = () => {
                   onChange={(e) => handleImgChange(e, 'profileImage')}
                 />
                 {/* USER AVATAR */}
-                <div className="avatar absolute -bottom-16 left-4">
+                <div className="avatar absolute -bottom-16 left-4 ">
                   <div className="w-32 rounded-full relative group/avatar">
                     <img
                       src={
