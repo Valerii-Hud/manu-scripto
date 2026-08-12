@@ -30,7 +30,7 @@ export interface CreatePostData {
 }
 
 export interface PostCounterTypeData {
-  type: 'like' | 'dislike' | 'save';
+  type: string;
 }
 
 export interface PostCommentData {
