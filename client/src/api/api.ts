@@ -68,6 +68,8 @@ type StaticEndpoint =
 
 type DynamicEndpoint =
   | `/api/v1/users/${string}`
+  | `/api/v1/verify/${string}`
+  | `/api/v1/reports/${string}`
   | `/api/v1/posts/${string}`
   | `/api/v1/notifications/${string}`;
 
