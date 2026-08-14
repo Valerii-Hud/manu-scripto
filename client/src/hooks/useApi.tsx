@@ -5,6 +5,7 @@ interface IRequest {
   endpoint: string;
   searchString?: string;
   data?: ApiData;
+  invalidateQueries?: string[];
 }
 
 interface IGenerateApiRequest {
@@ -161,6 +162,7 @@ function generateApiRequest({
       return {
         method: POST,
         endpoint: `${BASE_URL}/posts/comment/${searchString}`,
+        invalidateQueries: ['allPosts'],
       };
     case 'changePostCounter':
       return {
@@ -171,6 +173,8 @@ function generateApiRequest({
       return {
         method: DELETE,
         endpoint: `${BASE_URL}/posts/${searchString}`,
+        successMessage: 'Post deleted successfully',
+        invalidateQueries: ['allPosts'],
       };
     default:
       return {
@@ -195,7 +199,12 @@ const useApiQuery = ({ endpoint, searchString }: IRequest) => {
   return { data, isLoading };
 };
 
-const useApiMutation = ({ endpoint, searchString, data }: IRequest) => {
+const useApiMutation = ({
+  endpoint,
+  searchString,
+  data,
+  invalidateQueries,
+}: IRequest) => {
   const apiRequestData = generateApiRequest({ endpoint, searchString });
   const queryClient = useQueryClient();
 
@@ -209,7 +218,9 @@ const useApiMutation = ({ endpoint, searchString, data }: IRequest) => {
       return response;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [] });
+      queryClient.invalidateQueries({
+        queryKey: [...(invalidateQueries || 'unknown')],
+      });
     },
   });
   return { mutate, isPending };

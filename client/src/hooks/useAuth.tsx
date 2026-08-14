@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod, type ApiData, type Endpoint } from '../api/api';
 import type { IUser } from '../types/interfaces';
 
-interface UseAuthProps {
+export interface UseAuthProps {
   data?: ApiData | undefined;
   endpoint: 'signup' | 'login' | 'logout';
 }
