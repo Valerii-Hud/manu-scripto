@@ -218,9 +218,11 @@ const useApiMutation = ({
       return response;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [...(invalidateQueries || 'unknown')],
-      });
+      if (invalidateQueries) {
+        queryClient.invalidateQueries({
+          queryKey: [...invalidateQueries],
+        });
+      }
     },
   });
   return { mutate, isPending };

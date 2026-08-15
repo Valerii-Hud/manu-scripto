@@ -7,71 +7,91 @@ import { FaHeart } from 'react-icons/fa6';
 import type { INotification } from '../../types/interfaces';
 import useNotification from '../../hooks/useNotification';
 
+interface ViewProps {
+  deleteNotifications: () => void;
+  isFetching: boolean;
+  isDeleting: boolean;
+  notifications: INotification[];
+}
+
 const NotificationPage = () => {
   const { deleteNotifications, notifications, isFetching, isDeleting } =
     useNotification();
 
   return (
-    <>
-      <div className="flex-[4_4_0] border-l border-r border-gray-700 min-h-screen">
-        <div className="flex justify-between items-center p-4 border-b border-gray-700">
-          <p className="font-bold">Notifications</p>
-          <div className="dropdown ">
-            <div tabIndex={0} role="button" className="m-1">
-              <IoSettingsOutline className="w-4" />
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <li>
-                <a onClick={deleteNotifications}>Delete all notifications</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        {(isFetching || isDeleting) && (
-          <div className="flex justify-center h-full items-center">
-            <LoadingSpinner size="lg" />
-          </div>
-        )}
-        {notifications?.length === 0 && (
-          <div className="text-center p-4 font-bold">No notifications 🤔</div>
-        )}
-        {notifications?.map((notification: INotification) => (
-          <div className="border-b border-gray-700" key={notification._id}>
-            <div className="flex gap-2 p-4">
-              {notification.type === 'follow' && (
-                <FaUser className="w-7 h-7 text-primary" />
-              )}
-              {notification.type === 'like' && (
-                <FaHeart className="w-7 h-7 text-red-500" />
-              )}
-              <Link to={`/${notification.from.userName}`}>
-                <div className="avatar">
-                  <div className="w-8 rounded-full">
-                    <img
-                      src={
-                        notification.from.profileImage ||
-                        '/avatar-placeholder.png'
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-1">
-                  <span className="font-bold">
-                    @{notification.from.userName}
-                  </span>{' '}
-                  {notification.type === 'follow'
-                    ? 'followed you'
-                    : 'liked your post'}
-                </div>
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
+    <View
+      deleteNotifications={deleteNotifications}
+      isDeleting={isDeleting}
+      isFetching={isFetching}
+      notifications={notifications}
+    />
   );
 };
+
+const View = ({
+  deleteNotifications,
+  isFetching,
+  isDeleting,
+  notifications,
+}: ViewProps) => (
+  <>
+    <div className="flex-[4_4_0] border-l border-r border-gray-700 min-h-screen">
+      <div className="flex justify-between items-center p-4 border-b border-gray-700">
+        <p className="font-bold">Notifications</p>
+        <div className="dropdown ">
+          <div tabIndex={0} role="button" className="m-1">
+            <IoSettingsOutline className="w-4" />
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <li>
+              <a onClick={deleteNotifications}>Delete all notifications</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      {(isFetching || isDeleting) && (
+        <div className="flex justify-center h-full items-center">
+          <LoadingSpinner size="lg" />
+        </div>
+      )}
+      {notifications?.length === 0 && (
+        <div className="text-center p-4 font-bold">No notifications 🤔</div>
+      )}
+      {notifications?.map((notification: INotification) => (
+        <div className="border-b border-gray-700" key={notification._id}>
+          <div className="flex gap-2 p-4">
+            {notification.type === 'follow' && (
+              <FaUser className="w-7 h-7 text-primary" />
+            )}
+            {notification.type === 'like' && (
+              <FaHeart className="w-7 h-7 text-red-500" />
+            )}
+            <Link to={`/${notification.from.userName}`}>
+              <div className="avatar">
+                <div className="w-8 rounded-full">
+                  <img
+                    src={
+                      notification.from.profileImage ||
+                      '/avatar-placeholder.png'
+                    }
+                  />
+                </div>
+              </div>
+              <div className="flex gap-1">
+                <span className="font-bold">@{notification.from.userName}</span>{' '}
+                {notification.type === 'follow'
+                  ? 'followed you'
+                  : 'liked your post'}
+              </div>
+            </Link>
+          </div>
+        </div>
+      ))}
+    </div>
+  </>
+);
+
 export default NotificationPage;
