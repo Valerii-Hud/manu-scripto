@@ -3,7 +3,7 @@ import { api, HttpMethod, type ApiData } from '../api/api';
 
 const useUpdateProfile = () => {
   const queryClient = useQueryClient();
-  const { mutate: updateUserProfile, isPending: isUpdatingUserProfile } =
+  const { mutateAsync: updateUserProfile, isPending: isUpdatingUserProfile } =
     useMutation({
       mutationFn: async (data: ApiData) => {
         return await api({

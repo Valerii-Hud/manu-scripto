@@ -40,6 +40,8 @@ interface ViewProps {
   handleImgChange: (e: ChangeEvent<HTMLInputElement>, state: string) => void;
   profileImgRef: RefObject<HTMLInputElement | null>;
   profileImage: string;
+  setCoverImage: Dispatch<SetStateAction<string>>;
+  setProfileImage: Dispatch<SetStateAction<string>>;
   // eslint-disable-next-line
   follow: UseMutateFunction<any, Error, string, unknown>;
   queryClient: QueryClient;
@@ -130,6 +132,8 @@ const ProfilePage = () => {
 
   return (
     <View
+      setCoverImage={setCoverImage}
+      setProfileImage={setProfileImage}
       isRefetching={isRefetching}
       user={user}
       isFetchingUser={isFetchingUser}
@@ -157,6 +161,8 @@ const ProfilePage = () => {
 const View = ({
   isRefetching,
   user,
+  setCoverImage,
+  setProfileImage,
   isFetchingUser,
   feedType,
   coverImage,
@@ -270,9 +276,11 @@ const View = ({
               {(coverImage || profileImage) && (
                 <button
                   className="btn btn-primary rounded-full btn-sm text-white px-4 ml-2"
-                  onClick={() =>
-                    updateUserProfile({ coverImage, profileImage })
-                  }
+                  onClick={async () => {
+                    await updateUserProfile({ coverImage, profileImage });
+                    setProfileImage('');
+                    setCoverImage('');
+                  }}
                 >
                   {isUpdatingUserProfile ? 'Updating...' : 'Update'}
                 </button>
