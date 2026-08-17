@@ -30,9 +30,9 @@ if (PROTOCOL !== 'http' && NODE_ENV === 'development') {
   throw new Error('Development protocol must be http');
 }
 
-if (PROTOCOL !== 'https' && NODE_ENV === 'production') {
-  throw new Error('Production protocol must be https');
-}
+// if (PROTOCOL !== 'https' && NODE_ENV === 'production') {
+//   throw new Error('Production protocol must be https');
+// }
 
 const DOMAINS_LIST = ['localhost', '127.0.0.1', 'manu-scripto.com'];
 

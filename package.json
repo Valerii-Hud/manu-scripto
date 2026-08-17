@@ -19,10 +19,13 @@
     "typescript": "^5"
   },
   "scripts": {
-    "dev": "tsx  watch server/index.ts"
+    "dev": "NODE_ENV=development tsx  watch server/index.ts",
+    "start": "NODE_ENV=production tsx server/index.ts",
+    "build": "bun install && cd ./client && bun install && bun run build"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "client": "^0.0.1",
     "cloudinary": "^2.10.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",

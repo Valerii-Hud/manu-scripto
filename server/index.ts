@@ -11,9 +11,12 @@ import cors from 'cors';
 import connectToMongoDB from './lib/db/connectToMongoDB.lib';
 import protectRoute from './middlewares/protectRoute.middleware';
 import { v2 as cloudinary } from 'cloudinary';
+import path from 'path';
 
 const app = express();
 const { MONGO_URI } = ENV_VARS;
+
+const __dirname = path.resolve();
 
 cloudinary.config({
   cloud_name: ENV_VARS.CLOUDINARY_CLOUD_NAME,
@@ -38,6 +41,13 @@ app.use('/api/v1/posts', protectRoute, postRoutes);
 app.use('/api/v1/notifications', protectRoute, notificationRoutes);
 app.use('/api/v1/reports', protectRoute, reportRoutes);
 app.use('/api/v1/verify', verifiedUsersRoutes);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/client/dist')));
+  app.get('/*splat', (_req, res) => {
+    res.sendFile(`${__dirname}/client/dist/index.html`);
+  });
+}
 
 app.listen(ENV_VARS.PORT, () => {
   connectToMongoDB(MONGO_URI);

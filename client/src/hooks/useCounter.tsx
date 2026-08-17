@@ -3,7 +3,7 @@ import { api, HttpMethod } from '../api/api';
 import type { Id, IPost, IUser } from '../types/interfaces';
 import { useState } from 'react';
 
-const useCounter = () => {
+const useCounter = ({ post }: { post: IPost }) => {
   const queryClient = useQueryClient();
   const authUser = queryClient.getQueryData<IUser>(['authUser']);
   const [isUpdated, setIsUpdated] = useState(false);
