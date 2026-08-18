@@ -9,6 +9,7 @@ import {
   changeUserType,
   getMyPoints,
   changePointsByUserId,
+  toggleUserFlags,
 } from '../controllers/user.controllers';
 
 const router = express.Router();
@@ -22,5 +23,5 @@ router.post('/follow/:userId', followUnfollowUser);
 router.put('/points/:userId', adminOnlyRoute, changePointsByUserId);
 router.put('/update', updateUser);
 router.put('/type/:userId', adminOnlyRoute, changeUserType);
-
+router.put('/toggle/:userId', adminOnlyRoute, toggleUserFlags);
 export default router;

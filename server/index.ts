@@ -4,7 +4,6 @@ import userRoutes from './routes/user.routes';
 import postRoutes from './routes/post.routes';
 import reportRoutes from './routes/report.routes';
 import notificationRoutes from './routes/notification.routers';
-import verifiedUsersRoutes from './routes/verifiedUser.routes';
 import { ENV_VARS } from './lib/env/envVars.lib';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -40,7 +39,6 @@ app.use('/api/v1/users', protectRoute, userRoutes);
 app.use('/api/v1/posts', protectRoute, postRoutes);
 app.use('/api/v1/notifications', protectRoute, notificationRoutes);
 app.use('/api/v1/reports', protectRoute, reportRoutes);
-app.use('/api/v1/verify', verifiedUsersRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/dist')));

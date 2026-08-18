@@ -7,19 +7,10 @@ import { ENV_VARS } from '../lib/env/envVars.lib';
 import type { AuthRequest } from '../types/interfaces.types';
 export const signup = async (req: AuthRequest, res: Response) => {
   try {
-    const {
-      email,
-      phoneNumber,
-      fullName,
-      userName,
-      password,
-      confirmPassword,
-    } = req.body;
+    const { email, userName, password, confirmPassword } = req.body;
 
     if (
       typeof email !== 'string' ||
-      typeof phoneNumber !== 'string' ||
-      typeof fullName !== 'string' ||
       typeof userName !== 'string' ||
       typeof password !== 'string' ||
       typeof confirmPassword !== 'string'
@@ -29,18 +20,9 @@ export const signup = async (req: AuthRequest, res: Response) => {
 
     const tUserName = userName.trim(),
       tEmail = email.trim(),
-      tPhoneNumber = phoneNumber.trim(),
-      tFullName = fullName.trim(),
       tPassword = password.trim(),
       tConfirmPassword = confirmPassword.trim();
-    if (
-      !tEmail ||
-      !tPhoneNumber ||
-      !tFullName ||
-      !tUserName ||
-      !tPassword ||
-      !tConfirmPassword
-    ) {
+    if (!tEmail || !tUserName || !tPassword || !tConfirmPassword) {
       return res.status(403).json({ error: 'Please provide all fields' });
     }
 
@@ -48,13 +30,6 @@ export const signup = async (req: AuthRequest, res: Response) => {
       return res
         .status(400)
         .json({ error: 'Password must be at least 8 characters long' });
-    }
-
-    if (tFullName.length < 4 || tFullName.length > 128) {
-      return res.status(400).json({
-        error:
-          'Username must be at least 4 characters long and no more than 128',
-      });
     }
 
     if (tUserName.length < 4 || tUserName.length > 16) {
@@ -82,23 +57,11 @@ export const signup = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'This email is already taken' });
     }
 
-    const isUserExistsByPhoneNumber = await User.findOne({
-      phoneNumber: tPhoneNumber,
-    });
-
-    if (isUserExistsByPhoneNumber) {
-      return res
-        .status(400)
-        .json({ error: 'This phone number is already taken' });
-    }
-
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(tPassword, salt);
 
     const newUser = new User({
       email,
-      fullName,
-      phoneNumber,
       userName: tUserName,
       password: hashedPassword,
     });
@@ -110,8 +73,6 @@ export const signup = async (req: AuthRequest, res: Response) => {
       return res.status(201).json({
         _id: newUser._id,
         userName: newUser.userName,
-        fullName: newUser.fullName,
-        phoneNumber: newUser.phoneNumber,
         email: newUser.email,
         followers: newUser.followers,
         following: newUser.following,
@@ -159,8 +120,7 @@ export const login = async (req: AuthRequest, res: Response) => {
     return res.status(200).json({
       _id: user._id,
       userName: user.userName,
-      fullName: user.fullName,
-      phoneNumber: user.phoneNumber,
+
       email: user.email,
       followers: user.followers,
       following: user.following,

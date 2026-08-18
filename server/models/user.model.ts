@@ -9,12 +9,12 @@ const userSchema = new mongoose.Schema(
       minLength: 4,
       maxLength: 16,
     },
-    fullName: {
-      type: String,
-      trim: true,
-      minLength: 4,
-      maxLength: 128,
-    },
+    // fullName: {
+    //   type: String,
+    //   trim: true,
+    //   minLength: 4,
+    //   maxLength: 128,
+    // },
     password: {
       type: String,
       trim: true,
@@ -31,11 +31,11 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    phoneNumber: {
-      type: String,
-      trim: true,
-      unique: true,
-    },
+    // phoneNumber: {
+    //   type: String,
+    //   trim: true,
+    //   unique: true,
+    // },
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -93,16 +93,14 @@ const userSchema = new mongoose.Schema(
     },
     userType: {
       type: String,
-      enum: [
-        'default',
-        'administrator',
-        'moderator',
-        'support',
-        'secretAdministrator',
-      ],
+      enum: ['default', 'administrator', 'support'],
       default: 'default',
     },
     isHidden: {
+      type: Boolean,
+      default: false,
+    },
+    isVerified: {
       type: Boolean,
       default: false,
     },

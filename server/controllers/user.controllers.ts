@@ -105,16 +105,8 @@ export const followUnfollowUser = async (req: AuthRequest, res: Response) => {
 // TODO: Rewrite this
 export const updateUser = async (req: AuthRequest, res: Response) => {
   try {
-    const {
-      fullName,
-      email,
-      userName,
-      currentPassword,
-      newPassword,
-      bio,
-      phoneNumber,
-      link,
-    } = req.body;
+    const { email, userName, newPassword, currentPassword, bio, link } =
+      req.body;
 
     let { profileImage, coverImage } = req.body;
 
@@ -178,30 +170,8 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
       user.userName = trimmedUserName;
     }
 
-    if (fullName !== undefined && fullName.trim() !== '') {
-      const trimmedFullName = fullName.trim();
-
-      if (trimmedFullName.length < 4) {
-        return res.status(400).json({
-          error: 'Full name must be at least 4 characters long',
-        });
-      }
-
-      if (trimmedFullName.length > 128) {
-        return res.status(400).json({
-          error: 'Full name must be at most 128 characters long',
-        });
-      }
-
-      user.fullName = trimmedFullName;
-    }
-
     if (email !== undefined && email.trim() !== '') {
       user.email = email.trim();
-    }
-
-    if (phoneNumber !== undefined && phoneNumber.trim() !== '') {
-      user.phoneNumber = phoneNumber.trim();
     }
 
     if (bio !== undefined) {
@@ -337,6 +307,46 @@ export const changePointsByUserId = async (req: AuthRequest, res: Response) => {
     );
 
     return res.status(201).json(updatedUser);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+export type UserTogglerFlags = 'isHidden' | 'isVerified';
+// TODO: Test it
+export const toggleUserFlags = async (req: AuthRequest, res: Response) => {
+  try {
+    const currentUserId = req.user?._id;
+
+    const { type } = req.body;
+
+    if (!type) {
+      return res.status(400).json({ error: 'Please provide toggler type' });
+    }
+
+    const currentUser = await User.findById(currentUserId);
+
+    if (!currentUser)
+      return res
+        .status(401)
+        .json({ error: 'Unauthorized UserId must be provided' });
+
+    const { userId: userToModifyId } = req.params;
+
+    const userToModify =
+      await User.findById(userToModifyId).select('-password');
+
+    if (!userToModify) return res.status(404).json({ error: 'User Not Found' });
+
+    const response = await User.findByIdAndUpdate(
+      userToModify._id,
+      {
+        [type]: !userToModify[type as UserTogglerFlags],
+      },
+      { new: true }
+    );
+
+    return res.status(200).json(response);
   } catch (error) {
     errorHandler(res, error);
   }
