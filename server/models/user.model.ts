@@ -96,6 +96,7 @@ const userSchema = new mongoose.Schema(
       enum: ['default', 'administrator', 'support'],
       default: 'default',
     },
+    // TODO: Make flags in one obj
     isHidden: {
       type: Boolean,
       default: false,

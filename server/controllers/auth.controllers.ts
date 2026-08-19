@@ -120,7 +120,6 @@ export const login = async (req: AuthRequest, res: Response) => {
     return res.status(200).json({
       _id: user._id,
       userName: user.userName,
-
       email: user.email,
       followers: user.followers,
       following: user.following,

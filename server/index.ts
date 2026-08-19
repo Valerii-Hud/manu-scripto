@@ -2,6 +2,7 @@ import express, { urlencoded } from 'express';
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import postRoutes from './routes/post.routes';
+import searchRoutes from './routes/search.routes';
 import reportRoutes from './routes/report.routes';
 import notificationRoutes from './routes/notification.routers';
 import { ENV_VARS } from './lib/env/envVars.lib';
@@ -39,6 +40,7 @@ app.use('/api/v1/users', protectRoute, userRoutes);
 app.use('/api/v1/posts', protectRoute, postRoutes);
 app.use('/api/v1/notifications', protectRoute, notificationRoutes);
 app.use('/api/v1/reports', protectRoute, reportRoutes);
+app.use('/api/v1/search', protectRoute, searchRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/dist')));
