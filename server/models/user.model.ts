@@ -96,12 +96,34 @@ const userSchema = new mongoose.Schema(
       enum: ['default', 'administrator', 'support'],
       default: 'default',
     },
+    tags: [
+      {
+        type: String,
+        default: '',
+      },
+    ],
     // TODO: Make flags in one obj
     isHidden: {
       type: Boolean,
       default: false,
     },
     isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
+    isSponsored: {
+      type: Boolean,
+      default: false,
+    },
+    hasNitro: {
+      type: Boolean,
+      default: false,
+    },
+    hasNitroPlus: {
       type: Boolean,
       default: false,
     },
