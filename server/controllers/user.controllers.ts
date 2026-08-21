@@ -33,6 +33,7 @@ export const getSuggestedUsers = async (req: AuthRequest, res: Response) => {
       {
         $match: {
           _id: { $ne: userId },
+          isHidden: { $ne: true },
         },
       },
       { $sample: { size: 10 } },

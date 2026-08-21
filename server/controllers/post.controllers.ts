@@ -205,7 +205,7 @@ export const changePostCounter = async (req: AuthRequest, res: Response) => {
 
 export const getAllPosts = async (_req: AuthRequest, res: Response) => {
   try {
-    const posts = await Post.find()
+    const posts = await Post.find({ isHidden: { $ne: true } })
       .sort({ createdAt: -1 })
       .populate({
         path: 'user',
@@ -216,9 +216,8 @@ export const getAllPosts = async (_req: AuthRequest, res: Response) => {
         select: '-password',
       });
     if (posts.length === 0) return res.status(200).json([]);
-    const filteredPosts = posts.filter((post) => post.isHidden === false);
 
-    return res.status(200).json(filteredPosts);
+    return res.status(200).json(posts);
   } catch (error) {
     errorHandler(res, error);
   }
@@ -257,7 +256,7 @@ export const getFollowingPosts = async (req: AuthRequest, res: Response) => {
 
     const { following } = user;
     const feedPosts = await Post.find({ user: { $in: following } })
-      .sort({ createtAt: -1 })
+      .sort({ createdAt: -1 })
       .populate({
         path: 'user',
         select: '-password',

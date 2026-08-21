@@ -7,13 +7,14 @@ import type { Response } from 'express';
 export const search = async (req: AuthRequest, res: Response) => {
   try {
     const { searchString } = req.body;
-
     const users = await User.find({
       userName: { $regex: searchString },
+      isHidden: { $ne: true },
     }).select('-password -points');
 
     const posts = await Post.find({
       text: { $regex: searchString },
+      isHidden: { $ne: true },
     });
 
     if (users.length === 0 && posts.length === 0) {
