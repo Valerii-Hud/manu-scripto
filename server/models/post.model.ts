@@ -87,11 +87,7 @@ const postSchema = new mongoose.Schema(
         type: String,
       },
     ],
-    postType: {
-      type: String,
-      enum: ['public', 'private', 'onlySubscribers', 'onlySponsors'],
-      default: 'public',
-    },
+
     isHidden: {
       type: Boolean,
       default: false,

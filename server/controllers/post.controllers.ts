@@ -9,22 +9,11 @@ import type { Id } from '../types/interfaces.types';
 
 export const createPost = async (req: AuthRequest, res: Response) => {
   try {
-    const { text, tags, postType, isHidden } = req.body;
+    const { text, tags, isHidden } = req.body;
     let { image } = req.body;
 
     if (tags && !Array.isArray(tags))
       return res.status(400).json({ error: 'Invalid Tags Type' });
-
-    const validPostTypes = [
-      'public',
-      'private',
-      'onlySubscribers',
-      'onlySponsors',
-    ];
-
-    if (postType && !validPostTypes.includes(postType)) {
-      return res.status(400).json({ error: 'Invalid Post Type' });
-    }
 
     const userId = req.user?._id.toString();
 
@@ -42,7 +31,6 @@ export const createPost = async (req: AuthRequest, res: Response) => {
       text,
       image,
       tags,
-      postType,
       isHidden: isHidden || false,
       user: userId,
     });
