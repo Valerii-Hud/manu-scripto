@@ -7,7 +7,7 @@ interface FindUserByIdParams {
 }
 
 interface FindUserParams {
-  searchString: string;
+  searchString?: string;
   searchBy?: 'userName' | 'email';
 }
 
@@ -26,11 +26,11 @@ const userRepository = {
   async findUser(
     { searchString, searchBy }: FindUserParams = {
       searchBy: 'userName',
-      searchString: '',
     }
   ) {
-    const trimmedSearchString = searchString.trim();
-    return User.findOne({ [`${searchBy}`]: trimmedSearchString });
+    const trimmedSearchString = searchString?.trim();
+    const user = await User.findOne({ [`${searchBy}`]: trimmedSearchString });
+    return user;
   },
 };
 

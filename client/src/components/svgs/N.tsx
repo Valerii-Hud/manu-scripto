@@ -1,4 +1,4 @@
-const XSvg = (props: { className: string; fill?: 'white' | 'black' }) => (
+const NSvg = (props: { className: string; fill?: 'white' | 'black' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="416"
@@ -13,4 +13,4 @@ const XSvg = (props: { className: string; fill?: 'white' | 'black' }) => (
     />
   </svg>
 );
-export default XSvg;
+export default NSvg;

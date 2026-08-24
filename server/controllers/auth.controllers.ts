@@ -92,13 +92,18 @@ export const login = async (req: AuthRequest, res: Response) => {
       return res.status(403).json({ error: 'Please provide all fields' });
     }
 
-    const user = await userRepository.findUser({ searchString: userName });
+    const user = await userRepository.findUser({
+      searchBy: 'userName',
+      searchString: userName,
+    });
 
-    if (!user || !user.password) {
-      return res.status(400).json({ error: 'Invalid username or password' });
-    }
+    console.log(`user ${user}`);
 
-    if (!passwordHelper.isPasswordCorrect(password, user.password)) {
+    if (
+      !user ||
+      !user.password ||
+      !passwordHelper.isPasswordCorrect(password, user.password)
+    ) {
       return res.status(400).json({ error: 'Invalid username or password' });
     }
 

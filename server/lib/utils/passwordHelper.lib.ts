@@ -1,8 +1,10 @@
 import bcrypt from 'bcryptjs';
 
 const passwordHelper = {
-  isPasswordCorrect(password: string, passwordHash: string) {
-    return bcrypt.compare(password, passwordHash);
+  async isPasswordCorrect(password: string, passwordHash: string) {
+    const isCorrect = await bcrypt.compare(password, passwordHash);
+    console.log(`is correct ${isCorrect}`);
+    return isCorrect;
   },
 };
 
