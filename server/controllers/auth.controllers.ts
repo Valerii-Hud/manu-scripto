@@ -5,64 +5,59 @@ import generateTokenAndSetCookie from '../lib/utils/generateToken.lib';
 import errorHandler from '../lib/utils/errorHandler.lib';
 import { ENV_VARS } from '../lib/env/envVars.lib';
 import type { AuthRequest } from '../types/interfaces.types';
+import userRepository from '../repositories/user.repository';
+import passwordHelper from '../lib/utils/passwordHelper.lib';
 export const signup = async (req: AuthRequest, res: Response) => {
   try {
     const { email, userName, password, confirmPassword } = req.body;
 
-    if (
-      typeof email !== 'string' ||
-      typeof userName !== 'string' ||
-      typeof password !== 'string' ||
-      typeof confirmPassword !== 'string'
-    ) {
-      return res.status(400).json({ error: 'Invalid data type' });
-    }
-
-    const tUserName = userName.trim(),
-      tEmail = email.trim(),
-      tPassword = password.trim(),
-      tConfirmPassword = confirmPassword.trim();
-    if (!tEmail || !tUserName || !tPassword || !tConfirmPassword) {
+    if (!email || !userName || !password || !confirmPassword) {
       return res.status(403).json({ error: 'Please provide all fields' });
     }
 
-    if (tPassword.length < 8) {
+    if (password.length < 8) {
       return res
         .status(400)
         .json({ error: 'Password must be at least 8 characters long' });
     }
 
-    if (tUserName.length < 4 || tUserName.length > 16) {
+    if (userName.length < 4 || userName.length > 16) {
       return res.status(400).json({
         error:
           'Username must be at least 4 characters long and no more than 16',
       });
     }
 
-    if (tPassword !== tConfirmPassword) {
+    if (password !== confirmPassword) {
       return res
         .status(400)
         .json({ error: 'Password confirmation does not match' });
     }
 
-    const isUserExistsByUsername = await User.findOne({ userName: tUserName });
+    const isUserExistsByUserName = await userRepository.findUser({
+      searchString: userName,
+      searchBy: 'userName',
+    });
 
-    if (isUserExistsByUsername) {
+    if (isUserExistsByUserName) {
       return res.status(400).json({ error: 'This username is already taken' });
     }
 
-    const isUserExistsByEmail = await User.findOne({ email: tEmail });
+    const isUserExistsByEmail = await userRepository.findUser({
+      searchString: userName,
+      searchBy: 'userName',
+    });
 
     if (isUserExistsByEmail) {
       return res.status(400).json({ error: 'This email is already taken' });
     }
 
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(tPassword, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
       email,
-      userName: tUserName,
+      userName,
       password: hashedPassword,
     });
 
@@ -93,26 +88,17 @@ export const login = async (req: AuthRequest, res: Response) => {
   try {
     const { userName, password } = req.body;
 
-    if (typeof userName !== 'string' || typeof password !== 'string') {
-      return res.status(400).json({ error: 'Invalid data type' });
-    }
-
-    const tUserName = userName.trim(),
-      tPassword = password.trim();
-
-    if (!tUserName || !tPassword) {
+    if (!userName || !password) {
       return res.status(403).json({ error: 'Please provide all fields' });
     }
 
-    const user = await User.findOne({ userName: tUserName });
+    const user = await userRepository.findUser({ searchString: userName });
 
     if (!user || !user.password) {
       return res.status(400).json({ error: 'Invalid username or password' });
     }
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordCorrect) {
+    if (!passwordHelper.isPasswordCorrect(password, user.password)) {
       return res.status(400).json({ error: 'Invalid username or password' });
     }
 
@@ -149,8 +135,13 @@ export const logout = (_req: AuthRequest, res: Response) => {
 
 export const checkAuth = async (req: AuthRequest, res: Response) => {
   try {
-    const user = await User.findById(req?.user?._id).select('-password');
-    return res.status(200).json(user);
+    const userId = req.user?._id;
+    if (userId) {
+      const user = await userRepository.findUserById({ userId: userId });
+      return res.status(200).json(user);
+    } else {
+      return res.status(404).json({ error: 'UserId not provided' });
+    }
   } catch (error) {
     errorHandler(res, error);
   }

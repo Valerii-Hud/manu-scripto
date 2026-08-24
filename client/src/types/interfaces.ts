@@ -8,7 +8,6 @@ export interface IPost {
   comments: IPostComment[];
   tags?: string[];
   createdAt: string;
-  postType?: ['public', 'private', 'onlySubscribers', 'onlySponsors'];
 }
 
 export interface IPostComment {
