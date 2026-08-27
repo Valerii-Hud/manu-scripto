@@ -41,7 +41,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
-  SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -50,7 +49,6 @@ import {
   SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
-  SidebarTrigger,
   useSidebar,
 } from '@/components/ui/sidebar';
 import NSvg from '../svgs/N';
@@ -434,7 +432,7 @@ function NavUser({
   );
 }
 
-export function AppSidebar({ notifications, authUser, logout }: ViewProps) {
+export function AppSidebar({ authUser, logout }: ViewProps) {
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
@@ -449,13 +447,6 @@ export function AppSidebar({ notifications, authUser, logout }: ViewProps) {
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-          </div>
-        </header>
-      </SidebarInset>
     </SidebarProvider>
   );
 }

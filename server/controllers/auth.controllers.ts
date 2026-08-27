@@ -9,9 +9,9 @@ import userRepository from '../repositories/user.repository';
 import passwordHelper from '../lib/utils/passwordHelper.lib';
 export const signup = async (req: AuthRequest, res: Response) => {
   try {
-    const { email, userName, password, confirmPassword } = req.body;
+    const { email, userName, password } = req.body;
 
-    if (!email || !userName || !password || !confirmPassword) {
+    if (!email || !userName || !password) {
       return res.status(403).json({ error: 'Please provide all fields' });
     }
 
@@ -28,12 +28,6 @@ export const signup = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    if (password !== confirmPassword) {
-      return res
-        .status(400)
-        .json({ error: 'Password confirmation does not match' });
-    }
-
     const isUserExistsByUserName = await userRepository.findUser({
       searchString: userName,
       searchBy: 'userName',
@@ -44,8 +38,8 @@ export const signup = async (req: AuthRequest, res: Response) => {
     }
 
     const isUserExistsByEmail = await userRepository.findUser({
-      searchString: userName,
-      searchBy: 'userName',
+      searchString: email,
+      searchBy: 'email',
     });
 
     if (isUserExistsByEmail) {
@@ -69,12 +63,6 @@ export const signup = async (req: AuthRequest, res: Response) => {
         _id: newUser._id,
         userName: newUser.userName,
         email: newUser.email,
-        followers: newUser.followers,
-        following: newUser.following,
-        profileImage: newUser.profileImage,
-        coverImage: newUser.coverImage,
-        bio: newUser.bio,
-        link: newUser.link,
       });
     } else {
       return res.status(400).json({ error: 'Invalid user data' });

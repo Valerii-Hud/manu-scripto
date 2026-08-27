@@ -183,7 +183,7 @@ const View = ({
   posts,
 }: ViewProps) => (
   <>
-    <div className="flex-[4_4_0]  border-r border-gray-700 min-h-screen ">
+    <div className="flex-[4_4_0]   border-r border-gray-700 min-h-screen ">
       {(isFetchingUser || isRefetching) && <ProfileHeaderSkeleton />}
       {!(isFetchingUser || isRefetching) && !user && (
         <p className="text-center text-lg mt-4">User not found</p>

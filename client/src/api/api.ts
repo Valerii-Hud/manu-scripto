@@ -12,10 +12,10 @@ export enum HttpMethod {
 export interface SignupData {
   email: string;
   userName: string;
-  fullName: string;
   password: string;
-  phoneNumber: string;
-  confirmPassword: string;
+  // fullName: string;
+  // phoneNumber: string;
+  // confirmPassword: string;
 }
 
 export interface LoginData {

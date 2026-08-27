@@ -1,27 +1,26 @@
 import { Link } from 'react-router-dom';
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 
-import XSvg from '../../../components/svgs/N';
-
-import { MdOutlineMail } from 'react-icons/md';
-import { FaPhoneAlt, FaUser } from 'react-icons/fa';
-import { MdPassword } from 'react-icons/md';
-import { MdDriveFileRenameOutline } from 'react-icons/md';
 import useAuth from '../../../hooks/useAuth';
-
-interface FormData {
-  email: string;
-  userName: string;
-  fullName: string;
-  password: string;
-  phoneNumber: string;
-  confirmPassword: string;
-}
+import NSvg from '../../../components/svgs/N';
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import type { SignupData } from '@/api/api';
 
 interface ViewProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  formData: FormData;
+  formData: SignupData;
   isAuthentication: boolean;
   isAuthenticationError: boolean;
   authenticationError: Error | null;
@@ -31,10 +30,7 @@ const SignUpPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     userName: '',
-    fullName: '',
     password: '',
-    phoneNumber: '',
-    confirmPassword: '',
   });
   const {
     auth: signup,
@@ -47,7 +43,10 @@ const SignUpPage = () => {
     e.preventDefault();
     signup({ data: formData, endpoint: 'signup' });
   };
-
+  console.log(
+    `
+    ${isAuthenticationError} ${isAuthentication}`
+  );
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -69,108 +68,80 @@ const View = ({
   formData,
   isAuthentication,
   isAuthenticationError,
-  authenticationError,
 }: ViewProps) => (
-  <div className="max-w-screen-xl mx-auto flex h-screen px-10">
-    <div className="flex-1 hidden lg:flex items-center  justify-center">
-      <XSvg className=" lg:w-2/3 fill-white" />
-    </div>
-    <div className="flex-1 flex flex-col justify-center items-center">
-      <form
-        className="lg:w-2/3  mx-auto md:mx-20 flex gap-4 flex-col"
-        onSubmit={handleSubmit}
-      >
-        <XSvg className="w-24 lg:hidden fill-white" />
-        <h1 className="text-4xl font-extrabold text-white">Join today.</h1>
-        <label className="input input-bordered rounded flex items-center gap-2">
-          <MdOutlineMail />
-          <input
-            type="email"
-            className="grow"
-            placeholder="Email"
-            name="email"
-            onChange={handleInputChange}
-            value={formData.email}
-          />
-        </label>
-        <label className="input input-bordered rounded flex items-center gap-2">
-          <FaPhoneAlt />
-          <input
-            type="tel"
-            className="grow"
-            placeholder="Phone Number"
-            name="phoneNumber"
-            onChange={handleInputChange}
-            value={formData.phoneNumber}
-          />
-        </label>
-        <div className="flex gap-4 flex-wrap">
-          <label className="input input-bordered rounded flex items-center gap-2 flex-1">
-            <FaUser />
-            <input
-              type="text"
-              className="grow"
-              placeholder="Username"
-              name="userName"
-              onChange={handleInputChange}
-              value={formData.userName}
-            />
-          </label>
-          <label className="input input-bordered rounded flex items-center gap-2 flex-1">
-            <MdDriveFileRenameOutline />
-            <input
-              type="text"
-              className="grow"
-              placeholder="Full Name"
-              name="fullName"
-              onChange={handleInputChange}
-              value={formData.fullName}
-            />
-          </label>
-        </div>
-        <label className="input input-bordered rounded flex items-center gap-2">
-          <MdPassword />
-          <input
-            type="password"
-            className="grow"
-            placeholder="Password"
-            name="password"
-            onChange={handleInputChange}
-            value={formData.password}
-          />
-        </label>
-        <label className="input input-bordered rounded flex items-center gap-2">
-          <MdPassword />
-          <input
-            type="password"
-            className="grow"
-            placeholder="Confirm Password"
-            name="confirmPassword"
-            onChange={handleInputChange}
-            value={formData.confirmPassword}
-          />
-        </label>
-        <button className="btn rounded-full btn-primary text-white">
-          {isAuthentication ? 'Sign up' : 'Loading'}
-        </button>
-        {isAuthenticationError && (
-          <p className="text-red-500">
-            {authenticationError
-              ? authenticationError.message
-              : 'Something went wrong'}
-          </p>
-        )}
-      </form>
-      <div className="flex flex-col lg:w-2/3 gap-2 mt-4">
-        <p className="text-white text-lg">Already have an account?</p>
-        <Link to="/login">
-          <button className="btn rounded-full btn-primary text-white btn-outline w-full">
-            Sign in
-          </button>
-        </Link>
-      </div>
-    </div>
-  </div>
+  <form
+    className="flex w-full min-h-screen justify-center items-center gap-20"
+    onSubmit={handleSubmit}
+  >
+    <NSvg fill="black" className="hidden md:block h-100" />
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle>Sign up for an account</CardTitle>
+        <CardDescription>
+          Enter your details below to create your account
+        </CardDescription>
+        <CardAction>
+          <Link to="/login">
+            <Button variant="link">Login</Button>
+          </Link>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        <form>
+          <div className="flex flex-col gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                required
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="userName">Username</Label>
+              <Input
+                id="userName"
+                required
+                name="userName"
+                value={formData.userName}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+                <a
+                  href="#"
+                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                >
+                  Forgot your password?
+                </a>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                required
+                value={formData.password}
+                onChange={handleInputChange}
+              />
+            </div>
+          </div>
+        </form>
+      </CardContent>
+      <CardFooter className="flex-col gap-2">
+        <Button type="submit" className="w-full">
+          {!isAuthentication && !isAuthenticationError ? 'Login' : 'Loading...'}
+        </Button>
+        {/* <Button variant="outline" className="w-full">
+          Login with Google
+        </Button> */}
+      </CardFooter>
+    </Card>
+  </form>
 );
 
 export default SignUpPage;
