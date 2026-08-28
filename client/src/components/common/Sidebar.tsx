@@ -153,46 +153,54 @@ const SidebarBlock = () => {
 const data = {
   navMain: [
     {
-      title: 'Playground',
+      title: 'Posts',
       url: '#',
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: 'History',
+          title: 'Home',
+          url: '/',
+        },
+        {
+          title: 'Liked',
           url: '#',
         },
         {
-          title: 'Starred',
+          title: 'Following',
           url: '#',
         },
         {
-          title: 'Settings',
+          title: 'Recommended',
           url: '#',
         },
       ],
     },
     {
-      title: 'Models',
+      title: 'Reels',
       url: '#',
       icon: Bot,
       items: [
         {
-          title: 'Genesis',
+          title: 'Home',
+          url: '/',
+        },
+        {
+          title: 'Liked',
           url: '#',
         },
         {
-          title: 'Explorer',
+          title: 'Following',
           url: '#',
         },
         {
-          title: 'Quantum',
+          title: 'Recommended',
           url: '#',
         },
       ],
     },
     {
-      title: 'Documentation',
+      title: 'Music',
       url: '#',
       icon: BookOpen,
       items: [
@@ -215,44 +223,23 @@ const data = {
       ],
     },
     {
-      title: 'Settings',
+      title: 'You',
       url: '#',
       icon: Settings2,
       items: [
         {
-          title: 'General',
+          title: 'My Channel',
           url: '#',
         },
         {
-          title: 'Team',
+          title: 'Search History',
           url: '#',
         },
         {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
+          title: 'Liked',
           url: '#',
         },
       ],
-    },
-  ],
-  projects: [
-    {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame,
-    },
-    {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart,
-    },
-    {
-      name: 'Travel',
-      url: '#',
-      icon: Map,
     },
   ],
 };
@@ -319,7 +306,7 @@ function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton render={<a href={subItem.url} />}>
+                      <SidebarMenuSubButton render={<Link to={subItem.url} />}>
                         <span>{subItem.title}</span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

@@ -159,7 +159,8 @@ const View = ({
           )}
         </div>
         <input type="file" hidden ref={imgRef} onChange={handleImgChange} />
-        <button className="btn btn-primary rounded-full btn-sm text-white px-4">
+        <button className="btn btn-primary rounded-full btn-sm text-black px-4 border">
+          {/* TODO: fix post when user can paste spaces ... trim() */}
           {isPosting ? 'Posting...' : 'Post'}
         </button>
       </div>

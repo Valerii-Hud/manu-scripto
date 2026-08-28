@@ -172,11 +172,12 @@ const View = ({
             to={`/${postOwner?.userName || 'anonymous'}`}
             className="font-bold"
           >
-            {postOwner?.fullName || 'Anonymous'}
+            @{postOwner?.userName || 'anonymous'}
           </Link>
           <span className="text-gray-700 flex gap-1 text-sm">
             <Link to={`/${postOwner?.userName || 'anonymous'}`}>
-              @{postOwner?.userName || 'anonymous'}
+              {/* TODO: Make func for it */}
+              {postOwner?.followers?.length} followers
             </Link>
             <span>·</span>
             <span>{formattedDate}</span>
