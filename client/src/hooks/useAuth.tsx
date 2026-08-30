@@ -3,16 +3,16 @@ import { api, HttpMethod, type ApiData, type Endpoint } from '../api/api';
 import type { IUser } from '../types/interfaces';
 
 export interface UseAuthProps {
-  data?: ApiData | undefined;
-  endpoint: 'signup' | 'login' | 'logout';
+  data?: ApiData;
+  endpoint: 'signup' | 'login' | 'logout' | 'check';
 }
 
 const useAuth = () => {
   const queryClient = useQueryClient();
-  const authUser = queryClient.getQueryData(['authUser']) as IUser;
+  const user = queryClient.getQueryData(['user']) as IUser;
+
   const {
     mutate: auth,
-    error: authenticationError,
     isPending: isAuthentication,
     isError: isAuthenticationError,
   } = useMutation({
@@ -28,15 +28,14 @@ const useAuth = () => {
       return res;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
   return {
     auth,
     isAuthentication,
-    authenticationError,
     isAuthenticationError,
-    authUser,
+    user,
   };
 };
 

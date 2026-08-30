@@ -1,15 +1,11 @@
-import { Routes } from 'react-router-dom';
-
+import useFetch from './hooks/useFetch';
+import './scss/app.scss';
 function App() {
-  // const { data: authUser, isLoading } = useGetData({
-  //   queryKey: 'authUser',
-  //   showError: false,
-  // });
+  const { data: user, isLoading: isLoadingUser } = useFetch({
+    queryKey: 'user',
+    showError: false,
+  });
 
-  return (
-    <div className="flex max-w-6xl ">
-      <Routes></Routes>
-    </div>
-  );
+  return <div className="app">Test</div>;
 }
 export default App;

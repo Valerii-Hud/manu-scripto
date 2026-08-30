@@ -126,7 +126,7 @@ export const logout = (_req: AuthRequest, res: Response) => {
   }
 };
 
-export const checkAuth = async (req: AuthRequest, res: Response) => {
+export const check = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?._id;
     if (userId) {

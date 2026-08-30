@@ -6,9 +6,9 @@ function getEndpoint(queryKey: string) {
     case 'notifications':
       return '/api/v1/notifications/all';
     case 'authUser':
-      return '/api/v1/auth/check-auth';
+      return '/api/v1/auth/check';
     default:
-      return '/api/v1/auth/check-auth';
+      return '/api/v1/auth/check';
   }
 }
 

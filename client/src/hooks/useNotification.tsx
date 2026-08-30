@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod } from '../api/api';
-import useGetData from './useGetData';
+import useGetData from './useFetch';
 
 const useNotification = (
   { notificationId }: { notificationId?: string } = { notificationId: 'all' }
