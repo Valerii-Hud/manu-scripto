@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import generateTokenAndSetCookie from '../lib/utils/generateToken.lib';
 import errorHandler from '../lib/utils/errorHandler.lib';
 import { ENV_VARS } from '../lib/env/envVars.lib';
-import type { AuthRequest } from '../types/interfaces.types';
+import type { AuthRequest } from '../types/interfaces.type';
 import userRepository from '../repositories/user.repository';
 import passwordHelper from '../lib/utils/passwordHelper.lib';
 export const signup = async (req: AuthRequest, res: Response) => {

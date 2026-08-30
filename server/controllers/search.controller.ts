@@ -1,7 +1,7 @@
 import errorHandler from '../lib/utils/errorHandler.lib';
 import Post from '../models/post.model';
 import User from '../models/user.model';
-import type { AuthRequest } from '../types/interfaces.types';
+import type { AuthRequest } from '../types/interfaces.type';
 import type { Response } from 'express';
 
 export const search = async (req: AuthRequest, res: Response) => {

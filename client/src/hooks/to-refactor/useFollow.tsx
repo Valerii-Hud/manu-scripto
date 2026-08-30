@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Id } from '../types/interfaces';
-import { api, HttpMethod } from '../api/api';
+import type { Id } from '../../types/interfaces';
+import { api, HttpMethod } from '../../api/api';
 
 const useFollow = () => {
   const queryClient = useQueryClient();

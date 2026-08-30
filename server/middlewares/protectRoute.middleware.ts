@@ -3,7 +3,7 @@ import errorHandler from '../lib/utils/errorHandler.lib';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { ENV_VARS } from '../lib/env/envVars.lib';
 import User from '../models/user.model';
-import type { AuthRequest } from '../types/interfaces.types';
+import type { AuthRequest } from '../types/interfaces.type';
 
 export default async function protectRoute(
   req: AuthRequest,

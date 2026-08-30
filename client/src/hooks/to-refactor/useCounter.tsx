@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, HttpMethod } from '../api/api';
-import type { Id, IPost, IUser } from '../types/interfaces';
+import { api, HttpMethod } from '../../api/api';
+import type { Id, IPost, IUser } from '../../types/interfaces';
 import { useState } from 'react';
 
 const useCounter = ({ post }: { post: IPost }) => {

@@ -12,19 +12,19 @@ function getEndpoint(queryKey: string) {
   }
 }
 
-interface UseGetData {
+interface UseFetch {
   queryKey: string;
   successMessage?: string;
   errorMessage?: string;
   showError?: boolean;
 }
 
-const useGetData = ({
+const useFetch = ({
   queryKey,
   successMessage,
   errorMessage,
   showError,
-}: UseGetData) => {
+}: UseFetch) => {
   const { data, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
@@ -46,4 +46,4 @@ const useGetData = ({
   return { data, isLoading };
 };
 
-export default useGetData;
+export default useFetch;

@@ -3,7 +3,7 @@ import {
   sendReport,
   getAllReports,
   getUserReports,
-} from '../controllers/report.controllers';
+} from '../controllers/report.controller';
 import adminOnlyRoute from '../middlewares/adminOnlyRoute.middleware';
 
 const router = express.Router();

@@ -1,5 +1,4 @@
 import { axiosInstance } from '../lib/axios';
-// import { AxiosError } from 'axios';
 
 export enum HttpMethod {
   GET = 'get',
@@ -7,14 +6,14 @@ export enum HttpMethod {
   PUT = 'put',
   DELETE = 'delete',
 }
+export interface SearchData {
+  searchString: string;
+}
 
 export interface SignupData {
   email: string;
   userName: string;
   password: string;
-  // fullName: string;
-  // phoneNumber: string;
-  // confirmPassword: string;
 }
 
 export interface LoginData {
@@ -55,6 +54,7 @@ export type ApiData =
   | CreatePostData
   | PostCounterTypeData
   | ProfileUpdateData
+  | SearchData
   | PostCommentData;
 
 type StaticEndpoint =
@@ -62,6 +62,7 @@ type StaticEndpoint =
   | '/api/v1/auth/login'
   | '/api/v1/auth/logout'
   | '/api/v1/auth/check'
+  | '/api/v1/search'
   | '/api/v1/users/suggested';
 
 type DynamicEndpoint =

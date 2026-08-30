@@ -1,4 +1,4 @@
-import { isError } from '../../types/guards.types';
+import { isError } from '../../types/guards.type';
 import type { Response } from 'express';
 import { ENV_VARS } from '../env/envVars.lib';
 

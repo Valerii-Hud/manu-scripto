@@ -1,10 +1,10 @@
 import express, { urlencoded } from 'express';
-import authRoutes from './routes/auth.routes';
-import userRoutes from './routes/user.routes';
-import postRoutes from './routes/post.routes';
-import searchRoutes from './routes/search.routes';
-import reportRoutes from './routes/report.routes';
-import notificationRoutes from './routes/notification.routers';
+import authRoutes from './routes/auth.route';
+import userRoutes from './routes/user.route';
+import postRoutes from './routes/post.route';
+import searchRoutes from './routes/search.route';
+import reportRoutes from './routes/report.route';
+import notificationRoutes from './routes/notification.route';
 import { ENV_VARS } from './lib/env/envVars.lib';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';

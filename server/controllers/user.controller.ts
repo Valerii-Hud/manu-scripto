@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import errorHandler from '../lib/utils/errorHandler.lib';
 import User from '../models/user.model';
-import type { AuthRequest } from '../types/interfaces.types';
+import type { AuthRequest } from '../types/interfaces.type';
 import Notification from '../models/notification.model';
 import bcrypt from 'bcryptjs';
 import {

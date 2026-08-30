@@ -1,19 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, HttpMethod } from '../api/api';
-import useGetData from './useFetch';
+import useFetch from './useFetch';
 
-const useNotification = (
-  { notificationId }: { notificationId?: string } = { notificationId: 'all' }
-) => {
+const useNotification = () => {
   const queryClient = useQueryClient();
-  const { data: notifications, isLoading: isFetching } = useGetData({
+  const { data: notifications, isLoading: isFetching } = useFetch({
     queryKey: 'notifications',
   });
 
   const { mutate: deleteNotification, isPending: isDeleting } = useMutation({
     mutationFn: async () => {
       return await api({
-        endpoint: `/api/v1/notifications/${notificationId}`,
+        endpoint: `/api/v1/notifications/all`,
         method: HttpMethod.DELETE,
       });
     },

@@ -9,7 +9,7 @@ import {
   getAllPosts,
   getFollowingPosts,
   getUserPosts,
-} from '../controllers/post.controllers';
+} from '../controllers/post.controller';
 
 const router = express.Router();
 

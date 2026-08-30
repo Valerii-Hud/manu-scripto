@@ -1,4 +1,4 @@
-import type { EnvVars } from '../../types/interfaces.types';
+import type { EnvVars } from '../../types/interfaces.type';
 import dotenv from 'dotenv';
 dotenv.config({});
 

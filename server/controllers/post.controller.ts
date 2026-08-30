@@ -1,11 +1,11 @@
 import errorHandler from '../lib/utils/errorHandler.lib';
 import type { Response } from 'express';
-import type { AuthRequest } from '../types/interfaces.types';
+import type { AuthRequest } from '../types/interfaces.type';
 import User from '../models/user.model';
 import Post from '../models/post.model';
 import { destroyImage, uploadImage } from '../lib/utils/cloudinary.lib';
 import Notification from '../models/notification.model';
-import type { Id } from '../types/interfaces.types';
+import type { Id } from '../types/interfaces.type';
 
 export const createPost = async (req: AuthRequest, res: Response) => {
   try {

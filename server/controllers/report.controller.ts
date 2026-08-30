@@ -1,13 +1,13 @@
-import type { AuthRequest } from "../types/interfaces.types.ts";
-import type { Response } from "express";
-import Report from "../models/report.model.ts";
-import errorHandler from "../lib/utils/errorHandler.lib.ts";
+import type { AuthRequest } from '../types/interfaces.type.ts';
+import type { Response } from 'express';
+import Report from '../models/report.model.ts';
+import errorHandler from '../lib/utils/errorHandler.lib.ts';
 
 export const getAllReports = async (_req: AuthRequest, res: Response) => {
   try {
     const reports = await Report.find().populate({
-      path: "from to",
-      select: "-password",
+      path: 'from to',
+      select: '-password',
     });
 
     if (reports.length === 0) {
@@ -38,35 +38,35 @@ export const sendReport = async (req: AuthRequest, res: Response) => {
     const { defaultMessage, customMessage } = req.body;
 
     const validDefaultMessages = [
-      "spam",
-      "fakeAccount",
-      "impersonation",
-      "harassmentOrBullying",
-      "hateSpeech",
-      "scamOrFraud",
-      "threatsOrViolence",
-      "childExploitation",
-      "other",
+      'spam',
+      'fakeAccount',
+      'impersonation',
+      'harassmentOrBullying',
+      'hateSpeech',
+      'scamOrFraud',
+      'threatsOrViolence',
+      'childExploitation',
+      'other',
     ];
 
     const currentUserId = req.user?._id;
     const { userId: userToModifyId } = req.params;
 
     if (!validDefaultMessages.includes(defaultMessage)) {
-      return res.status(400).json({ error: "Invalid Default Message" });
+      return res.status(400).json({ error: 'Invalid Default Message' });
     }
 
-    if (defaultMessage !== "other" && customMessage) {
-      return res.status(400).json({ error: "Invalid Default Message Type" });
+    if (defaultMessage !== 'other' && customMessage) {
+      return res.status(400).json({ error: 'Invalid Default Message Type' });
     }
 
-    if (defaultMessage === "other" && !customMessage) {
+    if (defaultMessage === 'other' && !customMessage) {
       return res
         .status(400)
-        .json({ error: "Please provide your report message" });
+        .json({ error: 'Please provide your report message' });
     }
 
-    if (defaultMessage === "other" && customMessage) {
+    if (defaultMessage === 'other' && customMessage) {
       const newCustomReport = new Report({
         defaultMessage,
         customMessage: customMessage?.trim(),
@@ -83,7 +83,7 @@ export const sendReport = async (req: AuthRequest, res: Response) => {
 
       await newDefaultReport.save();
     }
-    return res.status(200).json({ message: "User reported successfully" });
+    return res.status(200).json({ message: 'User reported successfully' });
   } catch (error) {
     errorHandler(res, error);
   }

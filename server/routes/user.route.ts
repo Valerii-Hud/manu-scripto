@@ -10,7 +10,7 @@ import {
   getMyPoints,
   changePointsByUserId,
   toggleUserFlags,
-} from '../controllers/user.controllers';
+} from '../controllers/user.controller';
 
 const router = express.Router();
 
