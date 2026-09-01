@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { api, type Api } from '../api/api';
+import type { Api } from '../../types/interfaces';
+import { api } from '../../api/api';
 
 function getEndpoint(queryKey: string) {
   switch (queryKey) {

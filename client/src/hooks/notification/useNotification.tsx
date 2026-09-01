@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, HttpMethod } from '../api/api';
-import useFetch from './useFetch';
+import useFetch from '../fetch/useFetch';
+import { HttpMethod } from '../../types/interfaces';
+import { api } from '../../api/api';
 
 const useNotification = () => {
   const queryClient = useQueryClient();

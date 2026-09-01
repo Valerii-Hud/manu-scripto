@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, HttpMethod } from '../api/api';
+import { HttpMethod } from '../../types/interfaces';
+import { api } from '../../api/api';
 
 interface UseSearchProps {
   data: {

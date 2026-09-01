@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Id } from '../../types/interfaces';
-import { api, HttpMethod } from '../../api/api';
+import { HttpMethod } from '../../types/interfaces';
+import { api } from '../../api/api';
 
 const useFollow = () => {
   const queryClient = useQueryClient();
 
   const { mutate: follow, isPending: isFollowing } = useMutation({
-    mutationFn: async (userId: Id) => {
+    mutationFn: async (userId: string) => {
       return await api({
         method: HttpMethod.POST,
         endpoint: `/api/v1/users/follow/${userId}`,

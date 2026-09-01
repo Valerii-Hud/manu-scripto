@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, HttpMethod } from '../../api/api';
-import type { Id, IPost, IUser } from '../../types/interfaces';
+
+import { HttpMethod, type IPost, type IUser } from '../../types/interfaces';
 import { useState } from 'react';
+import { api } from '../../api/api';
 
 const useCounter = ({ post }: { post: IPost }) => {
   const queryClient = useQueryClient();
@@ -9,7 +10,7 @@ const useCounter = ({ post }: { post: IPost }) => {
   const [isUpdated, setIsUpdated] = useState(false);
 
   interface UpdateCounterProps {
-    postId: Id;
+    postId: string;
     updateType: string;
   }
 

@@ -1,6 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, HttpMethod, type ApiData, type Endpoint } from '../api/api';
-import type { IUser } from '../types/interfaces';
+import {
+  HttpMethod,
+  type ApiData,
+  type Endpoint,
+  type IUser,
+} from '../../types/interfaces';
+import { api } from '../../api/api';
 
 export interface UseAuthProps {
   data?: ApiData;
