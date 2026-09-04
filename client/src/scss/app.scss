@@ -1,3 +1,2 @@
-.app {
-  color: red;
-}
+@use './lib/reboot' as *;
+@use './pages/login-page' as *;

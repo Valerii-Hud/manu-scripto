@@ -11,6 +11,7 @@
         "@types/react-icons": "^3.0.0",
         "@types/react-router-dom": "^5.3.3",
         "axios": "^1.18.1",
+        "bootstrap-reboot": "^4.5.6",
         "lucide-react": "^1.34.0",
         "react": "^19.2.6",
         "react-dom": "^19.2.6",
@@ -253,6 +254,8 @@
     "balanced-match": ["balanced-match@4.0.4", "", {}, "sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA=="],
 
     "baseline-browser-mapping": ["baseline-browser-mapping@2.10.38", "", { "bin": { "baseline-browser-mapping": "dist/cli.cjs" } }, "sha512-31/02mVB4yuQU6adKk5SlY6m+mxDwUq5KZkyYgnLrrKl7TEm1+3PyDtDBz2kOv/wxZz41GHsvV1A/u6RmiyBvw=="],
+
+    "bootstrap-reboot": ["bootstrap-reboot@4.5.6", "", {}, "sha512-V3czvZrmSQP6lmaaJE5spc4sFbqeNDHyjhVTj4EaeVgh5p2maQpDxr+fJP8GfasvP8RG2hWbka15r3Z+OXLwRw=="],
 
     "brace-expansion": ["brace-expansion@5.0.6", "", { "dependencies": { "balanced-match": "^4.0.2" } }, "sha512-kLpxurY4Z4r9sgMsyG0Z9uzsBlgiU/EFKhj/h91/8yHu0edo7XuixOIH3VcJ8kkxs6/jPzoI6U9Vj3WqbMQ94g=="],
 
