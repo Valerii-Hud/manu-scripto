@@ -2,6 +2,10 @@ import { Route, Routes } from 'react-router-dom';
 import './scss/app.scss';
 import LoginPage from './pages/auth/login/LoginPage';
 import useFetch from './hooks/fetch/useFetch';
+import SignupPage from './pages/auth/signup/SignupPage';
+import HomePage from './pages/home/HomePage';
+import ProfilePage from './pages/profile/ProfilePage';
+import AppLoadingSpinner from './common/ui/spinners/AppLoadingSpinner';
 function App() {
   const { data: user, isLoading: isLoadingUser } = useFetch({
     queryKey: 'user',
@@ -9,7 +13,7 @@ function App() {
   });
 
   if (isLoadingUser) {
-    return <Spinner />;
+    return <AppLoadingSpinner />;
   }
 
   return (
