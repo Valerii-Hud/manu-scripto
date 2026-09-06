@@ -1,2 +1,8 @@
 @use './lib/reboot' as *;
 @use './pages/login-page' as *;
+@use './pages/signup-page' as *;
+
+.container {
+  padding: 30px;
+  margin: 0 auto;
+}

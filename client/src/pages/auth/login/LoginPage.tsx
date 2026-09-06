@@ -12,7 +12,7 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="login">
+    <main className="login container">
       <div className="login__logo">
         <NoviagramLogo />
       </div>
