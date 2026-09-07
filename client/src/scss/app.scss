@@ -1,6 +1,6 @@
 @use './lib/reboot' as *;
-@use './pages/login-page' as *;
-@use './pages/signup-page' as *;
+@use './pages/auth/login/login-page' as *;
+@use './pages/auth/signup/signup-page' as *;
 
 .container {
   padding: 30px;

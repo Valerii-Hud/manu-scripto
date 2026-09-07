@@ -16,7 +16,7 @@
     font-weight: 900;
   }
   &__text {
-    font-size: 6vw;
+    font-size: 5vw;
   }
   &__form {
     display: flex;
@@ -83,8 +83,7 @@
       display: block;
     }
   }
-  &__label {
-  }
+
   &__create {
     margin-top: 10px;
     width: 100%;
@@ -110,6 +109,19 @@
     }
     &_input {
       width: 40%;
+    }
+  }
+}
+
+@media (min-width: 860px) {
+  .signup {
+    padding-top: 20px;
+    &__text {
+      font-size: 4vw;
+    }
+    &__logo {
+      display: block;
+      width: 100%;
     }
   }
 }
