@@ -6,100 +6,99 @@ import { FaEyeSlash } from 'react-icons/fa';
 
 const SignupPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
-
   const handleShowPasswordChange = () => {
     setIsShowPassword(!isShowPassword);
   };
 
   return (
-    <main className="signup container">
-      <div className="signup__logo">
+    <main className="auth container">
+      <div className="auth__logo">
         <NoviagramLogo />
       </div>
-      <div className="signup__right-panel">
-        <div className="signup__form">
-          <h1 className="signup__text">Sign up for Noviagram</h1>
+      <div className="auth__right-panel">
+        <div className="auth__form">
+          <h1 className="auth__text">Sign up for Noviagram</h1>
 
-          <label htmlFor="phoneOrEmail" className="signup__label">
+          <label htmlFor="phoneOrEmail" className="auth__label">
             Phone number or email address
           </label>
           <input
             name="phoneOrEmail"
             type="text"
             placeholder="Phone number or email address"
-            className="signup__form_input"
+            className="auth__form_input"
           />
-          <div className="signup__password-container">
+          <div className="auth__password-container">
             <label
               htmlFor="password"
-              className="signup__label signup__password_label"
+              className="auth__label auth__password_label"
             >
               Password
             </label>
-            <div className="signup__password">
+            <div className="auth__password">
               <input
                 name="password"
                 type={isShowPassword ? 'text' : 'password'}
                 placeholder="Password"
-                className="signup__form_input signup__password_input"
+                className="auth__form_input auth__password_input"
               />
               {isShowPassword ? (
                 <FaEyeSlash
-                  className="signup__password_view"
+                  className="auth__password_view"
                   onClick={handleShowPasswordChange}
                 />
               ) : (
                 <FaEye
-                  className="signup__password_view"
+                  className="auth__password_view"
                   onClick={handleShowPasswordChange}
                 />
               )}
             </div>
           </div>
-          <div className="signup__birthday-container">
-            <label htmlFor="birth" className="signup__label">
+          <div className="auth__birthday-container">
+            <label htmlFor="birth" className="auth__label">
               Date of birth
             </label>
-            <div className="signup__birthday">
+            <div className="auth__birthday">
               <input
                 type="number"
                 placeholder="Day"
-                className="signup__form_input signup__birthday_input"
+                className="auth__form_input auth__birthday_input"
               />
               <input
                 type="number"
                 placeholder="Month"
-                className="signup__form_input signup__birthday_input"
+                className="auth__form_input auth__birthday_input"
               />
               <input
                 type="number"
                 placeholder="Year"
-                className="signup__form_input signup__birthday_input"
+                className="auth__form_input auth__birthday_input"
               />
             </div>
           </div>
-          <label htmlFor="fullName" className="signup__label">
+          <label htmlFor="fullName" className="auth__label">
             Full Name
           </label>
 
           <input
             type="text"
             placeholder="Full Name"
-            className="signup__form_input"
+            className="auth__form_input"
           />
           <label htmlFor="userName">Username</label>
 
           <input
             type="text"
             placeholder="Username"
-            className="signup__form_input"
+            className="auth__form_input"
           />
-          <button type="submit" className="signup__form_submit">
+          <button type="submit" className="auth__form_submit">
             Signup
           </button>
         </div>
-        <button className="signup__create">Create a new account</button>
-        <div className="signup__platforms">
+        <button className="auth__create">Create a new account</button>
+        <div className="auth__platforms">
           <NoviaPlatformsLogo />
         </div>
       </div>

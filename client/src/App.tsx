@@ -3,6 +3,7 @@ import './scss/app.scss';
 // import LoginPage from './pages/auth/login/LoginPage';
 // import useFetch from './hooks/fetch/useFetch';
 import SignupPage from './pages/auth/signup/SignupPage';
+import LoginPage from './pages/auth/login/LoginPage';
 // import HomePage from './pages/home/HomePage';
 // import ProfilePage from './pages/profile/ProfilePage';
 // import AppLoadingSpinner from './common/ui/spinners/AppLoadingSpinner';
@@ -18,8 +19,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<SignupPage />} />
-      {/* <Route path="/" element={<LoginPage />} /> */}
+      {/* <Route path="/" element={<SignupPage />} /> */}
+      <Route path="/" element={<LoginPage />} />
 
       {/* <Route path="/signup" element={user ? <HomePage /> : <SignupPage />} />
       <Route path="/login" element={user ? <HomePage /> : <LoginPage />} />
