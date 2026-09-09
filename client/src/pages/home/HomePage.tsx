@@ -1,5 +1,7 @@
+import MobileNavMenu from '../../common/ui/mobile/MobileNavMenu';
+
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return <MobileNavMenu />;
 };
 
 export default HomePage;
