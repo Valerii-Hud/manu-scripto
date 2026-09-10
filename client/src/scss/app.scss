@@ -3,6 +3,7 @@
 @use './pages/home/home-page' as *;
 
 .container {
+  position: relative;
   padding: 30px;
   margin: 0 auto;
 }

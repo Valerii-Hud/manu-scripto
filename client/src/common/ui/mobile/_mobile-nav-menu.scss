@@ -1,0 +1,21 @@
+.mobile-nav {
+  position: fixed;
+  display: flex;
+  bottom: 0;
+  gap: 10%;
+  font-size: 30px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: white;
+  background: #000;
+  padding-bottom: 10px;
+  &-divider {
+    position: fixed;
+    background: rgb(85, 85, 85);
+    width: 100%;
+    height: 4px;
+    bottom: 55px;
+    z-index: 4;
+  }
+}
