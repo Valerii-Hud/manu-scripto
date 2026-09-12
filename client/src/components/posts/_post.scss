@@ -5,7 +5,14 @@
     justify-content: center;
     align-items: center;
     color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
     &__user {
+      &-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
       &-username {
         font-size: 16px;
         font-weight: 600;
@@ -14,11 +21,25 @@
         font-size: 14px;
       }
       &-profile-image {
-        font-size: 50px;
         border: 1px solid black;
         border-radius: 100%;
         padding: 5px;
         margin-right: 15px;
+        width: 100%;
+        &_fallback {
+          margin-right: 15px;
+          color: rgb(255, 255, 255);
+          text-transform: uppercase;
+          font-weight: 600;
+          background-color: #3f49aa;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 35px;
+          height: 35px;
+          border-radius: 100%;
+          border: 1px solid rgb(0, 0, 0);
+        }
       }
       &-container {
         margin-right: 30%;
@@ -28,12 +49,11 @@
       }
     }
     &__subscribe {
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 8px;
+      font-size: 15px;
       color: rgb(252, 248, 248);
-      height: 100%;
       border: none;
-      padding: 5px 10px;
+      padding: 3px 7px;
       background-color: rgb(77, 77, 77);
       margin-right: 10px;
     }
@@ -43,6 +63,42 @@
       width: 100%;
       height: 100vw;
       object-fit: cover;
+    }
+  }
+  &-footer {
+    height: 100%;
+    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    &_about {
+      &-container {
+        padding-top: 10px;
+        color: white;
+        // display: flex;
+        // align-items: center;
+      }
+    }
+    &_user {
+      &-container {
+        display: flex;
+      }
+    }
+    &_date {
+      &-container {
+        font-size: 14px;
+      }
+    }
+    &_numbers {
+      &-container {
+        display: flex;
+        align-items: center;
+        // justify-content: center;
+        color: white;
+        font-size: 25px;
+        font-weight: 600;
+        gap: 10px;
+      }
+      font-size: 16px;
     }
   }
 }
