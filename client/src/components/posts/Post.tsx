@@ -1,14 +1,14 @@
 import './_post.scss';
 import PostHeader from './PostHeader';
-import catImg from '../../assets/dummy/cat.webp';
+import PostFooter from './PostFooter';
+import PostContent from './PostContent';
 
 const Post = () => {
   return (
     <article>
       <PostHeader />
-      <div className="post__content">
-        <img src={catImg} alt="cat" className="post__content_image" />
-      </div>
+      <PostContent />
+      <PostFooter />
     </article>
   );
 };
