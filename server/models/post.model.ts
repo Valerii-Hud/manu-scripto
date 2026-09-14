@@ -13,6 +13,16 @@ const postSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    images: [
+      {
+        types: String,
+      },
+    ],
+    videos: [
+      {
+        types: String,
+      },
+    ],
     views: [
       {
         type: mongoose.Schema.Types.ObjectId,
