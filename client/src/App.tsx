@@ -20,9 +20,9 @@ function App() {
 
   return (
     <Routes>
-      {/* <Route path="/" element={<SignupPage />} /> */}
+      <Route path="/" element={<SignupPage />} />
       {/* <Route path="/" element={<LoginPage />} /> */}
-      <Route path="/" element={<HomePage />} />
+      {/* <Route path="/" element={<HomePage />} /> */}
 
       {/* <Route path="/signup" element={user ? <HomePage /> : <SignupPage />} />
       <Route path="/login" element={user ? <HomePage /> : <LoginPage />} />

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import NoviagramLogo from '../../../common/ui/logos/NoviagramLogo';
 import NoviaPlatformsLogo from '../../../common/ui/logos/NoviaPlatformsLogo';
-import { FaEye } from 'react-icons/fa';
-import { FaEyeSlash } from 'react-icons/fa';
+import { LuEye, LuEyeOff } from 'react-icons/lu';
 
 const SignupPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -43,12 +42,12 @@ const SignupPage = () => {
                 className="auth__form_input auth__password_input"
               />
               {isShowPassword ? (
-                <FaEyeSlash
+                <LuEyeOff
                   className="auth__password_view"
                   onClick={handleShowPasswordChange}
                 />
               ) : (
-                <FaEye
+                <LuEye
                   className="auth__password_view"
                   onClick={handleShowPasswordChange}
                 />
