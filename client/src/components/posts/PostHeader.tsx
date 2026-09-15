@@ -1,5 +1,5 @@
 import './_post.scss';
-import { CiCircleList } from 'react-icons/ci';
+import { LuMenu } from 'react-icons/lu';
 
 interface ProfileImageFallbackProps {
   userName: string;
@@ -20,7 +20,7 @@ const PostHeader = () => {
       </div>
       {/* fix adaptation */}
       <button className="post-header__subscribe">Subscribe</button>{' '}
-      <CiCircleList className="post-header__user-menu" />
+      <LuMenu className="post-header__user-menu" />
     </div>
   );
 };
