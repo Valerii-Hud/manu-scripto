@@ -1,24 +1,35 @@
 import {
-  CiHeart,
-  CiBookmark,
-  CiRepeat,
-  CiLocationArrow1,
-} from 'react-icons/ci';
-import { FaRegComment } from 'react-icons/fa';
+  LuHeart,
+  LuMessageSquare,
+  LuRepeat2,
+  LuSend,
+  LuBookmark,
+} from 'react-icons/lu';
 
 const PostFooter = () => {
   return (
     <div className="post-footer ">
       <div className="post-footer_numbers-container">
-        <CiHeart />
-        <div className="post-footer_numbers">60,2 k</div>
-        <FaRegComment />
-        <div className="post-footer_numbers">385</div>
-        <CiRepeat />
-        <div className="post-footer_numbers">673</div>
-        <CiLocationArrow1 />
-        <div className="post-footer_numbers">2 685</div>
-        <CiBookmark />
+        <div className="post-footer_likes post-footer_number_container">
+          <LuHeart />
+          <div className="post-footer_numbers ">60,2 k</div>
+        </div>
+        <div className="post-footer_comments post-footer_number_container">
+          {' '}
+          <LuMessageSquare />
+          <div className="post-footer_numbers ">385</div>
+        </div>
+        <div className="post-footer_reposts post-footer_number_container">
+          <LuRepeat2 />
+          <div className="post-footer_numbers ">673</div>
+        </div>
+        <div className="post-footer_links post-footer_number_container">
+          <LuSend />
+          <div className="post-footer_numbers ">2 685</div>
+        </div>
+        <div className="post-footer_bookmarks post-footer_number_container">
+          <LuBookmark />
+        </div>
       </div>
       <div className="post-footer_about-container">
         <div className="post-footer_user-container">
