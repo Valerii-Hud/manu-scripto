@@ -13,14 +13,19 @@ const PostHeader = () => {
 
   return (
     <div className="post-header ">
-      <ProfileImageFallback userName={user.userName} />
-      <div className="post-header__user-container">
-        <div className="post-header__user-username">Username</div>
-        <div className="post-header__user-type">Sponsored</div>
+      <div className="post-header_left">
+        <ProfileImageFallback userName={user.userName} />
+        <div className="post-header__user-container">
+          <div className="post-header__user-username">Username</div>
+          <div className="post-header__user-type">Sponsored</div>
+        </div>
       </div>
+      <div className="post-header_right">
+        <button className="post-header__subscribe">Subscribe</button>
+        <LuMenu className="post-header__user-menu" />
+      </div>
+
       {/* fix adaptation */}
-      <button className="post-header__subscribe">Subscribe</button>{' '}
-      <LuMenu className="post-header__user-menu" />
     </div>
   );
 };
