@@ -1,11 +1,11 @@
 import './_mobile-nav-menu.scss';
 import {
-  CiHome,
-  CiSearch,
-  CiPlay1,
-  CiPaperplane,
-  CiUser,
-} from 'react-icons/ci';
+  LuHouse,
+  LuSquarePlay,
+  LuSend,
+  LuSearch,
+  LuCircleUser,
+} from 'react-icons/lu';
 
 const MobileNavMenu = () => {
   return (
@@ -13,19 +13,19 @@ const MobileNavMenu = () => {
       <div className="mobile-nav-divider"></div>
       <nav className="mobile-nav">
         <div>
-          <CiHome />
+          <LuHouse />
         </div>
         <div>
-          <CiPlay1 />
+          <LuSquarePlay />
         </div>
         <div>
-          <CiPaperplane />
+          <LuSend />
         </div>
         <div>
-          <CiSearch />
+          <LuSearch />
         </div>
         <div>
-          <CiUser />
+          <LuCircleUser />
         </div>
       </nav>
     </>

@@ -2,11 +2,19 @@
   &-header {
     display: flex;
     height: 100%;
-    justify-content: center;
     align-items: center;
     color: white;
+    justify-content: space-between;
+    margin: 0 5px;
     padding-top: 10px;
     padding-bottom: 10px;
+    &_right {
+      display: flex;
+    }
+    &_left {
+      display: flex;
+      width: 100%;
+    }
     &__user {
       &-container {
         display: flex;
@@ -35,8 +43,8 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 35px;
-          height: 35px;
+          width: 40px;
+          height: 40px;
           border-radius: 100%;
           border: 1px solid rgb(0, 0, 0);
         }
@@ -45,7 +53,7 @@
         margin-right: 30%;
       }
       &-menu {
-        font-size: 30px;
+        font-size: 2em;
       }
     }
     &__subscribe {
@@ -53,7 +61,6 @@
       font-size: 15px;
       color: rgb(252, 248, 248);
       border: none;
-      padding: 3px 7px;
       background-color: rgb(77, 77, 77);
       margin-right: 10px;
     }
