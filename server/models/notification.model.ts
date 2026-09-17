@@ -19,12 +19,11 @@ const notificationSchema = new mongoose.Schema(
         'follow',
         'like',
         'comment',
-        'save',
         'postDeleted',
         'commentDeleted',
         'accountBanned',
         'permissionsUpdated',
-        'verify',
+        'verified',
       ],
     },
     isRead: {
@@ -32,7 +31,7 @@ const notificationSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Notification = mongoose.model('Notification', notificationSchema);
