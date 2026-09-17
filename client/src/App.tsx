@@ -20,7 +20,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<SignupPage />} />
+      <Route path="/" element={<HomePage />} />
       {/* <Route path="/" element={<LoginPage />} /> */}
       {/* <Route path="/" element={<HomePage />} /> */}
 
