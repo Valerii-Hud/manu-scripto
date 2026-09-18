@@ -30,7 +30,9 @@ const PostHeader = () => {
   );
 };
 
-const ProfileImageFallback = ({ userName }: ProfileImageFallbackProps) => {
+export const ProfileImageFallback = ({
+  userName,
+}: ProfileImageFallbackProps) => {
   return (
     <div className="post-header__user-profile-image_fallback">
       {userName[0] + userName[1]}

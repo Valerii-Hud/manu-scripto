@@ -1,5 +1,7 @@
 import './_video.scss';
 import video from '../../assets/dummy/video.mp4';
+import profileImage from '../../assets/dummy/cat.webp';
+
 import {
   LuHeart,
   LuMessageSquare,
@@ -31,6 +33,14 @@ const Video = () => {
         <div className="video__number">
           <LuBookmark className="video__number_icon" />
           <div>4 582</div>
+        </div>
+      </div>
+      <div className="video__footer">
+        <div className="video__profile">
+          <div className="video__profile__image">
+            <img src={profileImage} alt="" />
+          </div>
+          <div className="video__profile__username">Cat21313fqw</div>
         </div>
       </div>
     </div>
