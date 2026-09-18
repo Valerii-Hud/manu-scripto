@@ -8,6 +8,7 @@ import {
   LuRepeat2,
   LuSend,
   LuBookmark,
+  LuBadgeCheck,
 } from 'react-icons/lu';
 const Video = () => {
   return (
@@ -40,7 +41,18 @@ const Video = () => {
           <div className="video__profile__image">
             <img src={profileImage} alt="" />
           </div>
-          <div className="video__profile__username">Cat21313fqw</div>
+          <div className="video__profile__username">
+            <div className="video__profile__username__text">cat4u1</div>
+            <div className="video__profile__username__badge">
+              <LuBadgeCheck />
+            </div>
+          </div>
+          <div className="video__profile__follow">
+            <button>Subscribe</button>
+          </div>
+        </div>
+        <div className="video__description">
+          Lorem ipsum dolor sit, amet consectetur...
         </div>
       </div>
     </div>
