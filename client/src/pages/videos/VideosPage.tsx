@@ -4,9 +4,9 @@ const VideosPage = () => {
   return (
     <div>
       <Video />
-      {/* <Video />
       <Video />
-      <Video /> */}
+      <Video />
+      <Video />
     </div>
   );
 };
