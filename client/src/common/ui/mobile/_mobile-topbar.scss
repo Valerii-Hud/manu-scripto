@@ -1,0 +1,12 @@
+.mobile-topbar {
+  display: flex;
+  color: white;
+  padding: 10px;
+  padding-bottom: 20px;
+  font-size: 1.5em;
+  justify-content: space-between;
+  align-items: center;
+  &_feed {
+    font-size: 0.8em;
+  }
+}
