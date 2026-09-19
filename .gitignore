@@ -32,4 +32,10 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Finder (MacOS) folder config
 .DS_Store
+<<<<<<< HEAD
 docs
+=======
+
+# dummy
+client/src/assets/dummy/video.mp4client/src/assets/dummy/video.mp4 
+>>>>>>> fd5e6cb604c23b1087a8e85cdc12cbc44b01c8e7
