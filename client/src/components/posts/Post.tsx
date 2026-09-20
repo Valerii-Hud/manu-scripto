@@ -1,7 +1,7 @@
-import './_post.scss';
-import PostHeader from './PostHeader';
-import PostFooter from './PostFooter';
-import PostContent from './PostContent';
+import './scss/_post.scss';
+import PostHeader from './blocks/PostHeader';
+import PostFooter from './blocks/PostFooter';
+import PostContent from './blocks/PostContent';
 
 const Post = () => {
   return (

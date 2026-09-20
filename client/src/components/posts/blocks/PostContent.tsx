@@ -1,4 +1,4 @@
-import './_post.scss';
+import '../scss/_post.scss';
 import catImg from '../../assets/dummy/cat.webp';
 
 const PostContent = () => {

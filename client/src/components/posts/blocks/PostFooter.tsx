@@ -6,6 +6,8 @@ import {
   LuBookmark,
 } from 'react-icons/lu';
 
+import '../scss/_post.scss';
+
 const PostFooter = () => {
   return (
     <div className="post-footer ">

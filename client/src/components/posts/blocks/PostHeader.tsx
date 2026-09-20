@@ -1,4 +1,4 @@
-import './_post.scss';
+import '../scss/_post.scss';
 import { LuMenu } from 'react-icons/lu';
 
 interface ProfileImageFallbackProps {

@@ -1,4 +1,4 @@
-import './_video.scss';
+import './scss/_video.scss';
 import video from '../../assets/dummy/video.mp4';
 import profileImage from '../../assets/dummy/cat.webp';
 
