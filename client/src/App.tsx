@@ -6,6 +6,8 @@ import './scss/app.scss';
 // import LoginPage from './pages/auth/login/LoginPage';
 // import HomePage from './pages/home/HomePage';
 import VideosPage from './pages/videos/VideosPage';
+import HomePage from './pages/home/HomePage';
+import ProfilePage from './pages/profile/ProfilePage';
 // import HomePage from './pages/home/HomePage';
 // import ProfilePage from './pages/profile/ProfilePage';
 // import AppLoadingSpinner from './common/ui/spinners/AppLoadingSpinner';
@@ -25,8 +27,8 @@ function App() {
       {/* <Route path="/" element={<LoginPage />} /> */}
       {/* <Route path="/" element={<HomePage />} /> */}
       {/* <Route path="/" element={<LoginPage />} /> */}
-      {/* <Route path="/" element={<HomePage />} /> */}
-      <Route path="/" element={<VideosPage />} />
+      <Route path="/" element={<ProfilePage />} />
+      {/* <Route path="/" element={<VideosPage />} /> */}
 
       {/* <Route path="/signup" element={user ? <HomePage /> : <SignupPage />} />
       <Route path="/login" element={user ? <HomePage /> : <LoginPage />} />
