@@ -1,16 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import './scss/app.scss';
-// import LoginPage from './pages/auth/login/LoginPage';
-// import useFetch from './hooks/fetch/useFetch';
-import SignupPage from './pages/auth/signup/SignupPage';
-import LoginPage from './pages/auth/login/LoginPage';
-// import HomePage from './pages/home/HomePage';
-// import VideosPage from './pages/videos/VideosPage';
-import HomePage from './pages/home/HomePage';
-import ProfilePage from './pages/profile/ProfilePage';
-// import HomePage from './pages/home/HomePage';
-// import ProfilePage from './pages/profile/ProfilePage';
-// import AppLoadingSpinner from './common/ui/spinners/AppLoadingSpinner';
+import './_app.scss';
+// import SignupPage from './pages/signup/SignupPage';
+import LoginPage from './pages/login/LoginPage';
+
 function App() {
   // const { data: user, isLoading: isLoadingUser } = useFetch({
   //   queryKey: 'user',
@@ -24,8 +16,8 @@ function App() {
   return (
     <Routes>
       {/* <Route path="/" element={<SignupPage />} /> */}
-      {/* <Route path="/" element={<LoginPage />} /> */}
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<LoginPage />} />
+      {/* <Route path="/" element={<HomePage />} /> */}
       {/* <Route path="/" element={<LoginPage />} /> */}
       {/* <Route path="/" element={<ProfilePage />} /> */}
       {/* <Route path="/" element={<VideosPage />} /> */}
