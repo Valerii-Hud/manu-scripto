@@ -1,7 +1,7 @@
 import './_login-page.scss';
 import ctaImage from './../../assets/dummy/53X3pk-t2Gn.webp';
 import noviagramLogo from '../../assets/logos/noviagram_logo_512x512.svg';
-import noviagramTextLogo from '../../assets/logos/noviagram_logo_text_white.svg';
+import noviagramTextLogo from '../../assets/logos/noviagram_logo_text_black.svg';
 const LoginPage = () => {
   const texts = {
     cta: 'See what interesting and memorable moments your friends have shared from their lives!',
@@ -33,36 +33,33 @@ const LoginPage = () => {
           <form action="#">
             <div className="login__form__item">
               <label htmlFor="loginData">{texts.form.inputs.loginData}</label>
-              <input type="text" id="loginData" />
+              <input type="text" id="loginData" autoComplete="email" />
             </div>
             <div className="login__form__item">
               <label htmlFor="password">{texts.form.inputs.password}</label>
-              <input type="text" id="password" />
+              <input
+                type="text"
+                id="password"
+                autoComplete="current-password"
+              />
             </div>
 
-            <button
-              type="submit"
-              className="login__form__button login__form__button_blue"
-            >
-              {texts.form.buttons.login}
-            </button>
-            <button type="submit" className="login__form__button">
-              {texts.form.buttons.forgotPassword}
-            </button>
-            <button
-              type="submit"
-              className="login__form__button login__form__button_transparent"
-            >
-              {texts.form.buttons.createNewAccout}
-            </button>
-            <button
-              type="submit"
-              className="login__form__button login__form__button_transparent"
-            >
-              {texts.form.buttons.createNewAccout}
-            </button>
+            <div className="login__form__buttons">
+              <button
+                type="submit"
+                className="login__form__button login__form__button_accent"
+              >
+                {texts.form.buttons.login}
+              </button>
+              <button
+                type="submit"
+                className="login__form__button login__form__button_ghost"
+              >
+                {texts.form.buttons.forgotPassword}
+              </button>
+            </div>
           </form>
-          <img src={noviagramTextLogo} className="login__form__logo" />
+          <img src={noviagramTextLogo} alt="" className="signup__text__logo" />
         </div>
       </main>
     </div>

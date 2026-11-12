@@ -1,6 +1,8 @@
 import './_signup-page.scss';
 import ctaImage from './../../assets/dummy/53X3pk-t2Gn.webp';
 import noviagramLogo from '../../assets/logos/noviagram_logo_512x512.svg';
+import noviagramTextLogo from '../../assets/logos/noviagram_logo_text_black.svg';
+
 const SignupPage = () => {
   const texts = {
     cta: 'See what interesting and memorable moments your friends have shared from their lives!',
@@ -41,19 +43,23 @@ const SignupPage = () => {
           <form action="#">
             <div className="signup__form__item">
               <label htmlFor="loginData">{texts.form.inputs.loginData}</label>
-              <input type="text" id="loginData" />
+              <input type="text" id="loginData" autoComplete="email" />
             </div>
             <div className="signup__form__item">
               <label htmlFor="password">{texts.form.inputs.password}</label>
-              <input type="text" id="password" />
+              <input
+                type="text"
+                id="password"
+                autoComplete="current-password"
+              />
             </div>
             <div className="signup__form__item">
               <label htmlFor="fullName">{texts.form.inputs.fullName}</label>
-              <input type="text" id="fullName" />
+              <input type="text" id="fullName" autoComplete="name" />
             </div>
             <div className="signup__form__item">
               <label htmlFor="userName">{texts.form.inputs.userName}</label>
-              <input type="text" id="userName" />
+              <input type="text" id="userName" autoComplete="username" />
             </div>
             <div className="signup__form__terms">
               <p>{texts.form.terms.createAccount}</p>
@@ -61,16 +67,22 @@ const SignupPage = () => {
               <p>{texts.form.terms.ourPolicy}</p>
             </div>
 
-            <button
-              type="submit"
-              className="signup__form__button signup__form__button_blue"
-            >
-              {texts.form.buttons.signup}
-            </button>
-            <button type="submit" className="signup__form__button">
-              {texts.form.buttons.alreadyHaveAccount}
-            </button>
+            <div className="signup__form__buttons">
+              <button
+                type="submit"
+                className="signup__form__button signup__form__button_accent"
+              >
+                {texts.form.buttons.signup}
+              </button>
+              <button
+                type="submit"
+                className="signup__form__button signup__form__button_ghost"
+              >
+                {texts.form.buttons.alreadyHaveAccount}
+              </button>
+            </div>
           </form>
+          <img src={noviagramTextLogo} alt="" className="signup__text__logo" />
         </div>
       </main>
     </div>

@@ -1,3 +1,4 @@
+@use './app' as *;
 // <Reset.css>
 
 @charset "utf-8";
@@ -18,6 +19,9 @@
   display: revert;
 }
 
+html {
+  font-size: 62.5%;
+}
 /* Preferred box-sizing value */
 *,
 *::before,
@@ -109,3 +113,7 @@ meter {
 }
 
 // </Reset.css>
+
+body {
+  background-color: $primary_color;
+}
